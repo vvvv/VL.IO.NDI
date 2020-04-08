@@ -12,7 +12,7 @@ Repository containing:
 
 * Install latest [NDI Runtime](http://new.tk/NDIRedistV4) - it contains the latest NDI dlls.
   * copy *Processing.NDI.Lib.x64.dll* to *VL.IO.NDI\lib-native\x64* 
-* Build the solution in *NDILibDotNet2_VL*
+* Build the VS solution in *src\*
   * copy *NDILibDotNet2_VL.dll* from *src\bin\Debug\netstandard2.0* to *VL.IO.NDI\lib\netstandard2.0*
 
 
