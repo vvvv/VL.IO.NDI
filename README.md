@@ -8,17 +8,19 @@ Repository containing:
 
 
 
-### Setup:
+### Setup
 
-* Install latest [NDI Runtime](http://new.tk/NDIRedistV4) - it contains the latest NDI dlls.
-  * copy *Processing.NDI.Lib.x64.dll* to *VL.IO.NDI\lib-native\x64* 
 * Build the VS solution in *src\\*
 
 
 
-### Recommended:
+### Recommended
 
 Download the [NDI Tools](https://www.ndi.tv/tools/). They contain several applications (like *Test Patterns* and *Scan Converter*) to create NDI Sources on your computer.
 
 
+
+### License
+
+By using this you agree to the NDI EULA which can be found in *licenses/NDI License Agreement.pdf* .
 
