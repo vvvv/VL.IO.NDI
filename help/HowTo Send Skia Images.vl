@@ -1,0 +1,184 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Document xmlns:p="property" Id="GZo7uzIzEXcPKOzsHEotz9" LanguageVersion="2020.1.0.53" Version="0.128">
+  <NugetDependency Id="QDKWB4liQfJMDPWein5ERc" Location="VL.Core" Version="2020.1.0" />
+  <NugetDependency Id="JngbdjrQttWP3C056ivUGZ" Location="VL.CoreLib" Version="2020.1.0" />
+  <NugetDependency Id="FDjgov6DOmvM906MD3ltdI" Location="VL.Skia" Version="2020.1.0" />
+  <Patch Id="IiCA7zHpiE6LeILS7YZGKy">
+    <Canvas Id="PmobLB0HSYAL6JU48f5ahA" DefaultCategory="Main" CanvasType="FullCategory">
+      <!--
+
+    ************************ paint ************************
+
+-->
+      <Node Name="paint" Bounds="200,100" Id="IU8c49RhUCbMbCf5OW2Z7S">
+        <p:NodeReference>
+          <Choice Kind="ContainerDefinition" Name="Process" />
+          <FullNameCategoryReference ID="Primitive" />
+        </p:NodeReference>
+        <Patch Id="Mj99NX10NKYMBmvus28OEi">
+          <Canvas Id="JjCrR4OqvNaM8t2aY0sbyg" BordersChecked="false" CanvasType="Group" />
+          <Patch Id="PC4nkpQl4uEO6SVbfhsiCJ" Name="Create" />
+          <Patch Id="LqNT2jTHtxcMU2kfyQ5u4p" Name="Update" />
+          <ProcessDefinition Id="ATEsnhSoaSEPuPvFYeEOB1">
+            <Fragment Id="AB2BHM0lPFBQKtXI4FKj0u" Patch="PC4nkpQl4uEO6SVbfhsiCJ" Enabled="true" />
+            <Fragment Id="KK32CGyKe6wNmhg4Z7M86I" Patch="LqNT2jTHtxcMU2kfyQ5u4p" Enabled="true" />
+          </ProcessDefinition>
+        </Patch>
+      </Node>
+    </Canvas>
+    <!--
+
+    ************************ Application ************************
+
+-->
+    <Node Name="Application" Bounds="399,230" Id="JtBCvSXkYVJM5hw4K561FZ">
+      <p:NodeReference>
+        <Choice Kind="ContainerDefinition" Name="Process" />
+        <FullNameCategoryReference ID="Primitive" />
+      </p:NodeReference>
+      <Patch Id="VX8x6j7wJ3GQSwpxICFXQ7">
+        <Canvas Id="FntGeiaET6xNjAVP7uNJ4R" CanvasType="Group">
+          <Node Bounds="544,821,479,19" Id="I9neeYxRP1qPByMr1CRhCH">
+            <p:NodeReference LastCategoryFullName="IO.NDI" LastSymbolSource="VL.IO.NDI.vl">
+              <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
+              <Choice Kind="ProcessAppFlag" Name="Sender" />
+              <CategoryReference Kind="Category" Name="NDI" NeedsToBeDirectParent="true" />
+            </p:NodeReference>
+            <Pin Id="TldjfVR3BuiN0vraygDJPf" Name="Source Name" Kind="InputPin" />
+            <Pin Id="Az4vpTnhysJQXIflqrcCNC" Name="Video Frame" Kind="InputPin" />
+            <Pin Id="MSEfZ6GPD06P0EreCe4RtQ" Name="Only Send When Connected" Kind="InputPin" />
+            <Pin Id="Q7CQ0xQXWX8LlMIhTbkfPJ" Name="Send Video" Kind="InputPin" />
+            <Pin Id="Ex2c6B1Y4i0PA1gnRqcH8b" Name="Force" Kind="InputPin" />
+            <Pin Id="Abr0AJ7D4xZQCxHHaTYL6Q" Name="Aspect Ratio" Kind="InputPin" />
+            <Pin Id="KLX2Fv76z2jLw3oQ9991Mf" Name="Four CC" Kind="InputPin" />
+            <Pin Id="IRe8lRYS8V1L4QDFpz6bLW" Name="Frame Rate Numerator" Kind="InputPin" />
+            <Pin Id="Vg3xa5lbCQLOPeh8yNQOld" Name="Frame Rate Denominator" Kind="InputPin" />
+            <Pin Id="R6r1oW57CcCQOV2zJU6W4g" Name="Format" Kind="InputPin" />
+            <Pin Id="PkuM3HN7RNIMSjuc9hCWvC" Name="Name" Kind="InputPin" />
+            <Pin Id="PmOUFfQq8iGMHYtAT3OaUa" Name="Current Connections" Kind="OutputPin" />
+          </Node>
+          <Node Bounds="592,610,56,26" Id="CUB1CHZgcRRQTCBcuGlzxw">
+            <p:NodeReference LastCategoryFullName="Graphics.Skia.Imaging" LastSymbolSource="VL.Skia.vl">
+              <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
+              <Choice Kind="OperationCallFlag" Name="ToImage" />
+              <CategoryReference Kind="Category" Name="Imaging" NeedsToBeDirectParent="true">
+                <p:OuterCategoryReference Kind="Category" Name="Skia" NeedsToBeDirectParent="true" />
+              </CategoryReference>
+            </p:NodeReference>
+            <Pin Id="FnICgyP950EOYGU3ryfkyx" Name="Input" Kind="InputPin" />
+            <Pin Id="Mou8YNpob6dLq4E2AjGWkx" Name="Result" Kind="OutputPin" />
+          </Node>
+          <Pad Id="RDj1RCnuTi7Np60YCHrFdx" Comment="Only Send When Connected" Bounds="641,724,35,35" ShowValueBox="true" isIOBox="true" Value="True">
+            <p:TypeAnnotation LastCategoryFullName="Primitive" LastSymbolSource="CoreLibBasics.vl">
+              <Choice Kind="TypeFlag" Name="Boolean" />
+            </p:TypeAnnotation>
+          </Pad>
+          <Pad Id="ON2GgMByFE5Mq1V0EgNdBo" Comment="Send Video" Bounds="688,768,35,35" ShowValueBox="true" isIOBox="true" Value="True">
+            <p:TypeAnnotation LastCategoryFullName="Primitive" LastSymbolSource="CoreLibBasics.vl">
+              <Choice Kind="TypeFlag" Name="Boolean" />
+            </p:TypeAnnotation>
+          </Pad>
+          <Pad Id="C69K36ZZ1p8LITQjJPswZt" Comment="Four CC" Bounds="830,723,148,15" ShowValueBox="true" isIOBox="true" Value="FourCC_type_BGRA">
+            <p:TypeAnnotation LastCategoryFullName="NewTek.NDIlib" LastSymbolSource="NDILibDotNet2_VL.dll">
+              <Choice Kind="TypeFlag" Name="FourCC_type_e" />
+            </p:TypeAnnotation>
+          </Pad>
+          <Pad Id="PrRQti5nyyKM6FQPHN5CjP" Comment="Frame Rate Numerator" Bounds="878,756,35,15" ShowValueBox="true" isIOBox="true" Value="50">
+            <p:TypeAnnotation LastCategoryFullName="Primitive" LastSymbolSource="CoreLibBasics.vl">
+              <Choice Kind="TypeFlag" Name="Integer32" />
+            </p:TypeAnnotation>
+          </Pad>
+          <Pad Id="S7XzXDZZwYLNtuAMPlbIeF" Comment="Format" Bounds="973,802,171,15" ShowValueBox="true" isIOBox="true" Value="frame_format_type_progressive">
+            <p:TypeAnnotation LastCategoryFullName="NewTek.NDIlib" LastSymbolSource="NDILibDotNet2_VL.dll">
+              <Choice Kind="TypeFlag" Name="frame_format_type_e" />
+            </p:TypeAnnotation>
+          </Pad>
+          <Pad Id="PhmIBAvbzyAPxJPOIjUPi7" Comment="Source Name" Bounds="496,684,129,15" ShowValueBox="true" isIOBox="true" Value="VLSender">
+            <p:TypeAnnotation LastCategoryFullName="Primitive" LastSymbolSource="CoreLibBasics.vl">
+              <Choice Kind="TypeFlag" Name="String" />
+            </p:TypeAnnotation>
+          </Pad>
+          <Pad Id="Cm7nfrD2rd2PUoS026D001" Comment="Current Connections" Bounds="546,882,35,15" ShowValueBox="true" isIOBox="true" />
+          <Pad Id="VHjH9nIXiZPPXCh4rOm4LR" Comment="Frame Rate Denominator" Bounds="925,779,35,15" ShowValueBox="true" isIOBox="true" Value="1">
+            <p:TypeAnnotation LastCategoryFullName="Primitive" LastSymbolSource="CoreLibBasics.vl">
+              <Choice Kind="TypeFlag" Name="Integer32" />
+            </p:TypeAnnotation>
+          </Pad>
+          <Node Bounds="593,423,345,19" Id="F2gbrhkXkEWM3E7X71xcno">
+            <p:NodeReference LastCategoryFullName="Main" LastSymbolSource="DemoContent.vl">
+              <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
+              <Choice Kind="ProcessAppFlag" Name="SkiaDemoContent" />
+            </p:NodeReference>
+            <Pin Id="RPSPY8J48CGLU6suJgjsaP" Name="ColorBars" Kind="InputPin" />
+            <Pin Id="KgrfzP8ej38Li9R0vBVhnJ" Name="Rectangle" Kind="InputPin" />
+            <Pin Id="HDv2nKmca1QOhGFj8Ex0ed" Name="Lines" Kind="InputPin" />
+            <Pin Id="UbBvlwAK015PlEe95FPJB0" Name="Period" Kind="InputPin" />
+            <Pin Id="NkXPuVC2MZzOAnDS8wyLfW" Name="Width" Kind="InputPin" />
+            <Pin Id="OD4V48JvDt2MPXchOY4Y4n" Name="Height" Kind="InputPin" />
+            <Pin Id="DUH7unOmPuWOz5jwe0JLzR" Name="SKImage" Kind="OutputPin" />
+          </Node>
+          <Overlay Id="EHygryxt4yqPD3dS3WLycl" Name="Demo Content" Bounds="147,289,1047,189" />
+          <Pad Id="KuuCDNXQZLjMXw6KaHvEZ6" Comment="ColorBars" Bounds="535,360,35,35" ShowValueBox="true" isIOBox="true" Value="True">
+            <p:TypeAnnotation LastCategoryFullName="Primitive" LastSymbolSource="CoreLibBasics.vl">
+              <Choice Kind="TypeFlag" Name="Boolean" />
+            </p:TypeAnnotation>
+          </Pad>
+          <Pad Id="LeCXE6KQylmPrXBkmTWXYH" Comment="Rectangle" Bounds="640,360,35,35" ShowValueBox="true" isIOBox="true" Value="True">
+            <p:TypeAnnotation LastCategoryFullName="Primitive" LastSymbolSource="CoreLibBasics.vl">
+              <Choice Kind="TypeFlag" Name="Boolean" />
+            </p:TypeAnnotation>
+          </Pad>
+          <Pad Id="FlF6mjApG3DLUWiH4QTB47" Comment="Lines" Bounds="761,360,35,35" ShowValueBox="true" isIOBox="true" Value="True">
+            <p:TypeAnnotation LastCategoryFullName="Primitive" LastSymbolSource="CoreLibBasics.vl">
+              <Choice Kind="TypeFlag" Name="Boolean" />
+            </p:TypeAnnotation>
+          </Pad>
+          <Overlay Id="PWzwFAsu0UUL5E2IJKFw77" Name="NDI Sender (Experimental)" Bounds="149,506,1050,443" />
+          <Pad Id="TCFApzYlmi3PHJqAFdj07T" Bounds="169,766,303,126" ShowValueBox="true" isIOBox="true" Value="The NDI Sender is a blocking node that will send frames according to the set frame rate.&#xD;&#xA;&#xD;&#xA;It is also not synced to any Renderer and will therefore have choppy results.">
+            <p:TypeAnnotation LastCategoryFullName="Primitive" LastSymbolSource="CoreLibBasics.vl">
+              <Choice Kind="TypeFlag" Name="String" />
+            </p:TypeAnnotation>
+            <p:ValueBoxSettings>
+              <p:fontsize p:Type="Int32">9</p:fontsize>
+              <p:stringtype p:Assembly="VL.Core" p:Type="VL.Core.StringType">Comment</p:stringtype>
+            </p:ValueBoxSettings>
+          </Pad>
+          <Pad Id="AGiRmAnZqxgM67zoadmR1e" Comment="Width" Bounds="848,360,35,15" ShowValueBox="true" isIOBox="true" Value="1920">
+            <p:TypeAnnotation LastCategoryFullName="Primitive" LastSymbolSource="CoreLibBasics.vl">
+              <Choice Kind="TypeFlag" Name="Integer32" />
+            </p:TypeAnnotation>
+          </Pad>
+          <Pad Id="EysoWE3zXhcNzBPULpo832" Comment="Height" Bounds="939,360,35,15" ShowValueBox="true" isIOBox="true" Value="1080">
+            <p:TypeAnnotation LastCategoryFullName="Primitive" LastSymbolSource="CoreLibBasics.vl">
+              <Choice Kind="TypeFlag" Name="Integer32" />
+            </p:TypeAnnotation>
+          </Pad>
+        </Canvas>
+        <Patch Id="RXbXPrEDZ5UN9J32SGvmAW" Name="Create" />
+        <Patch Id="QpxSgEoztp6NSBKwkBB7d3" Name="Update" />
+        <ProcessDefinition Id="OO7oPOAxfBdMB8hVif48eh">
+          <Fragment Id="G8ypkxvorGeMXrHUFXsQWk" Patch="RXbXPrEDZ5UN9J32SGvmAW" Enabled="true" />
+          <Fragment Id="IHf0xeXdBqUNyDlUj1QSpd" Patch="QpxSgEoztp6NSBKwkBB7d3" Enabled="true" />
+        </ProcessDefinition>
+        <Patch Id="M902u7q3k0RP1kg1zsLj5M" Name="Dispose" />
+        <Link Id="KLxs9aFfeF9Nrt5izjMvAS" Ids="Mou8YNpob6dLq4E2AjGWkx,Az4vpTnhysJQXIflqrcCNC" />
+        <Link Id="I0c1na072EMLs0vh19rkk1" Ids="RDj1RCnuTi7Np60YCHrFdx,MSEfZ6GPD06P0EreCe4RtQ" />
+        <Link Id="SMFTAbDXC0WQJQYBPizdjt" Ids="ON2GgMByFE5Mq1V0EgNdBo,Q7CQ0xQXWX8LlMIhTbkfPJ" />
+        <Link Id="UHZNmZqIZ0KMnkQdPxvdDf" Ids="C69K36ZZ1p8LITQjJPswZt,KLX2Fv76z2jLw3oQ9991Mf" />
+        <Link Id="J9ZpiYfdQQbOx00I7xkg4K" Ids="PrRQti5nyyKM6FQPHN5CjP,IRe8lRYS8V1L4QDFpz6bLW" />
+        <Link Id="F7GZjlmXL5BPgqjyR7yLmG" Ids="S7XzXDZZwYLNtuAMPlbIeF,R6r1oW57CcCQOV2zJU6W4g" />
+        <Link Id="KCCJUFURnEeMMHIu4Z2MRO" Ids="PhmIBAvbzyAPxJPOIjUPi7,TldjfVR3BuiN0vraygDJPf" />
+        <Link Id="BhqMQBVXTvgNUvyDqWX3MT" Ids="PmOUFfQq8iGMHYtAT3OaUa,Cm7nfrD2rd2PUoS026D001" />
+        <Link Id="T59mwdQ0kpGMq1eEyJJxUd" Ids="VHjH9nIXiZPPXCh4rOm4LR,Vg3xa5lbCQLOPeh8yNQOld" />
+        <Link Id="SzlPiu7ehDHOpDgnGIV8NO" Ids="DUH7unOmPuWOz5jwe0JLzR,FnICgyP950EOYGU3ryfkyx" />
+        <Link Id="BNraXfACgYgQLAd8w60lNn" Ids="KuuCDNXQZLjMXw6KaHvEZ6,RPSPY8J48CGLU6suJgjsaP" />
+        <Link Id="FP92Z9Es5MCOaLaR4fsfhl" Ids="LeCXE6KQylmPrXBkmTWXYH,KgrfzP8ej38Li9R0vBVhnJ" />
+        <Link Id="EhVWgFCSDiJN20OVWcPXKA" Ids="FlF6mjApG3DLUWiH4QTB47,HDv2nKmca1QOhGFj8Ex0ed" />
+        <Link Id="C4da4IEtq41Mcyujo2OwIk" Ids="AGiRmAnZqxgM67zoadmR1e,NkXPuVC2MZzOAnDS8wyLfW" />
+        <Link Id="LAWlTOP6PzOOejwX2s67Wm" Ids="EysoWE3zXhcNzBPULpo832,OD4V48JvDt2MPXchOY4Y4n" />
+      </Patch>
+    </Node>
+  </Patch>
+  <DocumentDependency Id="F1CrQZCRnTSLVHgFz8rWMB" Location="../VL.IO.NDI.vl" />
+  <DocumentDependency Id="FpaozMcnq9LLCEc6Qt4s1T" Location="./DemoContent.vl" />
+</Document>

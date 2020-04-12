@@ -1,0 +1,203 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Document xmlns:p="property" Id="QHpr0fv5ZhbPHgd1D9pUc5" LanguageVersion="2020.1.0.53" Version="0.128">
+  <NugetDependency Id="QDKWB4liQfJMDPWein5ERc" Location="VL.Core" Version="2020.1.0" />
+  <NugetDependency Id="JngbdjrQttWP3C056ivUGZ" Location="VL.CoreLib" Version="2020.1.0" />
+  <NugetDependency Id="FDjgov6DOmvM906MD3ltdI" Location="VL.Skia" Version="2020.1.0" />
+  <Patch Id="IiCA7zHpiE6LeILS7YZGKy">
+    <Canvas Id="PmobLB0HSYAL6JU48f5ahA" DefaultCategory="Main" CanvasType="FullCategory">
+      <!--
+
+    ************************ paint ************************
+
+-->
+      <Node Name="paint" Bounds="200,100" Id="IU8c49RhUCbMbCf5OW2Z7S">
+        <p:NodeReference>
+          <Choice Kind="ContainerDefinition" Name="Process" />
+          <FullNameCategoryReference ID="Primitive" />
+        </p:NodeReference>
+        <Patch Id="Mj99NX10NKYMBmvus28OEi">
+          <Canvas Id="JjCrR4OqvNaM8t2aY0sbyg" BordersChecked="false" CanvasType="Group" />
+          <Patch Id="PC4nkpQl4uEO6SVbfhsiCJ" Name="Create" />
+          <Patch Id="LqNT2jTHtxcMU2kfyQ5u4p" Name="Update" />
+          <ProcessDefinition Id="ATEsnhSoaSEPuPvFYeEOB1">
+            <Fragment Id="AB2BHM0lPFBQKtXI4FKj0u" Patch="PC4nkpQl4uEO6SVbfhsiCJ" Enabled="true" />
+            <Fragment Id="KK32CGyKe6wNmhg4Z7M86I" Patch="LqNT2jTHtxcMU2kfyQ5u4p" Enabled="true" />
+          </ProcessDefinition>
+        </Patch>
+      </Node>
+    </Canvas>
+    <!--
+
+    ************************ Application ************************
+
+-->
+    <Node Name="Application" Bounds="399,230" Id="JtBCvSXkYVJM5hw4K561FZ">
+      <p:NodeReference>
+        <Choice Kind="ContainerDefinition" Name="Process" />
+        <FullNameCategoryReference ID="Primitive" />
+      </p:NodeReference>
+      <Patch Id="VX8x6j7wJ3GQSwpxICFXQ7">
+        <Canvas Id="FntGeiaET6xNjAVP7uNJ4R" CanvasType="Group">
+          <Node Bounds="467,473,56,26" Id="CUB1CHZgcRRQTCBcuGlzxw">
+            <p:NodeReference LastCategoryFullName="Graphics.Skia.Imaging" LastSymbolSource="VL.Skia.vl">
+              <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
+              <Choice Kind="OperationCallFlag" Name="ToImage" />
+              <CategoryReference Kind="Category" Name="Imaging" NeedsToBeDirectParent="true">
+                <p:OuterCategoryReference Kind="Category" Name="Skia" NeedsToBeDirectParent="true" />
+              </CategoryReference>
+            </p:NodeReference>
+            <Pin Id="FnICgyP950EOYGU3ryfkyx" Name="Input" Kind="InputPin" />
+            <Pin Id="Mou8YNpob6dLq4E2AjGWkx" Name="Result" Kind="OutputPin" />
+          </Node>
+          <Node Bounds="468,754,354,19" Id="GyiLgF9p3MUQTG2mqt8tYu">
+            <p:NodeReference LastCategoryFullName="IO.NDI" LastSymbolSource="VL.IO.NDI.vl">
+              <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
+              <Choice Kind="ProcessAppFlag" Name="ReactiveSender" />
+            </p:NodeReference>
+            <Pin Id="OjQjRMBkMHuLq1peSGWeO5" Name="Image" Kind="InputPin" />
+            <Pin Id="Cf7AVnZmgQhOHKJhRIMK1E" Name="Name" Kind="InputPin" />
+            <Pin Id="I6SIYDtSUM2PhcVsH2pXkv" Name="Only Send When Connected" Kind="InputPin" />
+            <Pin Id="JJGHCb4tmUaMKgm12HFLt2" Name="Send Video" Kind="InputPin" />
+            <Pin Id="PDd6H2qditcOJGJGmW3WLT" Name="Aspect Ratio" Kind="InputPin" />
+            <Pin Id="UaLVCWZ1464PnNNkQ1T2Lt" Name="Four CC" Kind="InputPin" />
+            <Pin Id="LJcMBzgIEfPLEfp61HTSqV" Name="Frame Rate Numerator" Kind="InputPin" />
+            <Pin Id="RhxxpxMuooEQNulR4aMjCx" Name="Frame Rate Denominator" Kind="InputPin" />
+            <Pin Id="VzZUryaVnNLOTW9JKjA2eF" Name="Format" Kind="InputPin" />
+            <Pin Id="RTIqpsEqOFsNrfUPm6GEqg" Name="Connections" Kind="OutputPin" />
+            <Pin Id="QGhH3J0uQyCLajqaj0CLjY" Name="Last Period" Kind="OutputPin" />
+          </Node>
+          <Pad Id="LcSkN7dESBrLKFD7MUcKDt" Comment="Connections" Bounds="470,816,35,15" ShowValueBox="true" isIOBox="true" />
+          <Pad Id="HwAGfwRODxDLXP1YObMVM9" Comment="Name" Bounds="513,512,110,15" ShowValueBox="true" isIOBox="true" Value="VLSenderReactive">
+            <p:TypeAnnotation LastCategoryFullName="Primitive" LastSymbolSource="CoreLibBasics.vl">
+              <Choice Kind="TypeFlag" Name="String" />
+            </p:TypeAnnotation>
+          </Pad>
+          <Pad Id="UYTPdImwbuUOe8rx1bBHdW" Comment="Send Video" Bounds="602,581,35,35" ShowValueBox="true" isIOBox="true" Value="False">
+            <p:TypeAnnotation LastCategoryFullName="Primitive" LastSymbolSource="CoreLibBasics.vl">
+              <Choice Kind="TypeFlag" Name="Boolean" />
+            </p:TypeAnnotation>
+          </Pad>
+          <Pad Id="BFbS5vU7yTXPlY1D2BZBpA" Comment="Four CC" Bounds="687,648,148,15" ShowValueBox="true" isIOBox="true" Value="FourCC_type_BGRA">
+            <p:TypeAnnotation LastCategoryFullName="NewTek.NDIlib" LastSymbolSource="NDILibDotNet2_VL.dll">
+              <Choice Kind="TypeFlag" Name="FourCC_type_e" />
+            </p:TypeAnnotation>
+          </Pad>
+          <Pad Id="SvYaEDyY3rHOwzRfXZnQZi" Comment="Only Send When Connected" Bounds="558,541,35,35" ShowValueBox="true" isIOBox="true" Value="True">
+            <p:TypeAnnotation LastCategoryFullName="Primitive" LastSymbolSource="CoreLibBasics.vl">
+              <Choice Kind="TypeFlag" Name="Boolean" />
+            </p:TypeAnnotation>
+          </Pad>
+          <Pad Id="V4MiAZ5HMH0M8uuGviCI71" Comment="Last Period" Bounds="819,799,62,19" ShowValueBox="true" isIOBox="true">
+            <p:ValueBoxSettings>
+              <p:precision p:Type="Int32">4</p:precision>
+            </p:ValueBoxSettings>
+          </Pad>
+          <Pad Id="Ju7ggJ1enq5PyFaNr9mB6s" Comment="Aspect Ratio" Bounds="645,624,35,15" ShowValueBox="true" isIOBox="true" Value="0">
+            <p:TypeAnnotation LastCategoryFullName="Primitive" LastSymbolSource="CoreLibBasics.vl">
+              <Choice Kind="TypeFlag" Name="Float32" />
+            </p:TypeAnnotation>
+          </Pad>
+          <Pad Id="Hp9kJQ36nDUO9RyMxkwEz5" Bounds="754,621,356,19" ShowValueBox="true" isIOBox="true" Value="when AspectRatio is &lt;=0, it is determined by width/height">
+            <p:TypeAnnotation>
+              <Choice Kind="TypeFlag" Name="String" />
+            </p:TypeAnnotation>
+            <p:ValueBoxSettings>
+              <p:fontsize p:Type="Int32">9</p:fontsize>
+              <p:stringtype p:Assembly="VL.Core" p:Type="VL.Core.StringType">Comment</p:stringtype>
+            </p:ValueBoxSettings>
+          </Pad>
+          <Pad Id="BbO3cBLWmmUNTJMqaNRLxD" Comment="Frame Rate Numerator" Bounds="732,677,35,15" ShowValueBox="true" isIOBox="true" Value="60">
+            <p:TypeAnnotation LastCategoryFullName="Primitive" LastSymbolSource="CoreLibBasics.vl">
+              <Choice Kind="TypeFlag" Name="Integer32" />
+            </p:TypeAnnotation>
+          </Pad>
+          <Pad Id="UM7Wf02qZKmOTA4IyfDSqt" Comment="Frame Rate Denominator" Bounds="775,697,35,15" ShowValueBox="true" isIOBox="true" Value="1">
+            <p:TypeAnnotation LastCategoryFullName="Primitive" LastSymbolSource="CoreLibBasics.vl">
+              <Choice Kind="TypeFlag" Name="Integer32" />
+            </p:TypeAnnotation>
+          </Pad>
+          <Pad Id="FN9KamLm9MtLtHgDcTOvOl" Comment="Format" Bounds="819,728,171,15" ShowValueBox="true" isIOBox="true" Value="frame_format_type_progressive">
+            <p:TypeAnnotation LastCategoryFullName="NewTek.NDIlib" LastSymbolSource="NDILibDotNet2_VL.dll">
+              <Choice Kind="TypeFlag" Name="frame_format_type_e" />
+            </p:TypeAnnotation>
+          </Pad>
+          <Pad Id="VFXhp3QrRB6OMqNjq9UEb0" Bounds="91,599,356,221" ShowValueBox="true" isIOBox="true" Value="The ReactiveSender processes frames and their sending on a different thread and is therefore not heavy on the mainloop.&#xD;&#xA;&#xD;&#xA;However, it is not synced to any Renderer and therefore will not be fluent.&#xD;&#xA;&#xD;&#xA;Watch out: For now trying to rename the sender or close the patch while sending will likely crash VVVV.">
+            <p:TypeAnnotation LastCategoryFullName="Primitive" LastSymbolSource="CoreLibBasics.vl">
+              <Choice Kind="TypeFlag" Name="String" />
+            </p:TypeAnnotation>
+            <p:ValueBoxSettings>
+              <p:fontsize p:Type="Int32">9</p:fontsize>
+              <p:stringtype p:Assembly="VL.Core" p:Type="VL.Core.StringType">Comment</p:stringtype>
+            </p:ValueBoxSettings>
+          </Pad>
+          <Overlay Id="IPojQgC4d5iNw41gimTq44" Name="Demo Content" Bounds="87,227,1045,189" />
+          <Overlay Id="PyowFH5cc40P7gR4GdjLZT" Name="Reactive NDI Sender (Experimental)" Bounds="87,454,1046,458" />
+          <Node Bounds="468,367,303,19" Id="KwgFkVJLsWrMZZTlwURdO6">
+            <p:NodeReference LastCategoryFullName="Main" LastSymbolSource="DemoContent.vl">
+              <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
+              <Choice Kind="ProcessAppFlag" Name="SkiaDemoContent" />
+            </p:NodeReference>
+            <Pin Id="AkBJN8FTUQcQdE9kEhx1B4" Name="ColorBars" Kind="InputPin" />
+            <Pin Id="SiJgs4cjXNfM4caYKgvOEj" Name="Rectangle" Kind="InputPin" />
+            <Pin Id="DqlvUvEFDrbNHOXIbI3ThL" Name="Lines" Kind="InputPin" />
+            <Pin Id="N3B10wUTafwQMFggcOpj72" Name="Period" Kind="InputPin" />
+            <Pin Id="SartXsKdh7EPirmqBgXXOq" Name="Width" Kind="InputPin" />
+            <Pin Id="Poupqrj6dPuPCHkSG7p39i" Name="Height" Kind="InputPin" />
+            <Pin Id="VnqqtELXvLlPkMXmQSYNTX" Name="SKImage" Kind="OutputPin" />
+          </Node>
+          <Pad Id="TI6xYBsuNN3QGOJui1qXoZ" Comment="Rectangle" Bounds="497,301,35,35" ShowValueBox="true" isIOBox="true" Value="True">
+            <p:TypeAnnotation LastCategoryFullName="Primitive" LastSymbolSource="CoreLibBasics.vl">
+              <Choice Kind="TypeFlag" Name="Boolean" />
+            </p:TypeAnnotation>
+          </Pad>
+          <Pad Id="MeaumDw6WO4MdRg3rSDsdS" Comment="ColorBars" Bounds="382,301,35,35" ShowValueBox="true" isIOBox="true" Value="False">
+            <p:TypeAnnotation LastCategoryFullName="Primitive" LastSymbolSource="CoreLibBasics.vl">
+              <Choice Kind="TypeFlag" Name="Boolean" />
+            </p:TypeAnnotation>
+          </Pad>
+          <Pad Id="HXhNxsiMdLnNklxdNA3F4B" Comment="Lines" Bounds="614,301,35,35" ShowValueBox="true" isIOBox="true" Value="True">
+            <p:TypeAnnotation LastCategoryFullName="Primitive" LastSymbolSource="CoreLibBasics.vl">
+              <Choice Kind="TypeFlag" Name="Boolean" />
+            </p:TypeAnnotation>
+          </Pad>
+          <Pad Id="OLU1Smcp1PdP5AkWlo5yVS" Comment="Width" Bounds="710,301,35,15" ShowValueBox="true" isIOBox="true" Value="1920">
+            <p:TypeAnnotation LastCategoryFullName="Primitive" LastSymbolSource="CoreLibBasics.vl">
+              <Choice Kind="TypeFlag" Name="Integer32" />
+            </p:TypeAnnotation>
+          </Pad>
+          <Pad Id="QWilPEZierfPSXlxmAowij" Comment="Height" Bounds="804,301,35,15" ShowValueBox="true" isIOBox="true" Value="1080">
+            <p:TypeAnnotation LastCategoryFullName="Primitive" LastSymbolSource="CoreLibBasics.vl">
+              <Choice Kind="TypeFlag" Name="Integer32" />
+            </p:TypeAnnotation>
+          </Pad>
+        </Canvas>
+        <Patch Id="RXbXPrEDZ5UN9J32SGvmAW" Name="Create" />
+        <Patch Id="QpxSgEoztp6NSBKwkBB7d3" Name="Update" />
+        <ProcessDefinition Id="OO7oPOAxfBdMB8hVif48eh">
+          <Fragment Id="G8ypkxvorGeMXrHUFXsQWk" Patch="RXbXPrEDZ5UN9J32SGvmAW" Enabled="true" />
+          <Fragment Id="IHf0xeXdBqUNyDlUj1QSpd" Patch="QpxSgEoztp6NSBKwkBB7d3" Enabled="true" />
+        </ProcessDefinition>
+        <Patch Id="M902u7q3k0RP1kg1zsLj5M" Name="Dispose" />
+        <Link Id="A86asbq7If4OoHlKguXVxC" Ids="RTIqpsEqOFsNrfUPm6GEqg,LcSkN7dESBrLKFD7MUcKDt" />
+        <Link Id="HPQ0A6I3I4XQTxpUOfavfV" Ids="HwAGfwRODxDLXP1YObMVM9,Cf7AVnZmgQhOHKJhRIMK1E" />
+        <Link Id="Hno5DXyDRv7OvcFqg4iOck" Ids="UYTPdImwbuUOe8rx1bBHdW,JJGHCb4tmUaMKgm12HFLt2" />
+        <Link Id="AVwV0rIIgaZP5ZccAUuIix" Ids="BFbS5vU7yTXPlY1D2BZBpA,UaLVCWZ1464PnNNkQ1T2Lt" />
+        <Link Id="VoTCBC24q92NB1v8FsUQTG" Ids="SvYaEDyY3rHOwzRfXZnQZi,I6SIYDtSUM2PhcVsH2pXkv" />
+        <Link Id="NQ1qG2R05A6POuidLU9Ece" Ids="QGhH3J0uQyCLajqaj0CLjY,V4MiAZ5HMH0M8uuGviCI71" />
+        <Link Id="KfY7dPiGIiaNOdmXKL4iNJ" Ids="Mou8YNpob6dLq4E2AjGWkx,OjQjRMBkMHuLq1peSGWeO5" />
+        <Link Id="LopPtzMjC6sLHZYGCqAUC4" Ids="Ju7ggJ1enq5PyFaNr9mB6s,PDd6H2qditcOJGJGmW3WLT" />
+        <Link Id="EAE1gRScWeKOIPFl9k45r4" Ids="BbO3cBLWmmUNTJMqaNRLxD,LJcMBzgIEfPLEfp61HTSqV" />
+        <Link Id="DBh9NxVu4DpL2je7Q7X2ST" Ids="UM7Wf02qZKmOTA4IyfDSqt,RhxxpxMuooEQNulR4aMjCx" />
+        <Link Id="MnOCc8OtZxNMWQXTiwDsL1" Ids="FN9KamLm9MtLtHgDcTOvOl,VzZUryaVnNLOTW9JKjA2eF" />
+        <Link Id="GaNtZo0UoNhNR0Ltozc2Y0" Ids="VnqqtELXvLlPkMXmQSYNTX,FnICgyP950EOYGU3ryfkyx" />
+        <Link Id="KNXAHnHmfC1PDkAPpTpYCu" Ids="TI6xYBsuNN3QGOJui1qXoZ,SiJgs4cjXNfM4caYKgvOEj" />
+        <Link Id="PGQdefSM4vkPgfY1epXTbS" Ids="MeaumDw6WO4MdRg3rSDsdS,AkBJN8FTUQcQdE9kEhx1B4" />
+        <Link Id="JtwJPKZY4nmLmVGeJqKZqj" Ids="HXhNxsiMdLnNklxdNA3F4B,DqlvUvEFDrbNHOXIbI3ThL" />
+        <Link Id="TGT0bCnr59LLDsdHxpgVkK" Ids="OLU1Smcp1PdP5AkWlo5yVS,SartXsKdh7EPirmqBgXXOq" />
+        <Link Id="HMhW53idIbHLdgcJj5vPSN" Ids="QWilPEZierfPSXlxmAowij,Poupqrj6dPuPCHkSG7p39i" />
+      </Patch>
+    </Node>
+  </Patch>
+  <DocumentDependency Id="F1CrQZCRnTSLVHgFz8rWMB" Location="../VL.IO.NDI.vl" />
+  <DocumentDependency Id="JN6UyzLn3UALVb8auyml7S" Location="./DemoContent.vl" />
+</Document>
