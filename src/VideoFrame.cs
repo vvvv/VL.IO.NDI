@@ -41,7 +41,7 @@ namespace NewTek.NDI
         }
 
 
-        public VideoFrame(IImage image, NDIlib.FourCC_type_e fourCC,
+        public VideoFrame(IImage image, float aspectRatio,  NDIlib.FourCC_type_e fourCC,
             int frameRateNumerator, int frameRateDenominator, NDIlib.frame_format_type_e format)
         {
             IntPtr videoBufferPtr;
@@ -52,6 +52,9 @@ namespace NewTek.NDI
 
             // allocate some memory for a video buffer
             IntPtr tmpPtr = Marshal.AllocHGlobal(bufferSize);
+            var ar = aspectRatio;
+            if (ar <= 0.0)
+                ar = (float) image.Info.Width / image.Info.Height;
 
 
             using(var data = image.GetData())
@@ -73,7 +76,7 @@ namespace NewTek.NDI
                 FourCC = NDIlib.FourCC_type_e.FourCC_type_BGRA,
                 frame_rate_N = frameRateNumerator,
                 frame_rate_D = frameRateDenominator,
-                picture_aspect_ratio = (float)image.Info.Width / image.Info.Height,
+                picture_aspect_ratio = ar,
                 frame_format_type = format,
                 timecode = NDIlib.send_timecode_synthesize,
                 p_data = videoBufferPtr,
