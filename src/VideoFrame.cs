@@ -70,7 +70,7 @@ namespace NewTek.NDI
             {
                 xres = image.Info.Width,
                 yres = image.Info.Height,
-                FourCC = NDIlib.FourCC_type_e.FourCC_type_BGRA,
+                FourCC = fourCC,
                 frame_rate_N = frameRateNumerator,
                 frame_rate_D = frameRateDenominator,
                 picture_aspect_ratio = ar,
