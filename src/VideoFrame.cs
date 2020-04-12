@@ -44,31 +44,28 @@ namespace NewTek.NDI
         public VideoFrame(IImage image, float aspectRatio,  NDIlib.FourCC_type_e fourCC,
             int frameRateNumerator, int frameRateDenominator, NDIlib.frame_format_type_e format)
         {
-            IntPtr videoBufferPtr;
-            int bufferSize = image.Info.Height * image.Info.ScanSize;
-
             // we have to know to free it later
             _memoryOwned = true;
 
-            // allocate some memory for a video buffer
-            IntPtr tmpPtr = Marshal.AllocHGlobal(bufferSize);
             var ar = aspectRatio;
             if (ar <= 0.0)
                 ar = (float) image.Info.Width / image.Info.Height;
 
 
-            using(var data = image.GetData())
-            using(var handle = data.Bytes.Pin())
+            int bufferSize = image.Info.ImageSize;
+
+            // allocate some memory for a video buffer
+            IntPtr videoBufferPtr = Marshal.AllocHGlobal(bufferSize);
+
+            using(var handle = image.GetData().Bytes.Pin())
             {
                 unsafe
                 {
-                    Buffer.MemoryCopy((void*)handle.Pointer, (void*)tmpPtr.ToPointer(), bufferSize, bufferSize);
+                    Buffer.MemoryCopy((void*)handle.Pointer, (void*)videoBufferPtr.ToPointer(), bufferSize, bufferSize);
                 }
             }
 
-            videoBufferPtr = tmpPtr;
-
-
+            
             _ndiVideoFrame = new NDIlib.video_frame_v2_t()
             {
                 xres = image.Info.Width,
