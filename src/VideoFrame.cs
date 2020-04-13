@@ -41,31 +41,42 @@ namespace NewTek.NDI
         }
 
 
-        public VideoFrame(IImage image, float aspectRatio,  NDIlib.FourCC_type_e fourCC,
+        public VideoFrame(IImage image, bool clone, float aspectRatio,  NDIlib.FourCC_type_e fourCC,
             int frameRateNumerator, int frameRateDenominator, NDIlib.frame_format_type_e format)
         {
-            // we have to know to free it later
-            _memoryOwned = true;
-
             var ar = aspectRatio;
             if (ar <= 0.0)
                 ar = (float) image.Info.Width / image.Info.Height;
 
-
             int bufferSize = image.Info.ImageSize;
 
-            // allocate some memory for a video buffer
-            IntPtr videoBufferPtr = Marshal.AllocHGlobal(bufferSize);
+            IntPtr videoBufferPtr;
 
-            using(var handle = image.GetData().Bytes.Pin())
+            if (clone) { 
+                // we have to know to free it later
+                _memoryOwned = true;
+
+                // allocate some memory for a video buffer
+                videoBufferPtr = Marshal.AllocHGlobal(bufferSize);
+
+                using(var handle = image.GetData().Bytes.Pin())
+                {
+                    unsafe
+                    {
+                        Buffer.MemoryCopy((void*)handle.Pointer, (void*)videoBufferPtr.ToPointer(), bufferSize, bufferSize);
+                    }
+                }
+            }
+            else
             {
+                _pinnedBytes = true;
                 unsafe
                 {
-                    Buffer.MemoryCopy((void*)handle.Pointer, (void*)videoBufferPtr.ToPointer(), bufferSize, bufferSize);
+                    _handle = image.GetData().Bytes.Pin(); //unpin when frame gets Disposed
+                    videoBufferPtr = (IntPtr) _handle.Pointer; 
                 }
             }
 
-            
             _ndiVideoFrame = new NDIlib.video_frame_v2_t()
             {
                 xres = image.Info.Width,
@@ -183,11 +194,20 @@ namespace NewTek.NDI
                     _ndiVideoFrame.p_data = IntPtr.Zero;
                 }
 
+                if (_pinnedBytes)
+                {
+                    _handle.Dispose();
+                    _pinnedBytes = false;
+                }
+
                 NDIlib.destroy();
             }
         }
 
         internal NDIlib.video_frame_v2_t _ndiVideoFrame;
         bool _memoryOwned = false;
+
+        bool _pinnedBytes = false;
+        System.Buffers.MemoryHandle _handle;
     }    
 }
