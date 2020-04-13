@@ -12,7 +12,7 @@
     <description>NDI nodes for use in VL. See ndi.tv for details on NDI.</description>
     <copyright>NDI is copyright by VizRT. VL wrapper by Matthias Husinsky</copyright>
     <tags>VL, VVVV, video, NDI</tags>
-	<license type="expression">NDI: NewTek Free Software EULA; VL nodes: LGPL-3.0-only</license>
+	<license type="expression">LGPL-3.0-only</license>
     <dependencies>
 		<dependency id="VL.Core" version="[2020.1.0]" />
     </dependencies>
