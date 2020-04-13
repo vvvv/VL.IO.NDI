@@ -1,0 +1,79 @@
+#---------------------------------#
+#      general configuration      #
+#---------------------------------#
+
+environment:
+  nuget_api_key:
+    secure: EzEXHsgX6LLZ13UmsYStE3g/Otn1L8mN75St7GwjuknOTD9caXLcYhLRb/rmM74W
+
+# version format
+version: 0.1.{build}
+
+# Build worker image (VM template)
+image: Visual Studio 2017
+
+# clone directory
+clone_folder: c:\projects\VL.IO.NDI
+
+branches:
+  only:
+    - master
+
+# enable patching of AssemblyInfo.* files
+assembly_info:
+  patch: true
+  file: AssemblyInfo.*
+  assembly_version: "0.1.{build}-alpha"
+  assembly_file_version: "{version}"
+
+
+install:
+  - nuget sources add -Name vvvv -Source http://teamcity.vvvv.org/guestAuth/app/nuget/feed/_Root/default/v3/index.json
+  - appveyor DownloadFile https://dist.nuget.org/win-x86-commandline/latest/nuget.exe
+
+#---------------------------------#
+#       build configuration       #
+#---------------------------------#
+
+# build platform, i.e. x86, x64, Any CPU. This setting is optional.
+platform: x64
+
+# build Configuration, i.e. Debug, Release, etc.
+configuration: Release
+
+build:
+  project: src\VL.IO.NDI.sln      # path to Visual Studio solution or project
+  publish_nuget: false             # package projects with .nuspec files and push to artifacts
+  publish_nuget_symbols: false     # generate and publish NuGet symbol packages
+  include_nuget_references: true  # add -IncludeReferencedProjects option while packaging NuGet artifacts
+
+before_build:
+  - cd src
+  - nuget restore -DisableParallelProcessing
+  
+
+after_build:
+  - cd..
+  - nuget pack appveyor\VL.IO.NDI.nuspec -Version %APPVEYOR_BUILD_VERSION%-alpha
+  - nuget setApiKey %nuget_api_key%
+  - nuget push C:\projects\VL.IO.NDI\VL.IO.NDI.%APPVEYOR_BUILD_VERSION%-alpha.nupkg -Source https://api.nuget.org/v3/index.json
+    
+artifacts:
+  - path: '*.nupkg'
+    type: NuGetPackage
+  
+#---------------------------------#
+#         notifications           #
+#---------------------------------#
+
+test: off
+
+notifications:
+
+  # Email
+  - provider: Email
+    to:
+      - mhusinsky@outlook.com
+    subject: 'VL.IO.NDI Build {{status}}'                  # optional
+    message: "{{message}}, {{commitId}}, ..."    # optional
+    on_build_status_changed: true
