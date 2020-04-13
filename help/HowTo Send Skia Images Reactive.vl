@@ -64,9 +64,11 @@
             <Pin Id="RhxxpxMuooEQNulR4aMjCx" Name="Frame Rate Denominator" Kind="InputPin" />
             <Pin Id="VzZUryaVnNLOTW9JKjA2eF" Name="Format" Kind="InputPin" />
             <Pin Id="RTIqpsEqOFsNrfUPm6GEqg" Name="Connections" Kind="OutputPin" />
+            <Pin Id="OM1gmX4qfpKO5GqRZoU6Oq" Name="On Program" Kind="OutputPin" />
+            <Pin Id="K0YvbWWxHcFNMajpCmJrUR" Name="On Preview" Kind="OutputPin" />
             <Pin Id="QGhH3J0uQyCLajqaj0CLjY" Name="Last Period" Kind="OutputPin" />
           </Node>
-          <Pad Id="LcSkN7dESBrLKFD7MUcKDt" Comment="Connections" Bounds="470,816,35,15" ShowValueBox="true" isIOBox="true" />
+          <Pad Id="LcSkN7dESBrLKFD7MUcKDt" Comment="Connections" Bounds="470,794,35,15" ShowValueBox="true" isIOBox="true" />
           <Pad Id="HwAGfwRODxDLXP1YObMVM9" Comment="Name" Bounds="513,512,110,15" ShowValueBox="true" isIOBox="true" Value="VLSenderReactive">
             <p:TypeAnnotation LastCategoryFullName="Primitive" LastSymbolSource="CoreLibBasics.vl">
               <Choice Kind="TypeFlag" Name="String" />
@@ -87,7 +89,7 @@
               <Choice Kind="TypeFlag" Name="Boolean" />
             </p:TypeAnnotation>
           </Pad>
-          <Pad Id="V4MiAZ5HMH0M8uuGviCI71" Comment="Last Period" Bounds="819,799,62,19" ShowValueBox="true" isIOBox="true">
+          <Pad Id="V4MiAZ5HMH0M8uuGviCI71" Comment="Last Period" Bounds="819,794,62,19" ShowValueBox="true" isIOBox="true">
             <p:ValueBoxSettings>
               <p:precision p:Type="Int32">4</p:precision>
             </p:ValueBoxSettings>
@@ -97,8 +99,8 @@
               <Choice Kind="TypeFlag" Name="Float32" />
             </p:TypeAnnotation>
           </Pad>
-          <Pad Id="Hp9kJQ36nDUO9RyMxkwEz5" Bounds="754,621,356,19" ShowValueBox="true" isIOBox="true" Value="when AspectRatio is &lt;=0, it is determined by width/height">
-            <p:TypeAnnotation>
+          <Pad Id="Hp9kJQ36nDUO9RyMxkwEz5" Bounds="766,588,243,47" ShowValueBox="true" isIOBox="true" Value="when AspectRatio is &lt;=0, it is determined by Image width/height">
+            <p:TypeAnnotation LastCategoryFullName="Primitive" LastSymbolSource="CoreLibBasics.vl">
               <Choice Kind="TypeFlag" Name="String" />
             </p:TypeAnnotation>
             <p:ValueBoxSettings>
@@ -121,7 +123,7 @@
               <Choice Kind="TypeFlag" Name="frame_format_type_e" />
             </p:TypeAnnotation>
           </Pad>
-          <Pad Id="VFXhp3QrRB6OMqNjq9UEb0" Bounds="91,599,356,221" ShowValueBox="true" isIOBox="true" Value="The ReactiveSender processes frames and their sending on a different thread and is therefore not heavy on the mainloop.&#xD;&#xA;&#xD;&#xA;However, it is not synced to any Renderer and therefore will not be fluent.&#xD;&#xA;&#xD;&#xA;Watch out: For now trying to rename the sender or close the patch while sending will likely crash VVVV.">
+          <Pad Id="VFXhp3QrRB6OMqNjq9UEb0" Bounds="91,599,356,221" ShowValueBox="true" isIOBox="true" Value="The ReactiveSender processes frames and their sending on a different thread and is therefore not heavy on the mainloop.&#xD;&#xA;&#xD;&#xA;However, it is not synced to any Renderer and therefore result in jittery video.&#xD;&#xA;&#xD;&#xA;Watch out: For now trying to rename the sender or close the patch while sending will likely crash VVVV.">
             <p:TypeAnnotation LastCategoryFullName="Primitive" LastSymbolSource="CoreLibBasics.vl">
               <Choice Kind="TypeFlag" Name="String" />
             </p:TypeAnnotation>
@@ -150,7 +152,7 @@
               <Choice Kind="TypeFlag" Name="Boolean" />
             </p:TypeAnnotation>
           </Pad>
-          <Pad Id="MeaumDw6WO4MdRg3rSDsdS" Comment="ColorBars" Bounds="382,301,35,35" ShowValueBox="true" isIOBox="true" Value="False">
+          <Pad Id="MeaumDw6WO4MdRg3rSDsdS" Comment="ColorBars" Bounds="382,301,35,35" ShowValueBox="true" isIOBox="true" Value="True">
             <p:TypeAnnotation LastCategoryFullName="Primitive" LastSymbolSource="CoreLibBasics.vl">
               <Choice Kind="TypeFlag" Name="Boolean" />
             </p:TypeAnnotation>
@@ -170,6 +172,17 @@
               <Choice Kind="TypeFlag" Name="Integer32" />
             </p:TypeAnnotation>
           </Pad>
+          <Pad Id="MOBO4dMWdFsPn8QPdfVJTu" Comment="On Preview" Bounds="703,794,35,35" ShowValueBox="true" isIOBox="true" />
+          <Pad Id="CquWAkrj8yrLQOtVzgpbB3" Comment="On Program" Bounds="586,794,35,35" ShowValueBox="true" isIOBox="true" />
+          <Pad Id="AiZFzOKlJ2bN6wm9xX6TEG" Bounds="103,870,438,19" ShowValueBox="true" isIOBox="true" Value="This should probably be remade using the AsyncSend methods of NDILib">
+            <p:TypeAnnotation>
+              <Choice Kind="TypeFlag" Name="String" />
+            </p:TypeAnnotation>
+            <p:ValueBoxSettings>
+              <p:fontsize p:Type="Int32">9</p:fontsize>
+              <p:stringtype p:Assembly="VL.Core" p:Type="VL.Core.StringType">Comment</p:stringtype>
+            </p:ValueBoxSettings>
+          </Pad>
         </Canvas>
         <Patch Id="RXbXPrEDZ5UN9J32SGvmAW" Name="Create" />
         <Patch Id="QpxSgEoztp6NSBKwkBB7d3" Name="Update" />
@@ -184,7 +197,6 @@
         <Link Id="AVwV0rIIgaZP5ZccAUuIix" Ids="BFbS5vU7yTXPlY1D2BZBpA,UaLVCWZ1464PnNNkQ1T2Lt" />
         <Link Id="VoTCBC24q92NB1v8FsUQTG" Ids="SvYaEDyY3rHOwzRfXZnQZi,I6SIYDtSUM2PhcVsH2pXkv" />
         <Link Id="NQ1qG2R05A6POuidLU9Ece" Ids="QGhH3J0uQyCLajqaj0CLjY,V4MiAZ5HMH0M8uuGviCI71" />
-        <Link Id="KfY7dPiGIiaNOdmXKL4iNJ" Ids="Mou8YNpob6dLq4E2AjGWkx,OjQjRMBkMHuLq1peSGWeO5" />
         <Link Id="LopPtzMjC6sLHZYGCqAUC4" Ids="Ju7ggJ1enq5PyFaNr9mB6s,PDd6H2qditcOJGJGmW3WLT" />
         <Link Id="EAE1gRScWeKOIPFl9k45r4" Ids="BbO3cBLWmmUNTJMqaNRLxD,LJcMBzgIEfPLEfp61HTSqV" />
         <Link Id="DBh9NxVu4DpL2je7Q7X2ST" Ids="UM7Wf02qZKmOTA4IyfDSqt,RhxxpxMuooEQNulR4aMjCx" />
@@ -195,6 +207,9 @@
         <Link Id="JtwJPKZY4nmLmVGeJqKZqj" Ids="HXhNxsiMdLnNklxdNA3F4B,DqlvUvEFDrbNHOXIbI3ThL" />
         <Link Id="TGT0bCnr59LLDsdHxpgVkK" Ids="OLU1Smcp1PdP5AkWlo5yVS,SartXsKdh7EPirmqBgXXOq" />
         <Link Id="HMhW53idIbHLdgcJj5vPSN" Ids="QWilPEZierfPSXlxmAowij,Poupqrj6dPuPCHkSG7p39i" />
+        <Link Id="RwpY6QATQM6MsgzMKPwx1T" Ids="Mou8YNpob6dLq4E2AjGWkx,OjQjRMBkMHuLq1peSGWeO5" />
+        <Link Id="HGgn67FALuJLc4MSgE7Ex9" Ids="K0YvbWWxHcFNMajpCmJrUR,MOBO4dMWdFsPn8QPdfVJTu" />
+        <Link Id="HeGFg4iElRVM81mTzrRxgm" Ids="OM1gmX4qfpKO5GqRZoU6Oq,CquWAkrj8yrLQOtVzgpbB3" />
       </Patch>
     </Node>
   </Patch>

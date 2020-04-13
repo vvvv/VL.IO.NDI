@@ -48,7 +48,6 @@
             <Pin Id="Az4vpTnhysJQXIflqrcCNC" Name="Video Frame" Kind="InputPin" />
             <Pin Id="MSEfZ6GPD06P0EreCe4RtQ" Name="Only Send When Connected" Kind="InputPin" />
             <Pin Id="Q7CQ0xQXWX8LlMIhTbkfPJ" Name="Send Video" Kind="InputPin" />
-            <Pin Id="Ex2c6B1Y4i0PA1gnRqcH8b" Name="Force" Kind="InputPin" />
             <Pin Id="Abr0AJ7D4xZQCxHHaTYL6Q" Name="Aspect Ratio" Kind="InputPin" />
             <Pin Id="KLX2Fv76z2jLw3oQ9991Mf" Name="Four CC" Kind="InputPin" />
             <Pin Id="IRe8lRYS8V1L4QDFpz6bLW" Name="Frame Rate Numerator" Kind="InputPin" />
@@ -56,6 +55,8 @@
             <Pin Id="R6r1oW57CcCQOV2zJU6W4g" Name="Format" Kind="InputPin" />
             <Pin Id="PkuM3HN7RNIMSjuc9hCWvC" Name="Name" Kind="InputPin" />
             <Pin Id="PmOUFfQq8iGMHYtAT3OaUa" Name="Current Connections" Kind="OutputPin" />
+            <Pin Id="MoTnFPbG0M0QTjdmVULMCH" Name="On Program" Kind="OutputPin" />
+            <Pin Id="SbiC6t2XXWOLxk5M3Rm55R" Name="On Preview" Kind="OutputPin" />
           </Node>
           <Node Bounds="592,610,56,26" Id="CUB1CHZgcRRQTCBcuGlzxw">
             <p:NodeReference LastCategoryFullName="Graphics.Skia.Imaging" LastSymbolSource="VL.Skia.vl">
@@ -73,7 +74,7 @@
               <Choice Kind="TypeFlag" Name="Boolean" />
             </p:TypeAnnotation>
           </Pad>
-          <Pad Id="ON2GgMByFE5Mq1V0EgNdBo" Comment="Send Video" Bounds="688,768,35,35" ShowValueBox="true" isIOBox="true" Value="True">
+          <Pad Id="ON2GgMByFE5Mq1V0EgNdBo" Comment="Send Video" Bounds="697,743,35,35" ShowValueBox="true" isIOBox="true" Value="True">
             <p:TypeAnnotation LastCategoryFullName="Primitive" LastSymbolSource="CoreLibBasics.vl">
               <Choice Kind="TypeFlag" Name="Boolean" />
             </p:TypeAnnotation>
@@ -83,7 +84,7 @@
               <Choice Kind="TypeFlag" Name="FourCC_type_e" />
             </p:TypeAnnotation>
           </Pad>
-          <Pad Id="PrRQti5nyyKM6FQPHN5CjP" Comment="Frame Rate Numerator" Bounds="878,756,35,15" ShowValueBox="true" isIOBox="true" Value="50">
+          <Pad Id="PrRQti5nyyKM6FQPHN5CjP" Comment="Frame Rate Numerator" Bounds="878,756,35,15" ShowValueBox="true" isIOBox="true" Value="30">
             <p:TypeAnnotation LastCategoryFullName="Primitive" LastSymbolSource="CoreLibBasics.vl">
               <Choice Kind="TypeFlag" Name="Integer32" />
             </p:TypeAnnotation>
@@ -118,7 +119,7 @@
             <Pin Id="DUH7unOmPuWOz5jwe0JLzR" Name="SKImage" Kind="OutputPin" />
           </Node>
           <Overlay Id="EHygryxt4yqPD3dS3WLycl" Name="Demo Content" Bounds="147,289,1047,189" />
-          <Pad Id="KuuCDNXQZLjMXw6KaHvEZ6" Comment="ColorBars" Bounds="535,360,35,35" ShowValueBox="true" isIOBox="true" Value="True">
+          <Pad Id="KuuCDNXQZLjMXw6KaHvEZ6" Comment="ColorBars" Bounds="535,360,35,35" ShowValueBox="true" isIOBox="true" Value="False">
             <p:TypeAnnotation LastCategoryFullName="Primitive" LastSymbolSource="CoreLibBasics.vl">
               <Choice Kind="TypeFlag" Name="Boolean" />
             </p:TypeAnnotation>
@@ -134,7 +135,7 @@
             </p:TypeAnnotation>
           </Pad>
           <Overlay Id="PWzwFAsu0UUL5E2IJKFw77" Name="NDI Sender (Experimental)" Bounds="149,506,1050,443" />
-          <Pad Id="TCFApzYlmi3PHJqAFdj07T" Bounds="169,766,303,126" ShowValueBox="true" isIOBox="true" Value="The NDI Sender is a blocking node that will send frames according to the set frame rate.&#xD;&#xA;&#xD;&#xA;It is also not synced to any Renderer and will therefore have choppy results.">
+          <Pad Id="TCFApzYlmi3PHJqAFdj07T" Bounds="169,766,303,126" ShowValueBox="true" isIOBox="true" Value="The NDI Sender is a blocking node that will send frames according to the set frame rate.&#xD;&#xA;&#xD;&#xA;It is also not synced to any Renderer and will therefore probably result in video with jitter.">
             <p:TypeAnnotation LastCategoryFullName="Primitive" LastSymbolSource="CoreLibBasics.vl">
               <Choice Kind="TypeFlag" Name="String" />
             </p:TypeAnnotation>
@@ -153,6 +154,22 @@
               <Choice Kind="TypeFlag" Name="Integer32" />
             </p:TypeAnnotation>
           </Pad>
+          <Pad Id="P0UT0BmqyUxLHEPsgnpv0s" Comment="Aspect Ratio" Bounds="779,654,35,15" ShowValueBox="true" isIOBox="true" Value="0">
+            <p:TypeAnnotation LastCategoryFullName="Primitive" LastSymbolSource="CoreLibBasics.vl">
+              <Choice Kind="TypeFlag" Name="Float32" />
+            </p:TypeAnnotation>
+          </Pad>
+          <Pad Id="CYjuQRels54Mao9uCLQtXr" Bounds="893,638,260,39" ShowValueBox="true" isIOBox="true" Value="If AspectRatio is &lt;= 0 the pixel aspect will be determined by Image width/height">
+            <p:TypeAnnotation>
+              <Choice Kind="TypeFlag" Name="String" />
+            </p:TypeAnnotation>
+            <p:ValueBoxSettings>
+              <p:fontsize p:Type="Int32">9</p:fontsize>
+              <p:stringtype p:Assembly="VL.Core" p:Type="VL.Core.StringType">Comment</p:stringtype>
+            </p:ValueBoxSettings>
+          </Pad>
+          <Pad Id="RvYka3wWbkwOydHAzI8qwL" Comment="On Program" Bounds="783,877,35,35" ShowValueBox="true" isIOBox="true" />
+          <Pad Id="HvMLJnVsUAuO52johQkVLp" Comment="On Preview" Bounds="1020,877,35,35" ShowValueBox="true" isIOBox="true" />
         </Canvas>
         <Patch Id="RXbXPrEDZ5UN9J32SGvmAW" Name="Create" />
         <Patch Id="QpxSgEoztp6NSBKwkBB7d3" Name="Update" />
@@ -176,6 +193,9 @@
         <Link Id="EhVWgFCSDiJN20OVWcPXKA" Ids="FlF6mjApG3DLUWiH4QTB47,HDv2nKmca1QOhGFj8Ex0ed" />
         <Link Id="C4da4IEtq41Mcyujo2OwIk" Ids="AGiRmAnZqxgM67zoadmR1e,NkXPuVC2MZzOAnDS8wyLfW" />
         <Link Id="LAWlTOP6PzOOejwX2s67Wm" Ids="EysoWE3zXhcNzBPULpo832,OD4V48JvDt2MPXchOY4Y4n" />
+        <Link Id="J2z0EQOLlZcPv9XenKrjz9" Ids="P0UT0BmqyUxLHEPsgnpv0s,Abr0AJ7D4xZQCxHHaTYL6Q" />
+        <Link Id="TM0Kk41lR9OQSbQM2kmQmG" Ids="MoTnFPbG0M0QTjdmVULMCH,RvYka3wWbkwOydHAzI8qwL" />
+        <Link Id="HmeFERlXiLeNl7rQSdpPhb" Ids="SbiC6t2XXWOLxk5M3Rm55R,HvMLJnVsUAuO52johQkVLp" />
       </Patch>
     </Node>
   </Patch>
