@@ -22,5 +22,6 @@ Download the [NDI Tools](https://www.ndi.tv/tools/). They contain several applic
 
 ### License
 
-By using this you agree to the NDI EULA which can be found in *licenses/NDI License Agreement.pdf* .
+NDI is copyright by VizRT (formerly NewTek). See [NDI.tv](https://ndi.tv) for details.
 
+By using this you agree to the NDI EULA which can be found in *licenses/NDI License Agreement.pdf* .
