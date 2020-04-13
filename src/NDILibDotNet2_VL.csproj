@@ -18,6 +18,10 @@
     <OutputPath>..\lib</OutputPath>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+
   <ItemGroup>
     <PackageReference Include="VL.Core" Version="2020.1.0" />
   </ItemGroup>
