@@ -20,6 +20,7 @@
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <OutputPath>..\lib</OutputPath>
   </PropertyGroup>
 
   <ItemGroup>
