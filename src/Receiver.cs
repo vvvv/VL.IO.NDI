@@ -453,7 +453,10 @@ namespace NewTek.NDI.VL
         }
 
         // connect to an NDI source in our Dictionary by name
-        public void Connect(Source source)
+        public void Connect(Source source, 
+            NDIlib.recv_color_format_e colorFormat = NDIlib.recv_color_format_e.recv_color_format_BGRX_BGRA,
+            NDIlib.recv_bandwidth_e bandwidth = NDIlib.recv_bandwidth_e.recv_bandwidth_highest, 
+            bool allowVideoFields = false)
         {
             //if (System.ComponentModel.DesignerProperties.GetIsInDesignMode(this))
             //    return;
@@ -478,7 +481,7 @@ namespace NewTek.NDI.VL
             {
                 p_ndi_name = UTF.StringToUtf8(source.Name)
             };
-
+            
             // make a description of the receiver we want
             NDIlib.recv_create_v3_t recvDescription = new NDIlib.recv_create_v3_t()
             {
@@ -486,13 +489,13 @@ namespace NewTek.NDI.VL
                 source_to_connect_to = source_t,
 
                 // we want BGRA frames for this example
-                color_format = NDIlib.recv_color_format_e.recv_color_format_BGRX_BGRA,
-
+                color_format = colorFormat,
+                
                 // we want full quality - for small previews or limited bandwidth, choose lowest
-                bandwidth = NDIlib.recv_bandwidth_e.recv_bandwidth_highest,
+                bandwidth = bandwidth,
 
                 // let NDIlib deinterlace for us if needed
-                allow_video_fields = false,
+                allow_video_fields = allowVideoFields,
 
                 // The name of the NDI receiver to create. This is a NULL terminated UTF8 string and should be
                 // the name of receive channel that you have. This is in many ways symettric with the name of
@@ -666,15 +669,29 @@ namespace NewTek.NDI.VL
                         buffer0 = buffer1;
                         buffer1 = temp;
 
-                        VideoFrameImage = buffer1.ToImage(bufferSize, xres, yres, ImagingPixelFormat.B8G8R8A8);
+                        ImagingPixelFormat pixFmt;
+                        switch (videoFrame.FourCC)
+                        {
+                            case NDIlib.FourCC_type_e.FourCC_type_BGRA:
+                                pixFmt = PixelFormat.B8G8R8A8; break;
+                            case NDIlib.FourCC_type_e.FourCC_type_BGRX:
+                                pixFmt = PixelFormat.B8G8R8; break;
+                            case NDIlib.FourCC_type_e.FourCC_type_RGBA:
+                                pixFmt = PixelFormat.R8G8B8A8; break;
+                            case NDIlib.FourCC_type_e.FourCC_type_RGBX:
+                                pixFmt = PixelFormat.R8G8B8; break;
+                            default:
+                                pixFmt = PixelFormat.Unknown;    // TODO: need to handle other video formats which are currently unsupported by IImage
+                                break;
+                        }
 
+                        VideoFrameImage = buffer1.ToImage(bufferSize, xres, yres, pixFmt);
 
 
                         // free frames that were received AFTER use!
                         // This writepixels call is dispatched, so we must do it inside this scope.
                         NDIlib.recv_free_video_v2(_recvInstancePtr, ref videoFrame);
                        
-
                         break;
 
                     // audio is beyond the scope of this example
