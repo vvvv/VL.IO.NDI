@@ -685,7 +685,7 @@ namespace NewTek.NDI.VL
                                 break;
                         }
 
-                        VideoFrameImage = buffer1.ToImage(bufferSize, xres, yres, pixFmt);
+                        VideoFrameImage = buffer1.ToImage(bufferSize, xres, yres, pixFmt, videoFrame.FourCC.ToString());
 
 
                         // free frames that were received AFTER use!
