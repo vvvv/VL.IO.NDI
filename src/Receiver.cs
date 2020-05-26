@@ -13,10 +13,12 @@ using System.Threading;
 
 using System.Drawing;
 
+using System.Reactive.Subjects;
+
 using VL.Lib.Basics.Imaging;
 using ImagingPixelFormat = VL.Lib.Basics.Imaging.PixelFormat;
 
-namespace NewTek.NDI.VL
+namespace VL.IO.NDI
 {
     // If you do not use this control, you can remove this file
     // and remove the dependency on naudio.
@@ -25,6 +27,7 @@ namespace NewTek.NDI.VL
     // to free any audio frames received.
     public class Receiver : IDisposable, INotifyPropertyChanged
     {
+        #region public properties
         [Category("NewTek NDI"),
         Description("The name of this receiver channel. Required or else an invalid argument exception will be thrown.")]
         public String ReceiverName
@@ -136,12 +139,17 @@ namespace NewTek.NDI.VL
                 }
             }
         }
+        #endregion
 
         public Receiver()
         {
             //if (System.ComponentModel.DesignerProperties.GetIsInDesignMode(this))
             //    return;
         }
+
+        private readonly Subject<IImage> videoFrames = new Subject<IImage>();
+
+        public IObservable<IImage> Frames => videoFrames;
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -286,7 +294,7 @@ namespace NewTek.NDI.VL
             else
             {
                 // convert to an unmanaged UTF8 IntPtr
-                IntPtr fileNamePtr = NDI.UTF.StringToUtf8(filenameHint);
+                IntPtr fileNamePtr = UTF.StringToUtf8(filenameHint);
 
                 retVal = NDIlib.recv_recording_start(_recvInstancePtr, IntPtr.Zero);
 
@@ -335,7 +343,7 @@ namespace NewTek.NDI.VL
             }
             else
             {
-                String filename = NDI.UTF.Utf8ToString(filenamePtr);
+                String filename = UTF.Utf8ToString(filenamePtr);
 
                 // free it
                 NDIlib.recv_free_string(_recvInstancePtr, filenamePtr);
@@ -356,7 +364,7 @@ namespace NewTek.NDI.VL
             }
             else
             {
-                String error = NDI.UTF.Utf8ToString(errorPtr);
+                String error = UTF.Utf8ToString(errorPtr);
 
                 // free it
                 NDIlib.recv_free_string(_recvInstancePtr, errorPtr);
@@ -430,8 +438,8 @@ namespace NewTek.NDI.VL
                 // Not required, but "correct". (see the SDK documentation)
                 NDIlib.destroy();
 
-                if(VideoFrameImage != null)
-                    VideoFrameImage.Dispose();
+                //if(VideoFrameImage != null)
+                //    VideoFrameImage.Dispose();
                 Marshal.FreeCoTaskMem(buffer0);
                 Marshal.FreeCoTaskMem(buffer1);
                 
@@ -610,7 +618,7 @@ namespace NewTek.NDI.VL
                         else
                         {
                             // convert to managed String
-                            WebControlUrl = NDI.UTF.Utf8ToString(webUrlPtr);
+                            WebControlUrl = UTF.Utf8ToString(webUrlPtr);
 
                             // Don't forget to free the string ptr
                             NDIlib.recv_free_string(_recvInstancePtr, webUrlPtr);
@@ -685,8 +693,9 @@ namespace NewTek.NDI.VL
                                 break;
                         }
 
-                        VideoFrameImage = buffer1.ToImage(bufferSize, xres, yres, pixFmt, videoFrame.FourCC.ToString());
+                        var VideoFrameImage = buffer1.ToImage(bufferSize, xres, yres, pixFmt, videoFrame.FourCC.ToString());
 
+                        videoFrames.OnNext(VideoFrameImage);
 
                         // free frames that were received AFTER use!
                         // This writepixels call is dispatched, so we must do it inside this scope.
@@ -815,7 +824,7 @@ namespace NewTek.NDI.VL
         //public WriteableBitmap VideoBitmap;
 
         
-        public IntPtrImage VideoFrameImage;
+        //public IntPtrImage VideoFrameImage;
 
         private IntPtr buffer0 = IntPtr.Zero;
         private IntPtr buffer1 = IntPtr.Zero;

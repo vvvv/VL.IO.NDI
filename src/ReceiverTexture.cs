@@ -25,7 +25,8 @@ using VL.Lib.Basics.Imaging;
 using ImagingPixelFormat = VL.Lib.Basics.Imaging.PixelFormat;
 using VL.Lib.Basics.Resources;
 
-namespace NewTek.NDI.VL
+//namespace NewTek.NDI.VL
+namespace VL.IO.NDI
 {
     // If you do not use this control, you can remove this file
     // and remove the dependency on naudio.
@@ -304,7 +305,7 @@ namespace NewTek.NDI.VL
             else
             {
                 // convert to an unmanaged UTF8 IntPtr
-                IntPtr fileNamePtr = NDI.UTF.StringToUtf8(filenameHint);
+                IntPtr fileNamePtr = UTF.StringToUtf8(filenameHint);
 
                 retVal = NDIlib.recv_recording_start(_recvInstancePtr, IntPtr.Zero);
 
@@ -353,7 +354,7 @@ namespace NewTek.NDI.VL
             }
             else
             {
-                String filename = NDI.UTF.Utf8ToString(filenamePtr);
+                String filename = UTF.Utf8ToString(filenamePtr);
 
                 // free it
                 NDIlib.recv_free_string(_recvInstancePtr, filenamePtr);
@@ -374,7 +375,7 @@ namespace NewTek.NDI.VL
             }
             else
             {
-                String error = NDI.UTF.Utf8ToString(errorPtr);
+                String error = UTF.Utf8ToString(errorPtr);
 
                 // free it
                 NDIlib.recv_free_string(_recvInstancePtr, errorPtr);
@@ -463,7 +464,7 @@ namespace NewTek.NDI.VL
         // when the ConnectedSource changes, connect to it.
         private static void OnConnectedSourceChanged(object sender, EventArgs e)
         {
-            Receiver s = sender as Receiver;
+            ReceiverTexture s = sender as ReceiverTexture;
             if (s == null)
                 return;
 
@@ -640,7 +641,7 @@ namespace NewTek.NDI.VL
                         else
                         {
                             // convert to managed String
-                            WebControlUrl = NDI.UTF.Utf8ToString(webUrlPtr);
+                            WebControlUrl = UTF.Utf8ToString(webUrlPtr);
 
                             // Don't forget to free the string ptr
                             NDIlib.recv_free_string(_recvInstancePtr, webUrlPtr);
