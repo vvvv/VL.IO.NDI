@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Document xmlns:p="property" Id="Cj0Zq5GjQw4Qay7PkQAX1S" Summary="Receive and send video content over network via the NewTek NDI protocol" Authors="Motzi" Credits="NewTek" LanguageVersion="2020.1.2.119" Version="0.128">
-  <NugetDependency Id="Jq3wdcDI0TrOhpQpUk16ie" Location="VL.Core" Version="2020.1.2-0119-gdb2d8c40db" />
-  <NugetDependency Id="GNWGzTmrnVzNQptZEu7DrG" Location="VL.CoreLib" Version="2020.1.2-0119-gdb2d8c40db" />
+<Document xmlns:p="property" Id="Cj0Zq5GjQw4Qay7PkQAX1S" Summary="Receive and send video content over network via the NewTek NDI protocol" Authors="Motzi" Credits="NewTek" LanguageVersion="2020.1.2.135" Version="0.128">
+  <NugetDependency Id="Jq3wdcDI0TrOhpQpUk16ie" Location="VL.Core" Version="2020.1.2" />
+  <NugetDependency Id="GNWGzTmrnVzNQptZEu7DrG" Location="VL.CoreLib" Version="2020.1.2" />
   <Patch Id="C6h2Mz3rqxPNUeN6Nz2YoP">
     <Canvas Id="UCJJ4ngvXb5MPzaX1CGF2Y" CanvasType="FullCategory">
       <Pad Id="NCBfcD4lo2XOynmpatt9Sy" Bounds="218,100,116,31" ShowValueBox="true" isIOBox="true" Value="VL.IO.NDI">
@@ -26,323 +26,6 @@
         <Canvas Id="LRiG4kyibRxQPUTPIMLtju" Name="Internal" Position="400,318">
           <!--
 
-    ************************ Source ************************
-
--->
-          <Node Name="Source" Bounds="431,407" Id="QuEw5FI5anbLZ6frCjbU9E">
-            <p:NodeReference>
-              <Choice Kind="ForwardDefinition" Name="Forward" />
-              <FullNameCategoryReference ID="Primitive" />
-            </p:NodeReference>
-            <p:TypeAnnotation LastCategoryFullName="NewTek.NDI" LastSymbolSource="NDILibDotNet2_VL.dll">
-              <CategoryReference Kind="AssemblyCategory" Name="NewTek" />
-              <CategoryReference Kind="AssemblyCategory" Name="NDI" />
-              <Choice Kind="ClassType" Name="Source" />
-            </p:TypeAnnotation>
-            <p:ForwardAllNodesOfTypeDefinition p:Type="Boolean">false</p:ForwardAllNodesOfTypeDefinition>
-            <Patch Id="HuTnxaqHWQlLCEZI7faID5">
-              <Canvas Id="EKtAv1EgqVpMifWkewmuZB" CanvasType="Group">
-                <!--
-
-    ************************ ComputerName ************************
-
--->
-                <Node Name="ComputerName" Bounds="534,732,112,80" Id="Hg5AKL6rlFPLcgy9BdYSxv">
-                  <p:NodeReference>
-                    <Choice Kind="OperationDefinition" Name="Operation" />
-                    <FullNameCategoryReference ID="Primitive" />
-                  </p:NodeReference>
-                  <p:HideCategory p:Type="Boolean">false</p:HideCategory>
-                  <Patch Id="ARNeDXhpjdONTALHlWclHm">
-                    <Node Bounds="546,763,82,22" AutoConnect="true" Id="FV6mLpxRi4KOZ8T26mN6Se">
-                      <p:NodeReference LastCategoryFullName="NewTek.NDI.Source" LastSymbolSource="NDILibDotNet2_VL.dll">
-                        <Choice Kind="OperationNode" Name="ComputerName" />
-                        <FullNameCategoryReference ID="NewTek.NDI.Source" />
-                      </p:NodeReference>
-                      <Pin Id="PijdzEY6SjQP0WsL9WKiiy" Name="Input" Kind="StateInputPin" />
-                      <Pin Id="OB4VFY99NvQMmCVdH0U9I1" Name="Output" Kind="StateOutputPin" />
-                      <Pin Id="EgyhDEszpbyPjr27qSteKe" Name="Computer Name" Kind="OutputPin" />
-                    </Node>
-                    <Pin Id="Hx9XoLDqBiMNrXjXpvuF7U" Name="Input" Kind="InputPin" />
-                    <Pin Id="SufEyQKPCCbNvwHalc9oMo" Name="Output" Kind="OutputPin" />
-                    <Pin Id="BBcG3rm69ioPT8s1cRh4za" Name="Computer Name" Kind="OutputPin" />
-                  </Patch>
-                </Node>
-                <!--
-
-    ************************ Name ************************
-
--->
-                <Node Name="Name" Bounds="804,732,122,80" Id="FMmWS1gt2lGMUg7eVINQls">
-                  <p:NodeReference>
-                    <Choice Kind="OperationDefinition" Name="Operation" />
-                    <FullNameCategoryReference ID="Primitive" />
-                  </p:NodeReference>
-                  <p:HideCategory p:Type="Boolean">false</p:HideCategory>
-                  <Patch Id="QEZxEuL3lpOPRzutEZoWW1">
-                    <Node Bounds="826,763,35,22" AutoConnect="true" Id="L9kBzbqwUYpM93V7AZ4h0R">
-                      <p:NodeReference LastCategoryFullName="NewTek.NDI.Source" LastSymbolSource="NDILibDotNet2_VL.dll">
-                        <Choice Kind="OperationNode" Name="Name" />
-                        <FullNameCategoryReference ID="NewTek.NDI.Source" />
-                      </p:NodeReference>
-                      <Pin Id="EAgKXwW0XvJLOHmxasDIZ5" Name="Input" Kind="StateInputPin" />
-                      <Pin Id="MXILJfngr29QVL2irIOpd4" Name="Output" Kind="StateOutputPin" />
-                      <Pin Id="GMbYtVt4HCDLt2tmdIfAUz" Name="Name" Kind="OutputPin" />
-                    </Node>
-                    <Pin Id="MJUYyVhEaVAM6YOJIPwXoD" Name="Input" Kind="InputPin" />
-                    <Pin Id="MBAdste2i8lMrqfdz1XOnH" Name="Output" Kind="OutputPin" />
-                    <Pin Id="Iwqym1QzerfQStcsuidaNJ" Name="Name" Kind="OutputPin" />
-                  </Patch>
-                </Node>
-                <!--
-
-    ************************ SourceName ************************
-
--->
-                <Node Name="SourceName" Bounds="534,883,112,80" Id="GUPBhViqtr1Mx9BnRTnzu2">
-                  <p:NodeReference>
-                    <Choice Kind="OperationDefinition" Name="Operation" />
-                    <FullNameCategoryReference ID="Primitive" />
-                  </p:NodeReference>
-                  <p:HideCategory p:Type="Boolean">false</p:HideCategory>
-                  <Patch Id="AMSQ6gTdSRWNY6SY2kwAXT">
-                    <Node Bounds="546,913,67,22" AutoConnect="true" Id="P8TfRnvoh2ZPItAppwnqRe">
-                      <p:NodeReference LastCategoryFullName="NewTek.NDI.Source" LastSymbolSource="NDILibDotNet2_VL.dll">
-                        <Choice Kind="OperationNode" Name="SourceName" />
-                        <FullNameCategoryReference ID="NewTek.NDI.Source" />
-                      </p:NodeReference>
-                      <Pin Id="N2lmwu3gH3nMTCN8ihkGGJ" Name="Input" Kind="StateInputPin" />
-                      <Pin Id="QlWLAFf5PtiOEvSUCJRUKr" Name="Output" Kind="StateOutputPin" />
-                      <Pin Id="RsqkGSri0z7MOPrcng2Bt2" Name="Source Name" Kind="OutputPin" />
-                    </Node>
-                    <Pin Id="GCgC6zkZ59NOKj5Z1MgfZ3" Name="Input" Kind="InputPin" />
-                    <Pin Id="OewC1hAYIPiPBvWzOGc9DO" Name="Output" Kind="OutputPin" />
-                    <Pin Id="S1txEYFdt4bOREktU5eoL4" Name="Source Name" Kind="OutputPin" />
-                  </Patch>
-                </Node>
-                <!--
-
-    ************************ Uri ************************
-
--->
-                <Node Name="Uri" Bounds="802,883,123,80" Id="G4z37LHPc9zPS8n3jJME9S">
-                  <p:NodeReference>
-                    <Choice Kind="OperationDefinition" Name="Operation" />
-                    <FullNameCategoryReference ID="Primitive" />
-                  </p:NodeReference>
-                  <p:HideCategory p:Type="Boolean">false</p:HideCategory>
-                  <Patch Id="TkRyc5tVfkFPmicoxEfOsB">
-                    <Node Bounds="826,913,33,22" AutoConnect="true" Id="Vg0gXYmjDdwQJFpclYnXu9">
-                      <p:NodeReference LastCategoryFullName="NewTek.NDI.Source" LastSymbolSource="NDILibDotNet2_VL.dll">
-                        <Choice Kind="OperationNode" Name="Uri" />
-                        <FullNameCategoryReference ID="NewTek.NDI.Source" />
-                      </p:NodeReference>
-                      <Pin Id="GATHIAV2h0ROKSAcZ32wqs" Name="Input" Kind="StateInputPin" />
-                      <Pin Id="MUO66ozxhKsPOjZJf7solD" Name="Output" Kind="StateOutputPin" />
-                      <Pin Id="Ek6arcL6hsANn6NO1Ln56L" Name="Uri" Kind="OutputPin" />
-                    </Node>
-                    <Pin Id="BOxntzR7YBPO6a1823nvUu" Name="Input" Kind="InputPin" />
-                    <Pin Id="KzOgMMVvUn0N4693kQPyyI" Name="Output" Kind="OutputPin" />
-                    <Pin Id="VNDgfGNKWWfOvIn5MxEqHm" Name="Uri" Kind="OutputPin" />
-                  </Patch>
-                </Node>
-                <!--
-
-    ************************ Create ************************
-
--->
-                <Node Name="Create" Bounds="514,546,120,80" Id="VHrhuwmalhtOVHGeSVKoCw">
-                  <p:NodeReference>
-                    <Choice Kind="OperationDefinition" Name="Operation" />
-                    <FullNameCategoryReference ID="Primitive" />
-                  </p:NodeReference>
-                  <p:HideCategory p:Type="Boolean">false</p:HideCategory>
-                  <Patch Id="F6pEJpDe2leNABqvuQoVmI">
-                    <Node Bounds="535,577,39,22" AutoConnect="true" Id="ERq9oz2zKAxNQoJpr8BWBa">
-                      <p:NodeReference LastCategoryFullName="NewTek.NDI.Source" LastSymbolSource="NDILibDotNet2_VL.dll">
-                        <Choice Kind="OperationNode" Name="Create" />
-                        <FullNameCategoryReference ID="NewTek.NDI.Source" />
-                      </p:NodeReference>
-                      <Pin Id="VB0TKMBVvClPh72pUuVrfa" Name="Output" Kind="StateOutputPin" />
-                    </Node>
-                    <Pin Id="FFQasm3qgq3MddPIZYP8SR" Name="Output" Kind="OutputPin" />
-                  </Patch>
-                </Node>
-                <!--
-
-    ************************ Create ************************
-
--->
-                <Node Name="Create" Bounds="656,544,120,80" Id="PM4H4pTtqvONCJSDksURa8">
-                  <p:NodeReference>
-                    <Choice Kind="OperationDefinition" Name="Operation" />
-                    <FullNameCategoryReference ID="Primitive" />
-                  </p:NodeReference>
-                  <p:HideCategory p:Type="Boolean">false</p:HideCategory>
-                  <Patch Id="ABEfS7ZIAePNxHl86A0Llk">
-                    <Node Bounds="677,575,39,22" AutoConnect="true" Id="Mh6tavP3JLfMtGKIFXNFs6">
-                      <p:NodeReference LastCategoryFullName="NewTek.NDI.Source" LastSymbolSource="NDILibDotNet2_VL.dll">
-                        <Choice Kind="OperationNode" Name="Create" />
-                        <FullNameCategoryReference ID="NewTek.NDI.Source" />
-                        <PinReference Kind="InputPin" Name="Name" />
-                      </p:NodeReference>
-                      <Pin Id="UP8DhfqsKY2LSI8OoA5pYK" Name="Name" Kind="InputPin" />
-                      <Pin Id="DMngWo2KnAfOwDqq2yLLiC" Name="Output" Kind="StateOutputPin" />
-                    </Node>
-                    <Pin Id="QIErkAokYc7NWXOwFapyMu" Name="Name" Kind="InputPin" />
-                    <Pin Id="GUbth9xOj5nMzaNUWEJF0V" Name="Output" Kind="OutputPin" />
-                  </Patch>
-                </Node>
-                <!--
-
-    ************************ Create ************************
-
--->
-                <Node Name="Create" Bounds="804,542,120,80" Id="OhJOmPnsKKGQKuQRyFJxNp">
-                  <p:NodeReference>
-                    <Choice Kind="OperationDefinition" Name="Operation" />
-                    <FullNameCategoryReference ID="Primitive" />
-                  </p:NodeReference>
-                  <p:HideCategory p:Type="Boolean">false</p:HideCategory>
-                  <Patch Id="RaWkGwPncO9OhJwWJLNb5o">
-                    <Node Bounds="825,573,39,22" AutoConnect="true" Id="SuFYlRcP4YtNw8sYsE22w1">
-                      <p:NodeReference LastCategoryFullName="NewTek.NDI.Source" LastSymbolSource="NDILibDotNet2_VL.dll">
-                        <Choice Kind="OperationNode" Name="Create" />
-                        <FullNameCategoryReference ID="NewTek.NDI.Source" />
-                        <PinReference Kind="InputPin" Name="Previous Source" />
-                      </p:NodeReference>
-                      <Pin Id="D2gjYvlRzhTOLSHGmKONAR" Name="Previous Source" Kind="InputPin" />
-                      <Pin Id="H2guqGT8RD1OOwcztaScyC" Name="Output" Kind="StateOutputPin" />
-                    </Node>
-                    <Pin Id="Ah3cTYj6OQOLPxyScpXIIt" Name="Previous Source" Kind="InputPin" />
-                    <Pin Id="RF1Frj5hKwdPWsQp32Sg0v" Name="Output" Kind="OutputPin" />
-                  </Patch>
-                </Node>
-                <!--
-
-    ************************ ToString ************************
-
--->
-                <Node Name="ToString" Bounds="350,732,116,80" Id="D33UFQr3Bc8ME8zeaXRBFM">
-                  <p:NodeReference>
-                    <Choice Kind="OperationDefinition" Name="Operation" />
-                    <FullNameCategoryReference ID="Primitive" />
-                  </p:NodeReference>
-                  <p:HideCategory p:Type="Boolean">false</p:HideCategory>
-                  <Patch Id="OvB4YPmkWnWOtjFDwZsYuw">
-                    <Node Bounds="366,763,48,22" AutoConnect="true" Id="DeJ38yIIbu2Lp3hULRGXhx">
-                      <p:NodeReference LastCategoryFullName="NewTek.NDI.Source" LastSymbolSource="NDILibDotNet2_VL.dll">
-                        <Choice Kind="OperationNode" Name="ToString" />
-                        <FullNameCategoryReference ID="NewTek.NDI.Source" />
-                      </p:NodeReference>
-                      <Pin Id="VtqHADkoJUmM5cza5olPyc" Name="Input" Kind="StateInputPin" />
-                      <Pin Id="K2Kk1yjA0iOObWEpdze8AM" Name="Output" Kind="StateOutputPin" />
-                      <Pin Id="LaFurgOgQSOM8SMvSbO1sa" Name="Result" Kind="OutputPin" />
-                    </Node>
-                    <Pin Id="On9lwBC7eAjNWRb1FiCvXQ" Name="Input" Kind="InputPin" />
-                    <Pin Id="E45gOrT3ZFUP2q0Ur0BwQv" Name="Output" Kind="OutputPin" />
-                    <Pin Id="TiIxoOIqUIdQRfiR0ZwDst" Name="Result" Kind="OutputPin" />
-                  </Patch>
-                </Node>
-                <!--
-
-    ************************ CreateDefault ************************
-
--->
-                <Node Name="CreateDefault" Bounds="351,547,120,84" Id="Txrr0XZfFxkOVS1ayneNPU">
-                  <p:NodeReference>
-                    <Choice Kind="OperationDefinition" Name="Operation" />
-                    <FullNameCategoryReference ID="Primitive" />
-                  </p:NodeReference>
-                  <p:HideCategory p:Type="Boolean">false</p:HideCategory>
-                  <Patch Id="RiitKAfYWb6OYrTKqaNVeN">
-                    <Node Bounds="372,582,39,22" AutoConnect="true" Id="VLRY4E8S7TTMZxfSZ1hKOd">
-                      <p:NodeReference LastCategoryFullName="NewTek.NDI.Source" LastSymbolSource="NDILibDotNet2_VL.dll">
-                        <Choice Kind="OperationNode" Name="Create" />
-                        <FullNameCategoryReference ID="NewTek.NDI.Source" />
-                      </p:NodeReference>
-                      <Pin Id="LyLycBGfnmsO9J6uteCUZi" Name="Output" Kind="StateOutputPin" />
-                    </Node>
-                    <Pin Id="RqtWxDAJTN3PT0VClA3tt0" Name="Output" Kind="OutputPin" />
-                  </Patch>
-                </Node>
-                <!--
-
-    ************************ SplitSource ************************
-
--->
-                <Node Name="SplitSource" Bounds="360,1023,235,233" Id="GFGXLw3OxynQDvJUn5BePO">
-                  <p:NodeReference LastCategoryFullName="Primitive" LastSymbolSource="Builtin">
-                    <Choice Kind="OperationDefinition" Name="Operation" />
-                  </p:NodeReference>
-                  <Patch Id="LHyy7ldwGb9MRCW2Nrdlfu">
-                    <Node Bounds="372,1172,67,13" Id="C9gs2WsIlrNQXVuUni5pqY">
-                      <p:NodeReference LastCategoryFullName="IO.NDI.Source" LastSymbolSource="VL.NDI.vl">
-                        <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
-                        <Choice Kind="OperationCallFlag" Name="SourceName" />
-                        <CategoryReference Kind="ClassType" Name="Source" NeedsToBeDirectParent="true" />
-                      </p:NodeReference>
-                      <Pin Id="Vlknq4kHCJLPDJFQ4bsOKN" Name="Input" Kind="StateInputPin" />
-                      <Pin Id="R762Ab5Ut1vPkTkiP2MtjX" Name="Output" Kind="StateOutputPin" />
-                      <Pin Id="RUcOyv0sQzuPDihLMRdCJX" Name="Source Name" Kind="OutputPin" />
-                    </Node>
-                    <Node Bounds="372,1072,67,13" Id="T3L6DtFhfWMMeKsASWJ49L">
-                      <p:NodeReference LastCategoryFullName="IO.NDI.Source" LastSymbolSource="VL.NDI.vl">
-                        <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
-                        <Choice Kind="OperationCallFlag" Name="Name" />
-                        <CategoryReference Kind="ClassType" Name="Source" NeedsToBeDirectParent="true" />
-                      </p:NodeReference>
-                      <Pin Id="IonOYFoEKu5OquacNch29x" Name="Input" Kind="StateInputPin" />
-                      <Pin Id="NXgi6DdDnTyLIirg0EF1zi" Name="Output" Kind="StateOutputPin" />
-                      <Pin Id="VMMPhXiRXzTPP7QDjcLWMD" Name="Name" Kind="OutputPin" />
-                    </Node>
-                    <Node Bounds="372,1123,82,13" Id="OX4NEdhNtY7MbTKn2g1TM0">
-                      <p:NodeReference LastCategoryFullName="IO.NDI.Source" LastSymbolSource="VL.NDI.vl">
-                        <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
-                        <Choice Kind="OperationCallFlag" Name="ComputerName" />
-                        <CategoryReference Kind="ClassType" Name="Source" NeedsToBeDirectParent="true" />
-                      </p:NodeReference>
-                      <Pin Id="AWtxb3DFuRRNdnLuUxPl0r" Name="Input" Kind="StateInputPin" />
-                      <Pin Id="DApVr6U30xSMTM75ftekQ7" Name="Output" Kind="StateOutputPin" />
-                      <Pin Id="PieRTJ9iD7TNLccOzEQhP5" Name="Computer Name" Kind="OutputPin" />
-                    </Node>
-                    <ControlPoint Id="PeEIKZDffE0PrLfP0DCjjO" Bounds="374,1039" />
-                    <Link Id="JyG3lfuFaZ7LpLkoHbnV2N" Ids="ItYhU8EU9LKNASCmBRv09p,PeEIKZDffE0PrLfP0DCjjO" IsHidden="true" />
-                    <ControlPoint Id="Lay84jtkCpIQANFriOjF8x" Bounds="513,1237" />
-                    <Link Id="N5B2oAGgP4cOIhqSvSqB6B" Ids="RUcOyv0sQzuPDihLMRdCJX,Lay84jtkCpIQANFriOjF8x" />
-                    <Link Id="ElW8SAW9ZxKNGu6TE6Cq5u" Ids="Lay84jtkCpIQANFriOjF8x,RSO6ZKSl47nNAj4IiIF2vn" IsHidden="true" />
-                    <ControlPoint Id="RY098qIHpVLOd5ABFEckCq" Bounds="482,1121" />
-                    <Link Id="OMuvDtFYXPaL1egub9ac3T" Ids="VMMPhXiRXzTPP7QDjcLWMD,RY098qIHpVLOd5ABFEckCq" />
-                    <Link Id="G8m1zGmuo2fMnvAzqRFjbx" Ids="RY098qIHpVLOd5ABFEckCq,TUxHqvxTzxENF7ZJZV7KSQ" IsHidden="true" />
-                    <ControlPoint Id="JBFEoRLJcvqMvaCNTGKUpC" Bounds="488,1177" />
-                    <Link Id="EiHOP8fGCuZOLHA2Z46rCb" Ids="PieRTJ9iD7TNLccOzEQhP5,JBFEoRLJcvqMvaCNTGKUpC" />
-                    <Link Id="P1T9eUxrBY2QcY68UtM0y4" Ids="JBFEoRLJcvqMvaCNTGKUpC,INn6xfLVv6WPtkpzjttOkM" IsHidden="true" />
-                    <Link Id="JQ6xUGZq7BWMhoPQ9cWpYM" Ids="PeEIKZDffE0PrLfP0DCjjO,IonOYFoEKu5OquacNch29x" />
-                    <Link Id="NLg0w2YtPj1MzOZMObMRQ9" Ids="NXgi6DdDnTyLIirg0EF1zi,AWtxb3DFuRRNdnLuUxPl0r" />
-                    <Link Id="LywUO6xfD1QNs8j36Kq7GW" Ids="DApVr6U30xSMTM75ftekQ7,Vlknq4kHCJLPDJFQ4bsOKN" />
-                    <Pin Id="ItYhU8EU9LKNASCmBRv09p" Name="Input" Kind="InputPin" Bounds="693,477" />
-                    <Pin Id="TUxHqvxTzxENF7ZJZV7KSQ" Name="Name" Kind="OutputPin" Bounds="833,576" />
-                    <Pin Id="INn6xfLVv6WPtkpzjttOkM" Name="Computer Name" Kind="OutputPin" Bounds="853,607" />
-                    <Pin Id="RSO6ZKSl47nNAj4IiIF2vn" Name="Source Name" Kind="OutputPin" Bounds="777,600" />
-                  </Patch>
-                </Node>
-              </Canvas>
-              <ProcessDefinition Id="TAtiUGLRuVNQYOGT403fhz" IsHidden="true">
-                <Fragment Id="GLgDjjJH66ZQWLT9fBdpy4" Patch="OhJOmPnsKKGQKuQRyFJxNp" Enabled="true" />
-                <Fragment Id="FMPr6N5H4fzLZCbRLM6npH" Patch="Txrr0XZfFxkOVS1ayneNPU" />
-                <Fragment Id="LfcNxdaaUtdNd3APpwE5I3" Patch="GUPBhViqtr1Mx9BnRTnzu2" />
-                <Fragment Id="SFjNbrAFkhELsucMlP7uSM" Patch="G4z37LHPc9zPS8n3jJME9S" />
-                <Fragment Id="IwekG8gLuYVLWEmPX1FZPY" Patch="VHrhuwmalhtOVHGeSVKoCw" />
-                <Fragment Id="HmMJjyudVxhMTU53eK3AZn" Patch="PM4H4pTtqvONCJSDksURa8" Enabled="true" />
-                <Fragment Id="FmJKL5ae4Q8QC6s717F33V" Patch="Hg5AKL6rlFPLcgy9BdYSxv" />
-                <Fragment Id="UjdPVIMUlHkLau8HIaUJJi" Patch="D33UFQr3Bc8ME8zeaXRBFM" />
-                <Fragment Id="ROoyl9f7itmLfiCVFRedXT" Patch="FMmWS1gt2lGMUg7eVINQls" />
-                <Fragment Id="NGYic90S4NuNiwpgLK2aTT" Patch="GFGXLw3OxynQDvJUn5BePO" />
-              </ProcessDefinition>
-            </Patch>
-          </Node>
-          <!--
-
     ************************ Finder ************************
 
 -->
@@ -359,338 +42,6 @@
             <Patch Id="CZxAkvfLklGQW3I1Kjnork">
               <Canvas Id="Bo1EHhsBOoDQATmqfeN6gC" CanvasType="Group" />
               <ProcessDefinition Id="Rz3MKPYOdheOzovavlnMlS" IsHidden="true" />
-            </Patch>
-          </Node>
-          <!--
-
-    ************************ Sender ************************
-
--->
-          <Node Name="Sender" Bounds="431,486" Id="KkpoURsFouEM7KOKpuctYi">
-            <p:NodeReference>
-              <Choice Kind="ForwardDefinition" Name="Forward" />
-              <FullNameCategoryReference ID="Primitive" />
-            </p:NodeReference>
-            <p:TypeAnnotation LastCategoryFullName="NewTek.NDI" LastSymbolSource="NDILibDotNet2_VL.dll">
-              <CategoryReference Kind="AssemblyCategory" Name="NewTek" />
-              <CategoryReference Kind="AssemblyCategory" Name="NDI" />
-              <Choice Kind="ClassType" Name="Sender" />
-            </p:TypeAnnotation>
-            <p:ForwardAllNodesOfTypeDefinition p:Type="Boolean">false</p:ForwardAllNodesOfTypeDefinition>
-            <Patch Id="PfGmzXdYVtiMgEUQC7utjf">
-              <Canvas Id="MoaPTlvDO8JPC3N99WP5Jx" CanvasType="Group">
-                <!--
-
-    ************************ Dispose ************************
-
--->
-                <Node Name="Dispose" Bounds="270,-58,117,82" Id="KKWzNbXKn2ULUc1VLIrhLY">
-                  <p:NodeReference>
-                    <Choice Kind="OperationDefinition" Name="Operation" />
-                    <FullNameCategoryReference ID="Primitive" />
-                  </p:NodeReference>
-                  <p:HideCategory p:Type="Boolean">false</p:HideCategory>
-                  <Patch Id="NhQeEINq4ggOKh6kp8ipKe">
-                    <Node Bounds="287,-27,53,26" AutoConnect="true" Id="MNaoNBxFSctMYIYL3RcGKP">
-                      <p:NodeReference LastCategoryFullName="NewTek.NDI.Sender" LastSymbolSource="NDILibDotNet2_VL.dll">
-                        <Choice Kind="OperationNode" Name="Dispose" />
-                        <FullNameCategoryReference ID="NewTek.NDI.Sender" />
-                      </p:NodeReference>
-                      <Pin Id="NhztK1ZtrhbOYLxeHHkNsU" Name="Input" Kind="StateInputPin" />
-                      <Pin Id="DN8tRdSLbYiQbys5QvewRE" Name="Output" Kind="StateOutputPin" />
-                    </Node>
-                    <Pin Id="JxW8ZC9PhWeL5yc6sQyz7n" Name="Input" Kind="InputPin" />
-                    <Pin Id="EE7bciOoeMMMPsHE3iUi5N" Name="Output" Kind="OutputPin" />
-                  </Patch>
-                </Node>
-                <!--
-
-    ************************ GetConnections ************************
-
--->
-                <Node Name="GetConnections" Bounds="104,472,374,194" Id="G2WhPXNXmyaO0QCjJjb3Um">
-                  <p:NodeReference>
-                    <Choice Kind="OperationDefinition" Name="Operation" />
-                    <FullNameCategoryReference ID="Primitive" />
-                  </p:NodeReference>
-                  <p:HideCategory p:Type="Boolean">false</p:HideCategory>
-                  <Patch Id="Om91vIxsCytNS6YHpDtCuK">
-                    <Node Bounds="129,497,88,26" AutoConnect="true" Id="EW25opMs9GaLHn4tBoiwEK">
-                      <p:NodeReference LastCategoryFullName="NewTek.NDI.Sender" LastSymbolSource="NDILibDotNet2_VL.dll">
-                        <Choice Kind="OperationNode" Name="GetConnections" />
-                        <FullNameCategoryReference ID="NewTek.NDI.Sender" />
-                      </p:NodeReference>
-                      <Pin Id="QASD6wqeNJvMBhhdcNMXzY" Name="Input" Kind="StateInputPin" />
-                      <Pin Id="Id5h8MZ5TuIM7XBXZZP6j0" Name="Wait Ms" Kind="InputPin" />
-                      <Pin Id="Bkwibkune5TNP25fTktDgs" Name="Output" Kind="StateOutputPin" />
-                      <Pin Id="V0GmKhEcwX5P0GzndhvkXR" Name="Result" Kind="OutputPin" />
-                    </Node>
-                    <ControlPoint Id="NrWd10diQc9NQJ8C5bq3QI" Bounds="214,649" />
-                    <Link Id="ACJUGB8VYzXP7X1nCHSHz4" Ids="V0GmKhEcwX5P0GzndhvkXR,NrWd10diQc9NQJ8C5bq3QI" />
-                    <Link Id="PV8ESjhVnVPQAAROxma1oJ" Ids="NrWd10diQc9NQJ8C5bq3QI,ChqSAsvrpOqLKzhzsrdmjV" IsHidden="true" />
-                    <Pin Id="Q2ufm8dzyDJMoITj2sFZ7y" Name="Input" Kind="InputPin" />
-                    <Pin Id="RDjoUSUhnXlNmkOigWtCEO" Name="Wait Ms" Kind="InputPin" />
-                    <Pin Id="ChqSAsvrpOqLKzhzsrdmjV" Name="Current Connections" Kind="OutputPin" Bounds="549,300" />
-                    <Pin Id="L77srhEXBVAO3PI3PnDwkC" Name="Output" Kind="OutputPin" />
-                    <Pad Id="R9Ej9ARe1GhPkmOCjaXnuA" Bounds="231,500,212,42" ShowValueBox="true" isIOBox="true" Value="Same as Connections internally, except for the timeout">
-                      <p:TypeAnnotation>
-                        <Choice Kind="TypeFlag" Name="String" />
-                      </p:TypeAnnotation>
-                      <p:ValueBoxSettings>
-                        <p:fontsize p:Type="Int32">9</p:fontsize>
-                        <p:stringtype p:Assembly="VL.Core" p:Type="VL.Core.StringType">Comment</p:stringtype>
-                      </p:ValueBoxSettings>
-                    </Pad>
-                    <Pad Id="Uo4Vsykj2lKMi2bcmndmCu" Bounds="120,548,339,59" ShowValueBox="true" isIOBox="true" Value="// Get the current number of receivers connected to this source. This can be used to avoid even rendering when nothing is connected to the video source.">
-                      <p:TypeAnnotation>
-                        <Choice Kind="TypeFlag" Name="String" />
-                      </p:TypeAnnotation>
-                      <p:ValueBoxSettings>
-                        <p:fontsize p:Type="Int32">9</p:fontsize>
-                        <p:stringtype p:Assembly="VL.Core" p:Type="VL.Core.StringType">Comment</p:stringtype>
-                      </p:ValueBoxSettings>
-                    </Pad>
-                  </Patch>
-                </Node>
-                <!--
-
-    ************************ Tally ************************
-
--->
-                <Node Name="Tally" Bounds="651,470,293,304" Id="OqMtCKjtZmrOijsYidrO4Z">
-                  <p:NodeReference>
-                    <Choice Kind="OperationDefinition" Name="Operation" />
-                    <FullNameCategoryReference ID="Primitive" />
-                  </p:NodeReference>
-                  <p:HideCategory p:Type="Boolean">false</p:HideCategory>
-                  <Patch Id="EUfMHAX5GgMOOcBIeAk928">
-                    <Node Bounds="663,493,41,26" AutoConnect="true" Id="AOjQpMRt3UmN7V4FWN4wCY">
-                      <p:NodeReference LastCategoryFullName="NewTek.NDI.Sender" LastSymbolSource="NDILibDotNet2_VL.dll">
-                        <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
-                        <Choice Kind="OperationCallFlag" Name="Tally" />
-                        <CategoryReference Kind="AssemblyCategory" Name="Sender" NeedsToBeDirectParent="true" />
-                      </p:NodeReference>
-                      <Pin Id="HuRvh765e4HPTii3I9bio0" Name="Input" Kind="StateInputPin" />
-                      <Pin Id="VBy0zmRKcldOHOH95VT5vB" Name="Output" Kind="StateOutputPin" />
-                      <Pin Id="LIwClRLIMvkMu3kBvVh2Fb" Name="Tally" Kind="OutputPin" />
-                    </Node>
-                    <Link Id="EHyf7YUa140N9DM3x8oOpH" Ids="LIwClRLIMvkMu3kBvVh2Fb,AOUIihIYQgmOEcU7jdXXlj" />
-                    <Link Id="B8amZSKUhHRMMgUqyxAUWi" Ids="FU5F1pZKuLLLlNT7CRWCC9,NUMsAbuCI8yLMUxvwesYcC" />
-                    <Node Bounds="692,598,195,139" Id="SJsXC8GQkiYO64rHlg8bLq">
-                      <p:NodeReference LastCategoryFullName="Primitive" LastSymbolSource="CoreLibBasics.vl">
-                        <Choice Kind="StatefulRegion" Name="Region (Stateful)" Fixed="true" />
-                        <Choice Kind="ApplicationStatefulRegion" Name="If" />
-                        <CategoryReference Kind="Category" Name="Primitive" />
-                      </p:NodeReference>
-                      <Pin Id="VYKiGjGIdrqMAp5lSincHX" Name="Condition" Kind="InputPin" />
-                      <Patch Id="DTH0TSRKHceQCQOdrUCGTO" ManuallySortedPins="true">
-                        <Patch Id="OcFh9qHYfS8LBBCpYnrHYN" Name="Create" ManuallySortedPins="true" />
-                        <Patch Id="Q4RJtJoVA03OrHO4uehUnQ" Name="Then" ManuallySortedPins="true" />
-                        <Node Bounds="704,674,169,26" Id="BDCqztwvqpMLTPbbDwiF8J">
-                          <p:NodeReference LastCategoryFullName="Video.NDI.Tally" LastSymbolSource="VL.NDI.vl">
-                            <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
-                            <CategoryReference Kind="ClassType" Name="Tally" />
-                            <Choice Kind="OperationCallFlag" Name="on_preview" />
-                          </p:NodeReference>
-                          <Pin Id="NUMsAbuCI8yLMUxvwesYcC" Name="Input" Kind="StateInputPin" />
-                          <Pin Id="JL981XOXKKqLf2U9Qqhd6z" Name="Output" Kind="StateOutputPin" />
-                          <Pin Id="VdeClmdJ43QMjPFlwjDpNq" Name="On_preview" Kind="OutputPin" />
-                        </Node>
-                        <Node Bounds="704,626,72,26" Id="HKKXEiky2KSNAbdSDT38h4">
-                          <p:NodeReference LastCategoryFullName="Video.NDI.Tally" LastSymbolSource="VL.NDI.vl">
-                            <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
-                            <CategoryReference Kind="ClassType" Name="Tally" />
-                            <Choice Kind="OperationCallFlag" Name="on_program" />
-                          </p:NodeReference>
-                          <Pin Id="AOUIihIYQgmOEcU7jdXXlj" Name="Input" Kind="StateInputPin" />
-                          <Pin Id="FU5F1pZKuLLLlNT7CRWCC9" Name="Output" Kind="StateOutputPin" />
-                          <Pin Id="Hg8CCDk7fJQL6lSVbuvbkr" Name="On_program" Kind="OutputPin" />
-                        </Node>
-                      </Patch>
-                      <ControlPoint Id="LJQ6cCXlVcrQSVDTPby2U6" Bounds="774,605" Alignment="Top" />
-                      <ControlPoint Id="MCykPAJP2nqNt4orFq5Md7" Bounds="774,732" Alignment="Bottom" />
-                      <ControlPoint Id="PoMfVADgqCyOGg4u5Yvm8Y" Bounds="870,732" Alignment="Bottom" />
-                      <ControlPoint Id="PAJ2YVjnJ5CMYwzrlnfig0" Bounds="805,605" Alignment="Top" />
-                    </Node>
-                    <Link Id="UMSvCrm7RkdN9qQiFMyudG" Ids="LJQ6cCXlVcrQSVDTPby2U6,MCykPAJP2nqNt4orFq5Md7" IsFeedback="true" />
-                    <ControlPoint Id="PP2PjIzR1OjM6wwWvDot62" Bounds="774,755" />
-                    <Link Id="NsYRxA6WmYsQc5twOX2EUf" Ids="PP2PjIzR1OjM6wwWvDot62,PWRNK7PWDBhQbuxK9ulDOB" IsHidden="true" />
-                    <ControlPoint Id="ICLWxIOSppjLkjWVRiXzDU" Bounds="870,757" />
-                    <Link Id="CgjQx2p1ZWrP5JydM2yKzf" Ids="ICLWxIOSppjLkjWVRiXzDU,GXnrjX7FPRDMShuXtsJjly" IsHidden="true" />
-                    <Link Id="M4lIrsvXYOFPAWHFGoKupC" Ids="PAJ2YVjnJ5CMYwzrlnfig0,PoMfVADgqCyOGg4u5Yvm8Y" IsFeedback="true" />
-                    <Link Id="BSH2xwJR2ApNCw9kjQqZXi" Ids="VdeClmdJ43QMjPFlwjDpNq,PoMfVADgqCyOGg4u5Yvm8Y" />
-                    <Link Id="JZn0hT3LQMhNe6sG5oNlEt" Ids="PoMfVADgqCyOGg4u5Yvm8Y,ICLWxIOSppjLkjWVRiXzDU" />
-                    <Link Id="ASlnL8QaatNMWVrTyPUVLF" Ids="Hg8CCDk7fJQL6lSVbuvbkr,MCykPAJP2nqNt4orFq5Md7" />
-                    <Link Id="PKvDg0u67aHLbMS80wKKAQ" Ids="MCykPAJP2nqNt4orFq5Md7,PP2PjIzR1OjM6wwWvDot62" />
-                    <Node Bounds="692,555,65,19" Id="Ur97mWJDcpyPvc1bHfNVTU">
-                      <p:NodeReference LastCategoryFullName="Primitive.Object" LastSymbolSource="CoreLibBasics.vl">
-                        <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
-                        <Choice Kind="OperationCallFlag" Name="IsAssigned" />
-                      </p:NodeReference>
-                      <Pin Id="BE9fNiY7LUaNNITcyBxaFi" Name="X" Kind="InputPin" />
-                      <Pin Id="UZ7IbX3IEdmMbHM3MrLLRB" Name="Result" Kind="OutputPin" />
-                      <Pin Id="S8LcPCST965QbYndO9I01l" Name="Not Assigned" Kind="OutputPin" />
-                    </Node>
-                    <Link Id="CpVZPKYTGVuMr2CjVk4pxS" Ids="LIwClRLIMvkMu3kBvVh2Fb,BE9fNiY7LUaNNITcyBxaFi" />
-                    <Link Id="BLs3JTl7BalNP4iWctkzhO" Ids="UZ7IbX3IEdmMbHM3MrLLRB,VYKiGjGIdrqMAp5lSincHX" />
-                    <Pin Id="VhFzNx7Hq30PNSRIy6OMcv" Name="Input" Kind="InputPin" />
-                    <Pin Id="PWRNK7PWDBhQbuxK9ulDOB" Name="On Program" Kind="OutputPin" Bounds="578,428" />
-                    <Pin Id="GXnrjX7FPRDMShuXtsJjly" Name="On Preview" Kind="OutputPin" Bounds="678,431" />
-                    <Pin Id="JOdutB7ftkDNIkqlRjWsfI" Name="Output" Kind="OutputPin" />
-                  </Patch>
-                </Node>
-                <!--
-
-    ************************ SendAudioFrame ************************
-
--->
-                <Node Name="SendAudioFrame" Bounds="325,755,134,90" Id="TwT5RTzC7L5N5URWD8WjFZ">
-                  <p:NodeReference>
-                    <Choice Kind="OperationDefinition" Name="Operation" />
-                    <FullNameCategoryReference ID="Primitive" />
-                  </p:NodeReference>
-                  <p:HideCategory p:Type="Boolean">false</p:HideCategory>
-                  <Patch Id="US6lpCAQhDJLaW94fIB71g">
-                    <Node Bounds="342,794,45,26" AutoConnect="true" Id="TQklHYngIe1NRzGV6STv0B">
-                      <p:NodeReference LastCategoryFullName="NewTek.NDI.Sender" LastSymbolSource="NDILibDotNet2_VL.dll">
-                        <Choice Kind="OperationNode" Name="Send" />
-                        <FullNameCategoryReference ID="NewTek.NDI.Sender" />
-                        <PinReference Kind="InputPin" Name="this" />
-                        <PinReference Kind="InputPin" Name="Audio Frame" />
-                      </p:NodeReference>
-                      <Pin Id="R7kp8Q0BftpOU0IjZ2CLFd" Name="Input" Kind="StateInputPin" />
-                      <Pin Id="IDhE8XVVYVCNcobIhxHKYM" Name="Audio Frame" Kind="InputPin" />
-                      <Pin Id="QTz0NTVS2YCNnRxhZKhKgr" Name="Output" Kind="StateOutputPin" />
-                    </Node>
-                    <Pin Id="UQFa5Oc2Er5OWHGNB3Ovi4" Name="Input" Kind="InputPin" />
-                    <Pin Id="AoUXeB3YnhYL1YqnoPScMk" Name="Audio Frame" Kind="InputPin" />
-                    <Pin Id="HSGE7nuChMwQYY6ViOVqtj" Name="Output" Kind="OutputPin" />
-                  </Patch>
-                </Node>
-                <!--
-
-    ************************ Connections ************************
-
--->
-                <Node Name="Connections" Bounds="111,238,300,169" Id="QtmMrjrEGqbOtLQIX8AsBa">
-                  <p:NodeReference>
-                    <Choice Kind="OperationDefinition" Name="Operation" />
-                    <FullNameCategoryReference ID="Primitive" />
-                  </p:NodeReference>
-                  <p:HideCategory p:Type="Boolean">false</p:HideCategory>
-                  <Patch Id="IwIoxfNU8X3O9caEYZ8pNk">
-                    <Node Bounds="123,261,67,22" AutoConnect="true" Id="Rq6scsILg2QMO2DVg59EhF">
-                      <p:NodeReference LastCategoryFullName="NewTek.NDI.Sender" LastSymbolSource="NDILibDotNet2_VL.dll">
-                        <Choice Kind="OperationNode" Name="Connections" />
-                        <FullNameCategoryReference ID="NewTek.NDI.Sender" />
-                      </p:NodeReference>
-                      <Pin Id="OYYVI2br9FFPQwD2lDYlB0" Name="Input" Kind="StateInputPin" />
-                      <Pin Id="UCkBSNoZQMPNM1UCK7pstR" Name="Output" Kind="StateOutputPin" />
-                      <Pin Id="GXMR5j1TR5cMHUeFlryafc" Name="Connections" Kind="OutputPin" />
-                    </Node>
-                    <ControlPoint Id="Nlh2BVLF2RkPYdrh1k7QhM" Bounds="192,390" />
-                    <Link Id="JJK2HZZFsKnLQ2K0QmpIAL" Ids="Nlh2BVLF2RkPYdrh1k7QhM,LLc6q1LtjjbM3Ar2Y5r0iP" IsHidden="true" />
-                    <Node Bounds="191,328,32,19" Id="SZj24voWO6bLTUyCEDqiBA">
-                      <p:NodeReference LastCategoryFullName="Primitive.Integer32" LastSymbolSource="CoreLibBasics.vl">
-                        <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
-                        <Choice Kind="OperationCallFlag" Name="DIV" />
-                        <CategoryReference Kind="Int32Type" Name="Integer32" NeedsToBeDirectParent="true" />
-                      </p:NodeReference>
-                      <Pin Id="FA6jVmk8BUHMeKxKcAHkQ4" Name="Input" Kind="StateInputPin" />
-                      <Pin Id="TMWKmipzP9MOWtTTYpWgR9" Name="Input 2" Kind="InputPin" />
-                      <Pin Id="OcibGvqKaWaQHWfTNsVIaC" Name="Output" Kind="StateOutputPin" />
-                    </Node>
-                    <Link Id="RrBgaF66kQjLY6sZyrFklI" Ids="GXMR5j1TR5cMHUeFlryafc,FA6jVmk8BUHMeKxKcAHkQ4" />
-                    <Pad Id="UpoXF44n7WDNjDoSAdehIb" Comment="" Bounds="229,276,18,19" ShowValueBox="true" isIOBox="true" Value="2">
-                      <p:TypeAnnotation LastCategoryFullName="Primitive" LastSymbolSource="CoreLibBasics.vl">
-                        <Choice Kind="TypeFlag" Name="Integer32" />
-                      </p:TypeAnnotation>
-                    </Pad>
-                    <Link Id="KahKgtlfDWpOSp55sKRQN1" Ids="UpoXF44n7WDNjDoSAdehIb,TMWKmipzP9MOWtTTYpWgR9" />
-                    <Link Id="K5GUYvytssRNxJVw6mAnxM" Ids="OcibGvqKaWaQHWfTNsVIaC,Nlh2BVLF2RkPYdrh1k7QhM" />
-                    <Pad Id="Od4LkY40di2PqlsnXGUPId" Bounds="237,315,155,62" ShowValueBox="true" isIOBox="true" Value="NDI always outputs 2 connections per connected receiver">
-                      <p:TypeAnnotation>
-                        <Choice Kind="TypeFlag" Name="String" />
-                      </p:TypeAnnotation>
-                      <p:ValueBoxSettings>
-                        <p:fontsize p:Type="Int32">9</p:fontsize>
-                        <p:stringtype p:Assembly="VL.Core" p:Type="VL.Core.StringType">Comment</p:stringtype>
-                      </p:ValueBoxSettings>
-                    </Pad>
-                    <Pin Id="HZnbxgZkZPKNnIQkiaWVGl" Name="Input" Kind="InputPin" />
-                    <Pin Id="LLc6q1LtjjbM3Ar2Y5r0iP" Name="Current Connections" Kind="OutputPin" Bounds="730,209" />
-                    <Pin Id="PaV05UrMYopOBPqotq1Yxq" Name="Output" Kind="OutputPin" />
-                  </Patch>
-                </Node>
-                <!--
-
-    ************************ Create ************************
-
--->
-                <Node Name="Create" Bounds="128,-57,112,82" Id="ERSsDDuRb2UONoKE52pHr0">
-                  <p:NodeReference>
-                    <Choice Kind="OperationDefinition" Name="Operation" />
-                    <FullNameCategoryReference ID="Primitive" />
-                  </p:NodeReference>
-                  <p:HideCategory p:Type="Boolean">false</p:HideCategory>
-                  <Patch Id="OwbV3DN8lHrO8vNea2WFwL">
-                    <Node Bounds="140,-27,85,26" AutoConnect="true" Id="HwfAAMwWWAkL2CSwJH1CIr">
-                      <p:NodeReference LastCategoryFullName="NewTek.NDI.Sender" LastSymbolSource="NDILibDotNet2_VL.dll">
-                        <Choice Kind="OperationNode" Name="Create" />
-                        <FullNameCategoryReference ID="NewTek.NDI.Sender" />
-                      </p:NodeReference>
-                      <Pin Id="UbYHiTp5QnuN3xMczWJMJk" Name="Source Name" Kind="InputPin" />
-                      <Pin Id="ErgbC7qAdfRMtdVFLW8fWx" Name="Clock Video" Kind="InputPin" />
-                      <Pin Id="LcymSEI34CjP0xrQmJdJ3I" Name="Clock Audio" Kind="InputPin" />
-                      <Pin Id="TrbggFgZM3vOnFPFSQtY5r" Name="Groups" Kind="InputPin" />
-                      <Pin Id="DEbbHTb0Lp4M1h84JhVXws" Name="Failover Name" Kind="InputPin" />
-                      <Pin Id="QLnEZnvgoN3PvMq4oK6rwW" Name="Output" Kind="StateOutputPin" />
-                    </Node>
-                    <Pin Id="NpKSnNgV9T6QBVT3FUYS59" Name="Source Name" Kind="InputPin" />
-                    <Pin Id="P4SGGvSynWvOSnfWLT5T0e" Name="Clock Video" Kind="InputPin" />
-                    <Pin Id="R31zUp3xuiRMNK2DqCnXAN" Name="Clock Audio" Kind="InputPin" />
-                    <Pin Id="Ckre3xAQzWJLHjSfV8JBUE" Name="Groups" Kind="InputPin" />
-                    <Pin Id="NT2g6bQ0EC5NwDV85OVqhA" Name="Failover Name" Kind="InputPin" />
-                    <Pin Id="EozL1bzPQguOUNatuTYz6Z" Name="Output" Kind="OutputPin" />
-                  </Patch>
-                </Node>
-                <!--
-
-    ************************ SendVideoFrame ************************
-
--->
-                <Node Name="SendVideoFrame" Bounds="115,759,120,80" Id="LNwV9j0RLhFNhVobuXr0hU">
-                  <p:NodeReference>
-                    <Choice Kind="OperationDefinition" Name="Operation" />
-                    <FullNameCategoryReference ID="Primitive" />
-                  </p:NodeReference>
-                  <p:HideCategory p:Type="Boolean">false</p:HideCategory>
-                  <Patch Id="O8gyR19neXEMkqkkZv301H">
-                    <Node Bounds="135,788,41,26" AutoConnect="true" Id="Q77uonM5UYXPxDZbcloPxm">
-                      <p:NodeReference LastCategoryFullName="NewTek.NDI.Sender" LastSymbolSource="NDILibDotNet2_VL.dll">
-                        <Choice Kind="OperationNode" Name="Send" />
-                        <FullNameCategoryReference ID="NewTek.NDI.Sender" />
-                        <PinReference Kind="InputPin" Name="this" />
-                        <PinReference Kind="InputPin" Name="Video Frame" />
-                      </p:NodeReference>
-                      <Pin Id="Pj2HTtuh8s2NTpdDRKyhNF" Name="Input" Kind="StateInputPin" />
-                      <Pin Id="Cj4kH1SZnVaLrAy9jrErFQ" Name="Video Frame" Kind="InputPin" />
-                      <Pin Id="NOP3pLdW39oMkG17X9JSw5" Name="Output" Kind="StateOutputPin" />
-                    </Node>
-                    <Pin Id="Ny4bRMjuuz3Pi16zjgCWyv" Name="Input" Kind="InputPin" />
-                    <Pin Id="D3ZQVIsL6f0NuWx3hizlWH" Name="Video Frame" Kind="InputPin" />
-                    <Pin Id="P4nj0ZG0iv9LMT2e3vUPbF" Name="Output" Kind="OutputPin" />
-                  </Patch>
-                </Node>
-              </Canvas>
-              <ProcessDefinition Id="DfyyMMvLwzaN161dPYlFbr" HasStateOut="true" IsHidden="true">
-                <Fragment Id="DH39BMbZqrULC0d4EGnueD" Patch="ERSsDDuRb2UONoKE52pHr0" Enabled="true" />
-                <Fragment Id="NVrdfD3ivFSOw5XE8vLwEb" Patch="TwT5RTzC7L5N5URWD8WjFZ" />
-                <Fragment Id="IH1cZY8WnaIO7rkuIzbaiT" Patch="OqMtCKjtZmrOijsYidrO4Z" />
-                <Fragment Id="GjIQmweob4qK9df5IsPYuZ" Patch="QtmMrjrEGqbOtLQIX8AsBa" Enabled="true" />
-                <Fragment Id="A9uvvRGojGNOOlAwwbcZbY" Patch="G2WhPXNXmyaO0QCjJjb3Um" />
-                <Fragment Id="RFj5JhtVx4kNmaMIvUr1WC" Patch="LNwV9j0RLhFNhVobuXr0hU" />
-              </ProcessDefinition>
             </Patch>
           </Node>
           <!--
@@ -925,7 +276,7 @@
                   <Patch Id="BcucTla6MdkLbyAUO9Ir3N">
                     <Pin Id="H1EHc4XI6G7NECmPKQmSry" Name="Output" Kind="OutputPin" />
                     <Node Bounds="55,-57,360,26" AutoConnect="true" Id="DjXBvpk8yMRMK4Ismof7DR">
-                      <p:NodeReference LastCategoryFullName="NewTek.NDI.VideoFrame" LastSymbolSource="NDILibDotNet2_VL.dll">
+                      <p:NodeReference LastCategoryFullName="NewTek.NDI.VideoFrame" LastSymbolSource="VL.IO.NDI.dll">
                         <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
                         <CategoryReference Kind="AssemblyCategory" Name="NDI" />
                         <CategoryReference Kind="AssemblyCategory" Name="VideoFrame" />
@@ -1022,7 +373,7 @@
                   <p:HideCategory p:Type="Boolean">false</p:HideCategory>
                   <Patch Id="QOqDo05Q5aOL1zPO4USLSE">
                     <Node Bounds="-181,-194,165,26" AutoConnect="true" Id="KyD35JioPnSNMpiNxSJ3kv">
-                      <p:NodeReference LastCategoryFullName="NewTek.NDI.VideoFrame" LastSymbolSource="NDILibDotNet2_VL.dll">
+                      <p:NodeReference LastCategoryFullName="NewTek.NDI.VideoFrame" LastSymbolSource="VL.IO.NDI.dll">
                         <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
                         <CategoryReference Kind="AssemblyCategory" Name="NewTek" />
                         <CategoryReference Kind="AssemblyCategory" Name="NDI" />
@@ -1068,43 +419,43 @@
     ************************ Receiver ************************
 
 -->
-          <Node Name="Receiver" Bounds="604,328" Id="IRkRrD8iwIBOqHMsBgG6Zn">
+          <Node Name="Receiver" Bounds="622,333" Id="IYZR7JAiHMtMJQg357XIyI">
             <p:NodeReference>
               <Choice Kind="ForwardDefinition" Name="Forward" />
               <FullNameCategoryReference ID="Primitive" />
             </p:NodeReference>
-            <p:TypeAnnotation LastCategoryFullName="NewTek.NDI.VL" LastSymbolSource="NDILibDotNet2_VL.dll">
+            <p:TypeAnnotation LastCategoryFullName="VL.IO.NDI" LastSymbolSource="VL.IO.NDI.dll">
               <Choice Kind="TypeFlag" Name="Receiver" />
             </p:TypeAnnotation>
-            <Patch Id="KV8VvXIoJ3xPlnar6LSuGp">
-              <Canvas Id="IColGYpLCQiNuejs4l8sw4" CanvasType="Group">
+            <Patch Id="H4vq8hNL42CNk8ebEipCYr">
+              <Canvas Id="PaZdytzc38tLW4E5kNYqir" CanvasType="Group">
                 <!--
 
     ************************ SetReceiverName ************************
 
 -->
-                <Node Name="SetReceiverName" Bounds="441,412,193,85" Id="U4bkWZMVALmLUohxwIIom1">
+                <Node Name="SetReceiverName" Bounds="492,323,193,88" Id="VGGRRsHSAVXMcJznkgVDtm">
                   <p:NodeReference>
                     <Choice Kind="OperationDefinition" Name="Operation" />
                     <FullNameCategoryReference ID="Primitive" />
                   </p:NodeReference>
                   <p:HideCategory p:Type="Boolean">false</p:HideCategory>
-                  <Patch Id="NwcUkW1Xf1ZM9xYhUjqrO6">
-                    <Node Bounds="453,451,94,26" AutoConnect="true" Id="ARhbckc8jHmOYw6ZnwUwp6">
-                      <p:NodeReference LastCategoryFullName="NewTek.NDI.VL.Receiver" LastSymbolSource="NDILibDotNet2_VL.dll">
+                  <Patch Id="LbcuiZAL1evNmmjQDfuh2y">
+                    <Node Bounds="504,365,94,26" AutoConnect="true" Id="IEmR96AJ5I6LM3XVUXzwAz">
+                      <p:NodeReference LastCategoryFullName="VL.IO.NDI.Receiver" LastSymbolSource="VL.IO.NDI.dll">
                         <Choice Kind="OperationNode" Name="SetReceiverName" />
-                        <FullNameCategoryReference ID="NewTek.NDI.VL.Receiver" />
+                        <FullNameCategoryReference ID="VL.IO.NDI.Receiver" />
                       </p:NodeReference>
-                      <Pin Id="KrRWzZO5jlRNzqePuYDi0k" Name="Input" Kind="StateInputPin" />
-                      <Pin Id="RMsxPbWEf0bM7hETuw2Hrv" Name="Value" Kind="InputPin" />
-                      <Pin Id="STqhLVHFnLTNR0F6zp3GTH" Name="Output" Kind="StateOutputPin" />
+                      <Pin Id="RiQSs1lIwZCPEkVYrYozpE" Name="Input" Kind="StateInputPin" />
+                      <Pin Id="TL1HPs9ZV6kPzGSwtHzPZV" Name="Value" Kind="InputPin" />
+                      <Pin Id="KTncEjKVcNTOWuoe8jr1Pd" Name="Output" Kind="StateOutputPin" />
                     </Node>
-                    <ControlPoint Id="B9i61fLymRVO0CTn3gkFQu" Bounds="544,430" />
-                    <Link Id="MLUU8dVMCxZLYr88yUvOpG" Ids="B9i61fLymRVO0CTn3gkFQu,RMsxPbWEf0bM7hETuw2Hrv" />
-                    <Link Id="Ss6LvNmPMCXNSgEZQ3ubRf" Ids="NdUxmxtNDg4QV6pI2JpaBX,B9i61fLymRVO0CTn3gkFQu" IsHidden="true" />
-                    <Pin Id="NdUxmxtNDg4QV6pI2JpaBX" Name="Receiver Name" Kind="InputPin" Bounds="581,361" />
-                    <Pin Id="RVqIdGRt4NeN7HMZCsQI4l" Name="Input" Kind="InputPin" />
-                    <Pin Id="MzMjc8RUJsFOp8fUxxR5Tp" Name="Output" Kind="OutputPin" />
+                    <ControlPoint Id="KM1OHlvdgGuPZtaFxCRPZN" Bounds="595,341" />
+                    <Link Id="DVUZMCuGx4APvc37ykZVId" Ids="KM1OHlvdgGuPZtaFxCRPZN,TL1HPs9ZV6kPzGSwtHzPZV" />
+                    <Link Id="G5aypeNbqp6PpjNd8p6fSk" Ids="T6Lo6t2n5qzPklk1bIMU7u,KM1OHlvdgGuPZtaFxCRPZN" IsHidden="true" />
+                    <Pin Id="T6Lo6t2n5qzPklk1bIMU7u" Name="Receiver Name" Kind="InputPin" Bounds="597,345" />
+                    <Pin Id="PZdiQBFRUaFMZfzo33biis" Name="Input" Kind="InputPin" />
+                    <Pin Id="MChzvOJJyPaOfeXNjCFtAq" Name="Output" Kind="OutputPin" />
                   </Patch>
                 </Node>
                 <!--
@@ -1112,34 +463,379 @@
     ************************ SetConnectedSource ************************
 
 -->
-                <Node Name="SetConnectedSource" Bounds="688,412,172,84" Id="QIgNxubQ4AyMVg0FtdYFhy">
+                <Node Name="SetConnectedSource" Bounds="718,323,172,89" Id="RVoJPzKjmBMLtbNsIXuyJQ">
                   <p:NodeReference>
                     <Choice Kind="OperationDefinition" Name="Operation" />
                     <FullNameCategoryReference ID="Primitive" />
                   </p:NodeReference>
                   <p:HideCategory p:Type="Boolean">false</p:HideCategory>
-                  <Patch Id="V2VIkgNp59UQHaD7FiBkk0">
-                    <Node Bounds="700,450,109,26" AutoConnect="true" Id="Fv2VjlIIRQ9Oy0X4Enx4Ht">
-                      <p:NodeReference LastCategoryFullName="NewTek.NDI.VL.Receiver" LastSymbolSource="NDILibDotNet2_VL.dll">
+                  <Patch Id="H4h2YYIlnmePCISG4bH4Sg">
+                    <Node Bounds="730,366,109,26" AutoConnect="true" Id="KS9vL23A4i3NqlyWah3lH8">
+                      <p:NodeReference LastCategoryFullName="VL.IO.NDI.Receiver" LastSymbolSource="VL.IO.NDI.dll">
                         <Choice Kind="OperationNode" Name="SetConnectedSource" />
-                        <FullNameCategoryReference ID="NewTek.NDI.VL.Receiver" />
+                        <FullNameCategoryReference ID="VL.IO.NDI.Receiver" />
                       </p:NodeReference>
-                      <Pin Id="EBU7asETIQnPIPLTDb4BVk" Name="Input" Kind="StateInputPin" />
-                      <Pin Id="THLOav0OsRPNsjF6gAiVls" Name="Value" Kind="InputPin" />
-                      <Pin Id="TuPJRne8ABsOcnm2WQOYsF" Name="Output" Kind="StateOutputPin" />
+                      <Pin Id="T1eMXX5a68xObGCkppvn2j" Name="Input" Kind="StateInputPin" />
+                      <Pin Id="PLHkWjOEkoiPF8vJEPGEEe" Name="Value" Kind="InputPin" />
+                      <Pin Id="RuOuBQ4knpXMvtfTfElH4G" Name="Output" Kind="StateOutputPin" />
                     </Node>
-                    <ControlPoint Id="NxexqQ3xxjiQSdyM120LuU" Bounds="806,430" />
-                    <Link Id="Vv9Ibb1qeWgO1Voc4jhVtx" Ids="NxexqQ3xxjiQSdyM120LuU,THLOav0OsRPNsjF6gAiVls" />
-                    <Link Id="PTcCTdwoXdFNmMuDUwRFiH" Ids="GaOEOBu2TacNVOLqtZ5Wue,NxexqQ3xxjiQSdyM120LuU" IsHidden="true" />
-                    <Pin Id="GaOEOBu2TacNVOLqtZ5Wue" Name="Source" Kind="InputPin" Bounds="891,399" />
-                    <Pin Id="Cm7KFG508glOFqeFZGnmch" Name="Input" Kind="InputPin" />
-                    <Pin Id="OTbGtnOAEtTO60tFTtjqD8" Name="Output" Kind="OutputPin" />
+                    <ControlPoint Id="LMEsNecR3XcNYR9WBtqJUF" Bounds="836,341" />
+                    <Link Id="GKnv1Llo2YoMPtvzufEY2G" Ids="LMEsNecR3XcNYR9WBtqJUF,PLHkWjOEkoiPF8vJEPGEEe" />
+                    <Link Id="LCnFkNRhYUlQZcrHQBrWyI" Ids="NXke24zomZyNLOBjnLIzie,LMEsNecR3XcNYR9WBtqJUF" IsHidden="true" />
+                    <Pin Id="NXke24zomZyNLOBjnLIzie" Name="Source" Kind="InputPin" Bounds="841,306" />
+                    <Pin Id="KhXqcLVQuZKOzhfu2hEUY5" Name="Input" Kind="InputPin" />
+                    <Pin Id="SFl90Zm7sn9Lb8QOsEB1QN" Name="Output" Kind="OutputPin" />
+                  </Patch>
+                </Node>
+                <!--
+
+    ************************ Frames ************************
+
+-->
+                <Node Name="Frames" Bounds="727,510,117,80" Id="L6YAobuZtoyMCa5JcBNZzV">
+                  <p:NodeReference>
+                    <Choice Kind="OperationDefinition" Name="Operation" />
+                    <FullNameCategoryReference ID="Primitive" />
+                  </p:NodeReference>
+                  <p:HideCategory p:Type="Boolean">false</p:HideCategory>
+                  <Patch Id="VfIkUOV9RqtPRnAQJPXzeH">
+                    <Node Bounds="744,539,49,26" AutoConnect="true" Id="T6QVfamYYeHQUlKYYqZhK1">
+                      <p:NodeReference LastCategoryFullName="VL.IO.NDI.Receiver" LastSymbolSource="VL.IO.NDI.dll">
+                        <Choice Kind="OperationNode" Name="Frames" />
+                        <FullNameCategoryReference ID="VL.IO.NDI.Receiver" />
+                      </p:NodeReference>
+                      <Pin Id="NDrhnddg4xTNbr93ikd5Cf" Name="Input" Kind="StateInputPin" />
+                      <Pin Id="M9lMWCWmEHTOy7u8MSlf7Y" Name="Output" Kind="StateOutputPin" />
+                      <Pin Id="Kx0z3YGEdJgOG5xdRnnikZ" Name="Frames" Kind="OutputPin" />
+                    </Node>
+                    <Pin Id="Lep4xpEOpLKP0Zb8eK6XRM" Name="Input" Kind="InputPin" />
+                    <Pin Id="GYAI8LSVE2OPNho6rK7rS0" Name="Output" Kind="OutputPin" />
+                    <Pin Id="TD2WFoG7l1bLQJEq0CbtGa" Name="Frames" Kind="OutputPin" />
                   </Patch>
                 </Node>
               </Canvas>
-              <ProcessDefinition Id="MYy1tG9z2h1MSFJHgDpxFW" IsHidden="true">
-                <Fragment Id="JSR1w2eGS4COdvohJrZIXF" Patch="U4bkWZMVALmLUohxwIIom1" />
-                <Fragment Id="NErPw4DgbRNOzMFMBTHFqm" Patch="QIgNxubQ4AyMVg0FtdYFhy" />
+              <ProcessDefinition Id="BjikglX3qSnP5PVof66mmF" IsHidden="true">
+                <Fragment Id="U3A7tt7yqWHMQGwq7U2DVc" Patch="VGGRRsHSAVXMcJznkgVDtm" />
+                <Fragment Id="IeJxyJ4EaKxLBZ3q2JfOMv" Patch="RVoJPzKjmBMLtbNsIXuyJQ" />
+                <Fragment Id="BQ2MF4EqOYNLBOhgv1JqYo" Patch="L6YAobuZtoyMCa5JcBNZzV" />
+              </ProcessDefinition>
+            </Patch>
+          </Node>
+          <!--
+
+    ************************ Source ************************
+
+-->
+          <Node Name="Source" Bounds="431,417" Id="CMi59Ox9jGlO7zmRIPuKZo">
+            <p:NodeReference>
+              <Choice Kind="ForwardDefinition" Name="Forward" />
+              <FullNameCategoryReference ID="Primitive" />
+            </p:NodeReference>
+            <p:TypeAnnotation LastCategoryFullName="NewTek.NDI" LastSymbolSource="VL.IO.NDI.dll">
+              <Choice Kind="TypeFlag" Name="Source" />
+            </p:TypeAnnotation>
+            <Patch Id="M00BgUoc2DcMvY5HpYNstX">
+              <Canvas Id="GswCXx4PcAoMit4IQnhsrt" CanvasType="Group">
+                <!--
+
+    ************************ SplitSource ************************
+
+-->
+                <Node Name="SplitSource" Bounds="488,47,236,235" Id="MwT56mfoFiJOz8SEugGtsu">
+                  <p:NodeReference LastCategoryFullName="Primitive" LastSymbolSource="Builtin">
+                    <Choice Kind="OperationDefinition" Name="Operation" />
+                  </p:NodeReference>
+                  <Patch Id="QQTTKb9QynfOSyCQwW3HWF">
+                    <Node Bounds="500,198,73,26" Id="HLSNWm9nYIhLLLfGGtpntp">
+                      <p:NodeReference LastCategoryFullName="IO.NDI.Source" LastSymbolSource="VL.NDI.vl">
+                        <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
+                        <Choice Kind="OperationCallFlag" Name="SourceName" />
+                        <CategoryReference Kind="ClassType" Name="Source" NeedsToBeDirectParent="true" />
+                      </p:NodeReference>
+                      <Pin Id="Bcfelgx0CfKPywBwXFQ1In" Name="Input" Kind="StateInputPin" />
+                      <Pin Id="GAeShvnGS3PNR8jfZfuKej" Name="Output" Kind="StateOutputPin" />
+                      <Pin Id="FxO5wqhKFNKOPXvAxGQOA8" Name="Source Name" Kind="OutputPin" />
+                    </Node>
+                    <Node Bounds="500,98,67,26" Id="QX87J2AoCSiNIWMm5XW6RU">
+                      <p:NodeReference LastCategoryFullName="IO.NDI.Source" LastSymbolSource="VL.NDI.vl">
+                        <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
+                        <Choice Kind="OperationCallFlag" Name="Name" />
+                        <CategoryReference Kind="ClassType" Name="Source" NeedsToBeDirectParent="true" />
+                      </p:NodeReference>
+                      <Pin Id="Hdh9sxlfJrHOfcPqjYy1wh" Name="Input" Kind="StateInputPin" />
+                      <Pin Id="OZeOL9tFUuOO0OttFPOw4X" Name="Output" Kind="StateOutputPin" />
+                      <Pin Id="BXB8u1ROeFVQaOjYixcD7K" Name="Name" Kind="OutputPin" />
+                    </Node>
+                    <Node Bounds="500,149,88,26" Id="GPf6eI7MbARMbos0VxNIKK">
+                      <p:NodeReference LastCategoryFullName="IO.NDI.Source" LastSymbolSource="VL.NDI.vl">
+                        <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
+                        <Choice Kind="OperationCallFlag" Name="ComputerName" />
+                        <CategoryReference Kind="ClassType" Name="Source" NeedsToBeDirectParent="true" />
+                      </p:NodeReference>
+                      <Pin Id="LAUQ70L4RojMn4dU3XXsBx" Name="Input" Kind="StateInputPin" />
+                      <Pin Id="PgS4SHD8ur6MgKIVfvYk3T" Name="Output" Kind="StateOutputPin" />
+                      <Pin Id="R0JeO02OfLzPSIUgBa38Hl" Name="Computer Name" Kind="OutputPin" />
+                    </Node>
+                    <ControlPoint Id="VMJjJercmDkMeB9Ln10OcC" Bounds="502,65" />
+                    <Link Id="LDxekYKMKDlMIOI92gkQI8" Ids="GwPuqmOcJSBQdl9fEtI7Iu,VMJjJercmDkMeB9Ln10OcC" IsHidden="true" />
+                    <ControlPoint Id="KyNOdYayU8dPFcvKCmR148" Bounds="641,263" />
+                    <Link Id="SDVe9Du7kHdP6SKkwXKdt7" Ids="FxO5wqhKFNKOPXvAxGQOA8,KyNOdYayU8dPFcvKCmR148" />
+                    <Link Id="Cl3kgcZePk5QJvdoEPKCGB" Ids="KyNOdYayU8dPFcvKCmR148,UREpfAfal3FLIrBxyRx2eF" IsHidden="true" />
+                    <ControlPoint Id="AB47m6gcRAlLkgfrEpgq24" Bounds="610,147" />
+                    <Link Id="SyJIREA8Ld5Lq7UfYNbNfG" Ids="BXB8u1ROeFVQaOjYixcD7K,AB47m6gcRAlLkgfrEpgq24" />
+                    <Link Id="Aau6pAhIEp2MX0FKLUTKfg" Ids="AB47m6gcRAlLkgfrEpgq24,Pvmjphf6o1ULGqQnPISAD1" IsHidden="true" />
+                    <ControlPoint Id="U02KPNDcTjZQSi5IZPI99O" Bounds="616,203" />
+                    <Link Id="MU9bNOfN5gfOnlkjrJV5RP" Ids="R0JeO02OfLzPSIUgBa38Hl,U02KPNDcTjZQSi5IZPI99O" />
+                    <Link Id="IppPgAmLpRDPRpwsdNRCSZ" Ids="U02KPNDcTjZQSi5IZPI99O,U6mrfE5IvWkO6JzSI9S9Ye" IsHidden="true" />
+                    <Link Id="K4lHkAY88JKP1B7zSRl9v5" Ids="VMJjJercmDkMeB9Ln10OcC,Hdh9sxlfJrHOfcPqjYy1wh" />
+                    <Link Id="DC9k5L7u3eHMAk8Zcj0f9X" Ids="OZeOL9tFUuOO0OttFPOw4X,LAUQ70L4RojMn4dU3XXsBx" />
+                    <Link Id="VO7dbC5JSHJQNfcr3AnAHw" Ids="PgS4SHD8ur6MgKIVfvYk3T,Bcfelgx0CfKPywBwXFQ1In" />
+                    <Pin Id="GwPuqmOcJSBQdl9fEtI7Iu" Name="Input" Kind="InputPin" Bounds="693,477" />
+                    <Pin Id="Pvmjphf6o1ULGqQnPISAD1" Name="Name" Kind="OutputPin" Bounds="833,576" />
+                    <Pin Id="U6mrfE5IvWkO6JzSI9S9Ye" Name="Computer Name" Kind="OutputPin" Bounds="853,607" />
+                    <Pin Id="UREpfAfal3FLIrBxyRx2eF" Name="Source Name" Kind="OutputPin" Bounds="777,600" />
+                  </Patch>
+                </Node>
+                <!--
+
+    ************************ CreateDefault ************************
+
+-->
+                <Node Name="CreateDefault" Bounds="489,-180,120,86" Id="AsRdb0e3Hd6M6wJRbUHmGH">
+                  <p:NodeReference>
+                    <Choice Kind="OperationDefinition" Name="Operation" />
+                    <FullNameCategoryReference ID="Primitive" />
+                  </p:NodeReference>
+                  <p:HideCategory p:Type="Boolean">false</p:HideCategory>
+                  <Patch Id="AMGkIaMQOEcOGFyn05oaQ0">
+                    <Node Bounds="510,-145,40,26" AutoConnect="true" Id="McqQFXGeb59O3Doibe06t2">
+                      <p:NodeReference LastCategoryFullName="NewTek.NDI.Source" LastSymbolSource="NDILibDotNet2_VL.dll">
+                        <Choice Kind="OperationNode" Name="Create" />
+                        <FullNameCategoryReference ID="NewTek.NDI.Source" />
+                      </p:NodeReference>
+                      <Pin Id="AQjaJmyFGPYO3AsRq4rKT8" Name="Output" Kind="StateOutputPin" />
+                    </Node>
+                    <Pin Id="Oo6d5tQ7qeQNdasffcjJZG" Name="Output" Kind="OutputPin" />
+                  </Patch>
+                </Node>
+              </Canvas>
+              <ProcessDefinition Id="OJpTAYOsiHVOKlWeEU4m3e" IsHidden="true">
+                <Fragment Id="QKxoiwS9k97ONZ2I71wKSp" Patch="AsRdb0e3Hd6M6wJRbUHmGH" Enabled="true" />
+                <Fragment Id="CAKGqMTkPc3MOhhV2nJrtS" Patch="MwT56mfoFiJOz8SEugGtsu" />
+              </ProcessDefinition>
+            </Patch>
+          </Node>
+          <!--
+
+    ************************ Sender ************************
+
+-->
+          <Node Name="Sender" Bounds="434,490" Id="KyHskOg3gFPPWU9zthT6Rv">
+            <p:NodeReference>
+              <Choice Kind="ForwardDefinition" Name="Forward" />
+              <FullNameCategoryReference ID="Primitive" />
+            </p:NodeReference>
+            <p:TypeAnnotation LastCategoryFullName="NewTek.NDI" LastSymbolSource="VL.IO.NDI.dll">
+              <Choice Kind="TypeFlag" Name="Sender" />
+            </p:TypeAnnotation>
+            <Patch Id="GOC2cgOQoufPUVV2fUzly2">
+              <Canvas Id="KinFjnTnUCdNqpxonui76E" CanvasType="Group">
+                <!--
+
+    ************************ GetConnections ************************
+
+-->
+                <Node Name="GetConnections" Bounds="412,568,429,197" Id="ADDcAx4YnpjM8R6qa9T12N">
+                  <p:NodeReference>
+                    <Choice Kind="OperationDefinition" Name="Operation" />
+                    <FullNameCategoryReference ID="Primitive" />
+                  </p:NodeReference>
+                  <p:HideCategory p:Type="Boolean">false</p:HideCategory>
+                  <Patch Id="ReVLSmensblQXJaDds9AFt">
+                    <ControlPoint Id="VMvOsBIdvttOVskHMmWPun" Bounds="508,748" />
+                    <Link Id="QcLNAzZ60roPU258wNqF74" Ids="VMvOsBIdvttOVskHMmWPun,D6ym8cTlcBKOJELGdoigoK" IsHidden="true" />
+                    <Pad Id="CbG73l10FYNMgJRFP43YAb" Bounds="525,599,212,42" ShowValueBox="true" isIOBox="true" Value="Same as Connections internally, except for the timeout">
+                      <p:TypeAnnotation>
+                        <Choice Kind="TypeFlag" Name="String" />
+                      </p:TypeAnnotation>
+                      <p:ValueBoxSettings>
+                        <p:fontsize p:Type="Int32">9</p:fontsize>
+                        <p:stringtype p:Assembly="VL.Core" p:Type="VL.Core.StringType">Comment</p:stringtype>
+                      </p:ValueBoxSettings>
+                    </Pad>
+                    <Pad Id="H0TniVDRx3mObmWZPQ8yLp" Bounds="483,663,339,59" ShowValueBox="true" isIOBox="true" Value="// Get the current number of receivers connected to this source. This can be used to avoid even rendering when nothing is connected to the video source.">
+                      <p:TypeAnnotation>
+                        <Choice Kind="TypeFlag" Name="String" />
+                      </p:TypeAnnotation>
+                      <p:ValueBoxSettings>
+                        <p:fontsize p:Type="Int32">9</p:fontsize>
+                        <p:stringtype p:Assembly="VL.Core" p:Type="VL.Core.StringType">Comment</p:stringtype>
+                      </p:ValueBoxSettings>
+                    </Pad>
+                    <Node Bounds="424,591,88,26" AutoConnect="true" Id="SKLmir3QU1UL9aXweNtI3M">
+                      <p:NodeReference LastCategoryFullName="NewTek.NDI.Sender" LastSymbolSource="VL.IO.NDI.dll">
+                        <Choice Kind="OperationNode" Name="GetConnections" />
+                        <FullNameCategoryReference ID="NewTek.NDI.Sender" />
+                      </p:NodeReference>
+                      <Pin Id="Gyrlg0Rny4ZMlvyB0lkJnX" Name="Input" Kind="StateInputPin" />
+                      <Pin Id="O6T8sRuskFoPmZ5nqRdOOy" Name="Wait Ms" Kind="InputPin" />
+                      <Pin Id="A9k12Y7XzfCQLVdunzZ3HU" Name="Output" Kind="StateOutputPin" />
+                      <Pin Id="PbH8QVzVAWLMZVQ4nfRbN4" Name="Result" Kind="OutputPin" />
+                    </Node>
+                    <Link Id="GmJMETBOLL5PIJYWnZDvH4" Ids="PbH8QVzVAWLMZVQ4nfRbN4,VMvOsBIdvttOVskHMmWPun" />
+                    <Pin Id="MdcfVZPf1HnPwvIGfcaPvK" Name="Input" Kind="InputPin" />
+                    <Pin Id="B7CUsnTXguELdZ8xnjolZQ" Name="Wait Ms" Kind="InputPin" />
+                    <Pin Id="D6ym8cTlcBKOJELGdoigoK" Name="Current Connections" Kind="OutputPin" Bounds="549,300" />
+                    <Pin Id="NzjUIflhh3JMHmdcwSxCzm" Name="Output" Kind="OutputPin" />
+                  </Patch>
+                </Node>
+                <!--
+
+    ************************ Connections ************************
+
+-->
+                <Node Name="Connections" Bounds="436,309,300,175" Id="Qt65oaXu36YPR1UFYnHsjt">
+                  <p:NodeReference>
+                    <Choice Kind="OperationDefinition" Name="Operation" />
+                    <FullNameCategoryReference ID="Primitive" />
+                  </p:NodeReference>
+                  <p:HideCategory p:Type="Boolean">false</p:HideCategory>
+                  <Patch Id="TxHvM67DO2kMUhlKV4dkHN">
+                    <ControlPoint Id="Clup5FtwmmEMHMonYgAnL2" Bounds="517,467" />
+                    <Link Id="PiQiPNRg0JSPkqrNLo7t5O" Ids="Clup5FtwmmEMHMonYgAnL2,MtGe37Ts22sLltvoPFSE6c" IsHidden="true" />
+                    <Node Bounds="516,405,32,19" Id="PGkrBDeqXhFQE77NNFGWPN">
+                      <p:NodeReference LastCategoryFullName="Primitive.Integer32" LastSymbolSource="CoreLibBasics.vl">
+                        <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
+                        <Choice Kind="OperationCallFlag" Name="DIV" />
+                        <CategoryReference Kind="Int32Type" Name="Integer32" NeedsToBeDirectParent="true" />
+                      </p:NodeReference>
+                      <Pin Id="T9yGqjRAgbHQYlTHVKIq92" Name="Input" Kind="StateInputPin" />
+                      <Pin Id="QVp8riXBXQiLQnI4E40jER" Name="Input 2" Kind="InputPin" />
+                      <Pin Id="UdQHBYKdBcHNSrY4VrBFVE" Name="Output" Kind="StateOutputPin" />
+                    </Node>
+                    <Pad Id="U7ViJ5SOVyPNFybspGKik7" Comment="" Bounds="554,353,18,19" ShowValueBox="true" isIOBox="true" Value="2">
+                      <p:TypeAnnotation LastCategoryFullName="Primitive" LastSymbolSource="CoreLibBasics.vl">
+                        <Choice Kind="TypeFlag" Name="Integer32" />
+                      </p:TypeAnnotation>
+                    </Pad>
+                    <Link Id="ELGOXoenfBpPy1uh9F7d0F" Ids="U7ViJ5SOVyPNFybspGKik7,QVp8riXBXQiLQnI4E40jER" />
+                    <Link Id="QxsCa5Mq7vjPVRWupiaPPN" Ids="UdQHBYKdBcHNSrY4VrBFVE,Clup5FtwmmEMHMonYgAnL2" />
+                    <Pad Id="FSRA3Od883ROVzvdHYBFDv" Bounds="562,392,155,62" ShowValueBox="true" isIOBox="true" Value="NDI always outputs 2 connections per connected receiver">
+                      <p:TypeAnnotation>
+                        <Choice Kind="TypeFlag" Name="String" />
+                      </p:TypeAnnotation>
+                      <p:ValueBoxSettings>
+                        <p:fontsize p:Type="Int32">9</p:fontsize>
+                        <p:stringtype p:Assembly="VL.Core" p:Type="VL.Core.StringType">Comment</p:stringtype>
+                      </p:ValueBoxSettings>
+                    </Pad>
+                    <Node Bounds="448,332,73,26" AutoConnect="true" Id="UNSmDP7UeQFQMLzkDu1Hbh">
+                      <p:NodeReference LastCategoryFullName="NewTek.NDI.Sender" LastSymbolSource="VL.IO.NDI.dll">
+                        <Choice Kind="OperationNode" Name="Connections" />
+                        <FullNameCategoryReference ID="NewTek.NDI.Sender" />
+                      </p:NodeReference>
+                      <Pin Id="Tgtkn99D9KOQd0qV9IWLln" Name="Input" Kind="StateInputPin" />
+                      <Pin Id="QzyMdRFgDHdN7MUXe9c3kV" Name="Output" Kind="StateOutputPin" />
+                      <Pin Id="VitjP6lJg86OKB35NOvIwn" Name="Connections" Kind="OutputPin" />
+                    </Node>
+                    <Pin Id="KSi3DTDoDvEPJydUOOnvPH" Name="Input" Kind="InputPin" />
+                    <Pin Id="MtGe37Ts22sLltvoPFSE6c" Name="Current Connections" Kind="OutputPin" Bounds="730,209" />
+                    <Pin Id="U3O9q3pCjZVP3Q4sl1xPm4" Name="Output" Kind="OutputPin" />
+                    <Link Id="IbI50JlPMUKNdIAUsLdLxx" Ids="VitjP6lJg86OKB35NOvIwn,T9yGqjRAgbHQYlTHVKIq92" />
+                  </Patch>
+                </Node>
+                <!--
+
+    ************************ Tally ************************
+
+-->
+                <Node Name="Tally" Bounds="873,279,293,304" Id="Lf0bqc2T46MNno1m7UnB3k">
+                  <p:NodeReference>
+                    <Choice Kind="OperationDefinition" Name="Operation" />
+                    <FullNameCategoryReference ID="Primitive" />
+                  </p:NodeReference>
+                  <p:HideCategory p:Type="Boolean">false</p:HideCategory>
+                  <Patch Id="DNbVY7XOkfYObUVca3TuIb">
+                    <Node Bounds="885,302,41,26" AutoConnect="true" Id="FpilidubYnVP7ryAh71V9d">
+                      <p:NodeReference LastCategoryFullName="NewTek.NDI.Sender" LastSymbolSource="VL.IO.NDI.dll">
+                        <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
+                        <Choice Kind="OperationCallFlag" Name="Tally" />
+                        <CategoryReference Kind="AssemblyCategory" Name="Sender" NeedsToBeDirectParent="true" />
+                      </p:NodeReference>
+                      <Pin Id="E4iFKXJlZqxLhHEYPpMax8" Name="Input" Kind="StateInputPin" />
+                      <Pin Id="FRkZwLuDlwlOtlXCnA64iJ" Name="Output" Kind="StateOutputPin" />
+                      <Pin Id="GB1aDfi8VgVPlfKiG4ygU3" Name="Tally" Kind="OutputPin" />
+                    </Node>
+                    <Link Id="LFaikz77SSmN9VZJck06Yw" Ids="GB1aDfi8VgVPlfKiG4ygU3,Czak1C2uowTLzb8JaTxCYO" />
+                    <Link Id="Fns3QthC2OoPmlEfusMmcC" Ids="FatXVGiQrc0MOFxlTepaEx,CZdE9Wj1IEtPIRilGZMZt4" />
+                    <Node Bounds="914,408,195,139" Id="QFBkixvYY7OPUiejW1LLuv">
+                      <p:NodeReference LastCategoryFullName="Primitive" LastSymbolSource="CoreLibBasics.vl">
+                        <Choice Kind="StatefulRegion" Name="Region (Stateful)" Fixed="true" />
+                        <Choice Kind="ApplicationStatefulRegion" Name="If" />
+                        <CategoryReference Kind="Category" Name="Primitive" />
+                      </p:NodeReference>
+                      <Pin Id="IePrLOwVbY6QckUxFjoVTL" Name="Condition" Kind="InputPin" />
+                      <Patch Id="U9B7fP81JsIL0CLXQw9ZkB" ManuallySortedPins="true">
+                        <Patch Id="EbtuRt7TkpPO6zLwD73iMJ" Name="Create" ManuallySortedPins="true" />
+                        <Patch Id="GYO0d3CebytNypUapjG2Tz" Name="Then" ManuallySortedPins="true" />
+                        <Node Bounds="926,483,169,26" Id="Cc5Idr7HmNzLXAsBFpXjXQ">
+                          <p:NodeReference LastCategoryFullName="Video.NDI.Tally" LastSymbolSource="VL.NDI.vl">
+                            <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
+                            <CategoryReference Kind="ClassType" Name="Tally" />
+                            <Choice Kind="OperationCallFlag" Name="on_preview" />
+                          </p:NodeReference>
+                          <Pin Id="CZdE9Wj1IEtPIRilGZMZt4" Name="Input" Kind="StateInputPin" />
+                          <Pin Id="SbupUns5YV9ME5tskkWvs2" Name="Output" Kind="StateOutputPin" />
+                          <Pin Id="Kk7iMLpah7TMuLBOnZ1Dit" Name="On_preview" Kind="OutputPin" />
+                        </Node>
+                        <Node Bounds="926,435,72,26" Id="AX0wR7a5AzwPcImEGQeNys">
+                          <p:NodeReference LastCategoryFullName="Video.NDI.Tally" LastSymbolSource="VL.NDI.vl">
+                            <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
+                            <CategoryReference Kind="ClassType" Name="Tally" />
+                            <Choice Kind="OperationCallFlag" Name="on_program" />
+                          </p:NodeReference>
+                          <Pin Id="Czak1C2uowTLzb8JaTxCYO" Name="Input" Kind="StateInputPin" />
+                          <Pin Id="FatXVGiQrc0MOFxlTepaEx" Name="Output" Kind="StateOutputPin" />
+                          <Pin Id="MPVpbh13lpROs7p4ObRIwV" Name="On_program" Kind="OutputPin" />
+                        </Node>
+                      </Patch>
+                      <ControlPoint Id="O37qobMdrlnPNZwfhCoEKO" Bounds="996,414" Alignment="Top" />
+                      <ControlPoint Id="VsMuo5HNfovPqq4xcDAMBb" Bounds="996,541" Alignment="Bottom" />
+                      <ControlPoint Id="FC0ulRwRM76O1ZalamQzZb" Bounds="1092,541" Alignment="Bottom" />
+                      <ControlPoint Id="OEXF2xJs5eOQBWOuiisV6x" Bounds="1027,414" Alignment="Top" />
+                    </Node>
+                    <Link Id="PaE7tvxsFK7L3Tnu8idswQ" Ids="O37qobMdrlnPNZwfhCoEKO,VsMuo5HNfovPqq4xcDAMBb" IsFeedback="true" />
+                    <ControlPoint Id="A9RjYY9xx84PIWAHfOzZP2" Bounds="996,564" />
+                    <Link Id="VFy00SqC7QvNPtMPF6TkWi" Ids="A9RjYY9xx84PIWAHfOzZP2,LuLC7oKp9A3QVLs5opBUmn" IsHidden="true" />
+                    <ControlPoint Id="FmSIWaYJkRkOKJNznx49da" Bounds="1092,566" />
+                    <Link Id="Qc1yddK3bmjNvqnmXseqeB" Ids="FmSIWaYJkRkOKJNznx49da,Vnblabe7bJILFegXxNRvms" IsHidden="true" />
+                    <Link Id="KbYl7jcsEctLLXWBpgot6q" Ids="OEXF2xJs5eOQBWOuiisV6x,FC0ulRwRM76O1ZalamQzZb" IsFeedback="true" />
+                    <Link Id="UBHKM7ix3dxLwferTsXHHh" Ids="Kk7iMLpah7TMuLBOnZ1Dit,FC0ulRwRM76O1ZalamQzZb" />
+                    <Link Id="DQVDfJdlhhFQVpV4ibFAs8" Ids="FC0ulRwRM76O1ZalamQzZb,FmSIWaYJkRkOKJNznx49da" />
+                    <Link Id="QySzt6IQ5QIPK4qRyyIS5q" Ids="MPVpbh13lpROs7p4ObRIwV,VsMuo5HNfovPqq4xcDAMBb" />
+                    <Link Id="P9emCdAbyKQMmqec7ma4AQ" Ids="VsMuo5HNfovPqq4xcDAMBb,A9RjYY9xx84PIWAHfOzZP2" />
+                    <Node Bounds="914,364,65,19" Id="F6xeeAfYJSRNWzRhvdEorp">
+                      <p:NodeReference LastCategoryFullName="Primitive.Object" LastSymbolSource="CoreLibBasics.vl">
+                        <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
+                        <Choice Kind="OperationCallFlag" Name="IsAssigned" />
+                      </p:NodeReference>
+                      <Pin Id="SI6epq7JIXsNsYCbCNTGHd" Name="X" Kind="InputPin" />
+                      <Pin Id="LAmMTwj7GtxPRPk6MPhOET" Name="Result" Kind="OutputPin" />
+                      <Pin Id="JvsFQ1o1CW1M5U2cR67GQ9" Name="Not Assigned" Kind="OutputPin" />
+                    </Node>
+                    <Link Id="JT7XquQ7iR6OeKowH7rUvM" Ids="GB1aDfi8VgVPlfKiG4ygU3,SI6epq7JIXsNsYCbCNTGHd" />
+                    <Link Id="FD0bZNM2ymeL8yk4N40rLQ" Ids="LAmMTwj7GtxPRPk6MPhOET,IePrLOwVbY6QckUxFjoVTL" />
+                    <Pin Id="CTjtPAyqMpdLm9OJAhNVN6" Name="Input" Kind="InputPin" />
+                    <Pin Id="LuLC7oKp9A3QVLs5opBUmn" Name="On Program" Kind="OutputPin" Bounds="578,428" />
+                    <Pin Id="Vnblabe7bJILFegXxNRvms" Name="On Preview" Kind="OutputPin" Bounds="678,431" />
+                    <Pin Id="RU5nUXL8rp4PRCnrx7qgGD" Name="Output" Kind="OutputPin" />
+                  </Patch>
+                </Node>
+              </Canvas>
+              <ProcessDefinition Id="TLVnQIfdsEZOmAY9ibLwmM" IsHidden="true">
+                <Fragment Id="D0aK36iAt9xOeMje54ZPLG" Patch="ADDcAx4YnpjM8R6qa9T12N" />
+                <Fragment Id="ErhBgmIWJ4ALBBFiDCiVap" Patch="Qt65oaXu36YPR1UFYnHsjt" />
+                <Fragment Id="Va0dyWDZIB7OeZ0yxYHpNj" Patch="Lf0bqc2T46MNno1m7UnB3k" />
               </ProcessDefinition>
             </Patch>
           </Node>
@@ -1197,10 +893,10 @@
                           <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
                           <Choice Kind="OperationCallFlag" Name="SplitSource" />
                         </p:NodeReference>
-                        <Pin Id="JTWtTcqQSp1PmmZfAo8Gil" Name="Input" Kind="InputPin" />
                         <Pin Id="LxBsx7yUWrfQY05S1LNUIO" Name="Name" Kind="OutputPin" />
                         <Pin Id="Fxca6lJE7xoOBh91TU77aG" Name="Computer Name" Kind="OutputPin" />
                         <Pin Id="IJJkFzXbe7PMIkTJjvYKci" Name="Source Name" Kind="OutputPin" />
+                        <Pin Id="JTWtTcqQSp1PmmZfAo8Gil" Name="Input" Kind="InputPin" />
                       </Node>
                     </Patch>
                   </Node>
@@ -1459,7 +1155,7 @@
                 </p:NodeReference>
                 <Pin Id="Fnury5HVw5YM6QvRAccijr" Name="Output" Kind="StateOutputPin" />
               </Node>
-              <Node Bounds="347,576,91,112" Id="O3WBKoB1BDjPAdZfIEDfQc">
+              <Node Bounds="254,576,91,112" Id="O3WBKoB1BDjPAdZfIEDfQc">
                 <p:NodeReference LastCategoryFullName="Primitive" LastSymbolSource="CoreLibBasics.vl">
                   <Choice Kind="StatefulRegion" Name="Region (Stateful)" Fixed="true" />
                   <Choice Kind="ApplicationStatefulRegion" Name="If" />
@@ -1467,7 +1163,7 @@
                 </p:NodeReference>
                 <Pin Id="TwQ3rHdLZIUQO1i0aWgsnU" Name="Condition" Kind="InputPin" />
                 <Patch Id="VwOXvmia9GSNX0Qs5n63Zy" ManuallySortedPins="true">
-                  <Node Bounds="359,642,53,26" Id="P6EkNSocjdSMTB4P9XCcaW">
+                  <Node Bounds="266,642,53,26" Id="P6EkNSocjdSMTB4P9XCcaW">
                     <p:NodeReference LastCategoryFullName="NewTek.NDI.Receiver" LastSymbolSource="VL.IO.NDI.vl">
                       <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
                       <CategoryReference Kind="Category" Name="NewTek" />
@@ -1480,7 +1176,7 @@
                   </Node>
                   <Patch Id="Hhd9tdjpioKPZHnr7dpLQj" Name="Create" ManuallySortedPins="true" />
                   <Patch Id="R8GW7E8uSzVMou9Pq9fQZ7" Name="Then" ManuallySortedPins="true" />
-                  <Node Bounds="359,599,67,26" Id="OwKIvu4pdfSNEFbMQ3MdSn">
+                  <Node Bounds="266,599,67,26" Id="OwKIvu4pdfSNEFbMQ3MdSn">
                     <p:NodeReference LastCategoryFullName="NewTek.NDI.Receiver" LastSymbolSource="VL.IO.NDI.vl">
                       <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
                       <Choice Kind="OperationCallFlag" Name="Disconnect" />
@@ -1491,7 +1187,7 @@
                   </Node>
                 </Patch>
               </Node>
-              <Node Bounds="347,508,65,19" Id="P4avOjIhHEWLeotSpFUX9J">
+              <Node Bounds="254,508,65,19" Id="P4avOjIhHEWLeotSpFUX9J">
                 <p:NodeReference LastCategoryFullName="Primitive.Object" LastSymbolSource="CoreLibBasics.vl">
                   <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
                   <Choice Kind="OperationCallFlag" Name="IsAssigned" />
@@ -1570,7 +1266,7 @@
                 <Pin Id="ODv61tgK1RNPCvGI5OX62S" Name="Output" Kind="StateOutputPin" />
               </Node>
               <ControlPoint Id="FMKCsQpeATMMaE6lhAJ6YR" Bounds="622,379" />
-              <Node Bounds="1723,556,152,139" Id="Cot4ECW2lJVMmBGROrZh5H">
+              <Node Bounds="1723,556,152,162" Id="Cot4ECW2lJVMmBGROrZh5H">
                 <p:NodeReference LastCategoryFullName="Primitive" LastSymbolSource="CoreLibBasics.vl">
                   <Choice Kind="StatefulRegion" Name="Region (Stateful)" Fixed="true" />
                   <Choice Kind="ApplicationStatefulRegion" Name="If" />
@@ -1580,16 +1276,6 @@
                 <Patch Id="I8kvgXumTTOL8kMns5szg9" ManuallySortedPins="true">
                   <Patch Id="QNoOY8iRhLBMtnRdU5m8Gf" Name="Create" ManuallySortedPins="true" />
                   <Patch Id="UaYeNRqDZmHMmjXKz1pDZW" Name="Then" ManuallySortedPins="true" />
-                  <Node Bounds="1737,646,98,26" Id="KZYwIx9AfIlNypI7oS9HWQ">
-                    <p:NodeReference LastCategoryFullName="NewTek.NDI.Receiver" LastSymbolSource="VL.IO.NDI.vl">
-                      <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
-                      <CategoryReference Name="Receiver" />
-                      <Choice Kind="OperationCallFlag" Name="VideoFrameImage" />
-                    </p:NodeReference>
-                    <Pin Id="KjEUZyz6CgfOkOO2txJhse" Name="Input" Kind="StateInputPin" />
-                    <Pin Id="DnG8IcNhY0OOjQbcGL60V3" Name="Output" Kind="StateOutputPin" />
-                    <Pin Id="M1baU1oGs1UPw0vmoIqeP4" Name="Video Frame Image" Kind="OutputPin" />
-                  </Node>
                   <Node Bounds="1737,589,123,26" Id="PeDvK0wNRk0LJjjta2onBj">
                     <p:NodeReference LastCategoryFullName="NewTek.NDI.Receiver" LastSymbolSource="VL.IO.NDI.vl">
                       <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
@@ -1599,6 +1285,16 @@
                     <Pin Id="MxR0G9IWfEhM6SgA6ifep4" Name="Input" Kind="StateInputPin" />
                     <Pin Id="RFLAdfIJQ3ZQYVmh0VVgcS" Name="Output" Kind="StateOutputPin" />
                     <Pin Id="FEFNWjdaUmjPcfbR3lV7W9" Name="Connected Source" Kind="OutputPin" />
+                  </Node>
+                  <Node Bounds="1735,645,49,26" Id="EZeW0GmLnWPOl734E78Slh">
+                    <p:NodeReference LastCategoryFullName="NewTek.NDI.Receiver" LastSymbolSource="VL.IO.NDI.vl">
+                      <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
+                      <Choice Kind="OperationCallFlag" Name="Frames" />
+                      <CategoryReference Kind="ClassType" Name="Receiver" NeedsToBeDirectParent="true" />
+                    </p:NodeReference>
+                    <Pin Id="R9Lo3Bivv2vM5MafyfNFD5" Name="Input" Kind="StateInputPin" />
+                    <Pin Id="Pdu7BuTiQxOMefGyZnK677" Name="Output" Kind="StateOutputPin" />
+                    <Pin Id="CHQBRnYXrUdLn1c9zLQ5Lp" Name="Frames" Kind="OutputPin" />
                   </Node>
                 </Patch>
                 <ControlPoint Id="F3jLIP8MB6wLLBUZJuz3yk" Bounds="1832,689" Alignment="Bottom" />
@@ -1617,7 +1313,7 @@
                 <Pin Id="ObTQyUQA8BdLs0fK3sHQ7v" Name="Result" Kind="OutputPin" />
                 <Pin Id="LeFgBwgmiCtLAGg4i1LR9x" Name="Not Assigned" Kind="OutputPin" />
               </Node>
-              <ControlPoint Id="GiQgcBR2OX3MSIeaQROkvh" Bounds="1831,720" />
+              <ControlPoint Id="GiQgcBR2OX3MSIeaQROkvh" Bounds="1832,822" />
               <Node Bounds="509,329,94,26" Id="KsCSFpl1N66PJd7pORVLiH">
                 <p:NodeReference LastCategoryFullName="NewTek.NDI.Receiver" LastSymbolSource="VL.IO.NDI.vl">
                   <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
@@ -1683,7 +1379,7 @@
                       <CategoryReference Kind="ClassType" Name="Receiver" NeedsToBeDirectParent="true" />
                     </p:NodeReference>
                     <Pin Id="KUo2QyteMi0Pm6loLgkUVW" Name="Input" Kind="InputPin" />
-                    <Pin Id="P1UXKbtRtXTMzOeial1DYb" Name="Source" Kind="InputPin" />
+                    <Pin Id="DSn4Oems7KxN2GRjPuij72" Name="Source" Kind="InputPin" />
                     <Pin Id="NHqpFNLpWFxPBpMWAfu0yJ" Name="Output" Kind="StateOutputPin" />
                   </Node>
                 </Patch>
@@ -1787,7 +1483,6 @@
             <Link Id="RPZHIy7uH8pLZQLLzAEc6L" Ids="Qlin12l85k8OnyouFOCz42,FMKCsQpeATMMaE6lhAJ6YR" IsHidden="true" />
             <Link Id="U7qg7YtNz3HLsTy1xDMADc" Ids="ObTQyUQA8BdLs0fK3sHQ7v,LZ17AQFWdbrL86pi9WhfCX" />
             <Link Id="UtC6hCWBA1gOFIRvnAQRJc" Ids="K2xfkzV56G9O7cgp14B0b1,F3jLIP8MB6wLLBUZJuz3yk" IsFeedback="true" />
-            <Link Id="J3B1okzVxpTLO2gbjU5d1G" Ids="M1baU1oGs1UPw0vmoIqeP4,F3jLIP8MB6wLLBUZJuz3yk" />
             <Link Id="Nryqp51XDveOsyREhQQj0a" Ids="F3jLIP8MB6wLLBUZJuz3yk,GiQgcBR2OX3MSIeaQROkvh" />
             <Link Id="P3Unn0CeoDDNY2B4cl7YQd" Ids="GiQgcBR2OX3MSIeaQROkvh,VOOoJsPFZFqL5O8IBQxUgx" IsHidden="true" />
             <Link Id="NbDXkZZQJPXPcXn6nKTWcy" Ids="Fnury5HVw5YM6QvRAccijr,CzuORLmYhmMOTb2qeq9UDB" />
@@ -1800,7 +1495,6 @@
             <Link Id="Jy0LqddXoVbPj5KdUThOTA" Ids="Lfu91xij3DDMKkLv1dgZjy,DmC6mvzk8jrM69mtZl87vv" />
             <Link Id="Ayf3e2RqHVPMMwj4ajmuao" Ids="V3QqT4qjHosQQVDWJUf4io,VrJGclmpCDJMCWMligFWJ8" />
             <Link Id="J6WsX3Bui2lNydX60CynRf" Ids="O6fJU1ExeJFNqF29uhuLtl,RIufJkCdjRpP0VUEhW4b42" />
-            <Link Id="GRedY3jdhkjP7YXaqM0JJN" Ids="RFLAdfIJQ3ZQYVmh0VVgcS,KjEUZyz6CgfOkOO2txJhse" />
             <Link Id="JKKrxQDyVOoPlWaFKTd42u" Ids="VTgkEEZqa2HNZCEqzJdm3y,SRlzQRnw2p1MaHw15OMBu0" IsFeedback="true" />
             <Link Id="NcpopqyReA2LBVNOMY0Ci4" Ids="FEFNWjdaUmjPcfbR3lV7W9,SRlzQRnw2p1MaHw15OMBu0" />
             <Link Id="UmIa3D8iMpVMnhS71jgblA" Ids="SRlzQRnw2p1MaHw15OMBu0,CoUyDqR1sjxPTwonxDAIkU" />
@@ -1811,7 +1505,6 @@
             <Link Id="PPIQpyzdr7HLB2wHqFLDFH" Ids="Tjg3eLgZMNdPudLq6A5LEs,MxR0G9IWfEhM6SgA6ifep4" />
             <Link Id="QzLqStfjKahM2TimDpM2H6" Ids="UtBIOYkuY8KMdlVfb6TdgY,RP4eFQTm8dKMJUzscxMCx5" />
             <Link Id="FSJLTkwlRzYNJ58kPcj48L" Ids="RP4eFQTm8dKMJUzscxMCx5,H418IFcCVYSLHrv2BE5l2f" />
-            <Link Id="FZp6o6Y5h21Ncf7og0zWhe" Ids="DnG8IcNhY0OOjQbcGL60V3,VOtyUQhEHdvNvk7RS4ZrXc" />
             <Link Id="FOGbrHfYTepLDHmadJyAVk" Ids="ElYJrt9FfzvN9jgjNaacSL,PnwvLUu3ekxO8V5KSdUsRB" IsHidden="true" />
             <Link Id="A8dRju8O9raNrobvbwn2De" Ids="FMKCsQpeATMMaE6lhAJ6YR,H3BQiswifUALRayJjWmxBQ" />
             <Link Id="Cqi4tavae0WN62apO1RgN9" Ids="SRlzQRnw2p1MaHw15OMBu0,Lj6eqOSOMnwMnVkEPL2YSf" />
@@ -1855,6 +1548,9 @@
             <Link Id="GU2wOJGDXRjOMUlydsV9cb" Ids="KO6hn3WSAQ5LAVmnd9YOXo,JQZxR1WEJPcMYdgB3A6xjZ" IsHidden="true" />
             <Link Id="VyP3bK4y4KGO7J9DTRP4Zi" Ids="Th4izEzeSzoL2KgCUwcxli,IVyG4pBNIGmOg3NGbhv395" />
             <Link Id="A6ey0gvaxmuLZuJbHCpPNT" Ids="OvMvN1QlYUTQCROXhbflAw,Th4izEzeSzoL2KgCUwcxli" IsHidden="true" />
+            <Link Id="SzN063uaDGXPAKz7qUzkJB" Ids="RFLAdfIJQ3ZQYVmh0VVgcS,R9Lo3Bivv2vM5MafyfNFD5" />
+            <Link Id="JjoDpflLvC6OWtXWe7hM4L" Ids="Pdu7BuTiQxOMefGyZnK677,VOtyUQhEHdvNvk7RS4ZrXc" />
+            <Link Id="Ne0eKSMZx2yNb9i5jFJlgh" Ids="CHQBRnYXrUdLn1c9zLQ5Lp,F3jLIP8MB6wLLBUZJuz3yk" />
           </Patch>
         </Node>
         <!--
@@ -1918,7 +1614,7 @@
                       <Pin Id="OKKChz9i7HINQyfXVjRD3K" Name="Condition" Kind="InputPin" />
                       <Patch Id="S9CAFoO6ILyOpTja66t52s" ManuallySortedPins="true">
                         <Node Bounds="144,498,53,26" Id="Ux40fdGnnSKLZpsjkkxSLf">
-                          <p:NodeReference LastCategoryFullName="NewTek.NDI.Sender" LastSymbolSource="NDILibDotNet2_VL.dll">
+                          <p:NodeReference LastCategoryFullName="NewTek.NDI.Sender" LastSymbolSource="VL.IO.NDI.dll">
                             <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
                             <CategoryReference Kind="AssemblyCategory" Name="Sender" />
                             <Choice Kind="OperationCallFlag" Name="Dispose" />
@@ -2427,7 +2123,7 @@
                       <Pin Id="EaHiG9MP3NgPdylghqBUpd" Name="Condition" Kind="InputPin" />
                       <Patch Id="V4WFMzJLWruQISC8ujO5Pb" ManuallySortedPins="true">
                         <Node Bounds="313,398,53,26" Id="RjXTss1MqfxQS6gfu8AiWF">
-                          <p:NodeReference LastCategoryFullName="NewTek.NDI.Sender" LastSymbolSource="NDILibDotNet2_VL.dll">
+                          <p:NodeReference LastCategoryFullName="NewTek.NDI.Sender" LastSymbolSource="VL.IO.NDI.dll">
                             <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
                             <CategoryReference Kind="AssemblyCategory" Name="Sender" />
                             <Choice Kind="OperationCallFlag" Name="Dispose" />
@@ -2594,7 +2290,7 @@
                       <Pin Id="PNaGwI6wovrOOqcpVrFcGB" Name="Current Connections" Kind="OutputPin" />
                     </Node>
                     <Node Bounds="1278,692,186,26" AutoConnect="true" Id="F5vzgwFCFOQOKkwSsl1oAa">
-                      <p:NodeReference LastCategoryFullName="NewTek.NDI.Sender" LastSymbolSource="NDILibDotNet2_VL.dll">
+                      <p:NodeReference LastCategoryFullName="NewTek.NDI.Sender" LastSymbolSource="VL.IO.NDI.dll">
                         <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
                         <Choice Kind="OperationNode" Name="Send" />
                         <CategoryReference Kind="AssemblyCategory" Name="Sender" NeedsToBeDirectParent="true" />
@@ -2960,7 +2656,7 @@
             <Canvas Id="Duk8SRy5DrbMOjpijldcOJ" CanvasType="Group">
               <Pad Id="RVcXHy4g2UTQOkWAN76nua" SlotId="LMA0Bb9jMfDMT7gpZ7THs1" Bounds="511,410" />
               <Node Bounds="509,263,46,26" Id="Am3EGwaDrXIM0FCErsA9bT">
-                <p:NodeReference LastCategoryFullName="NewTek.NDI.VL.ReceiverTexture" LastSymbolSource="NDILibDotNet2_VL.dll">
+                <p:NodeReference LastCategoryFullName="VL.IO.NDI.ReceiverTexture" LastSymbolSource="VL.IO.NDI.dll">
                   <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
                   <CategoryReference Kind="AssemblyCategory" Name="ReceiverTexture" />
                   <Choice Kind="OperationCallFlag" Name="Create" />
@@ -2977,7 +2673,7 @@
                 <Pin Id="EcB0ishkBWBP0kuM0pmsfc" Name="Condition" Kind="InputPin" />
                 <Patch Id="BeD8k4583gBO0G4nwQIoDo" ManuallySortedPins="true">
                   <Node Bounds="359,642,53,26" Id="CEa0a7PDePwOeJutYwv3e7">
-                    <p:NodeReference LastCategoryFullName="NewTek.NDI.VL.ReceiverTexture" LastSymbolSource="NDILibDotNet2_VL.dll">
+                    <p:NodeReference LastCategoryFullName="VL.IO.NDI.ReceiverTexture" LastSymbolSource="VL.IO.NDI.dll">
                       <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
                       <Choice Kind="OperationCallFlag" Name="Dispose" />
                       <CategoryReference Kind="AssemblyCategory" Name="ReceiverTexture" NeedsToBeDirectParent="true" />
@@ -2988,7 +2684,7 @@
                   <Patch Id="QMmNExV5bpHM8U6M4ICg10" Name="Create" ManuallySortedPins="true" />
                   <Patch Id="MGYFNbmCP7VM0ioW9rbhcn" Name="Then" ManuallySortedPins="true" />
                   <Node Bounds="359,599,67,26" Id="KbKhPacydTRNlmYRcbxByj">
-                    <p:NodeReference LastCategoryFullName="NewTek.NDI.VL.ReceiverTexture" LastSymbolSource="NDILibDotNet2_VL.dll">
+                    <p:NodeReference LastCategoryFullName="VL.IO.NDI.ReceiverTexture" LastSymbolSource="VL.IO.NDI.dll">
                       <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
                       <Choice Kind="OperationCallFlag" Name="Disconnect" />
                       <CategoryReference Kind="AssemblyCategory" Name="ReceiverTexture" NeedsToBeDirectParent="true" />
@@ -3022,7 +2718,7 @@
                   <Patch Id="HsamXQJ21TyMlaqLFnK6gS" Name="Create" ManuallySortedPins="true" />
                   <Patch Id="QEOnzVwca6NLQIIHd76Ae9" Name="Then" ManuallySortedPins="true" />
                   <Node Bounds="514,708,364,26" Id="AiqVpHpeLjpMNmxhgCBV88">
-                    <p:NodeReference LastCategoryFullName="NewTek.NDI.VL.ReceiverTexture" LastSymbolSource="NDILibDotNet2_VL.dll">
+                    <p:NodeReference LastCategoryFullName="VL.IO.NDI.ReceiverTexture" LastSymbolSource="VL.IO.NDI.dll">
                       <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
                       <Choice Kind="OperationCallFlag" Name="Connect" />
                       <CategoryReference Kind="AssemblyCategory" Name="ReceiverTexture" NeedsToBeDirectParent="true" />
@@ -3035,7 +2731,7 @@
                     <Pin Id="Bl46vSP18v0LRAQbhYkypv" Name="Output" Kind="StateOutputPin" />
                   </Node>
                   <Node Bounds="514,611,109,26" Id="N5r6hyPAksiOe0hzIYME6e">
-                    <p:NodeReference LastCategoryFullName="NewTek.NDI.VL.ReceiverTexture" LastSymbolSource="NDILibDotNet2_VL.dll">
+                    <p:NodeReference LastCategoryFullName="VL.IO.NDI.ReceiverTexture" LastSymbolSource="VL.IO.NDI.dll">
                       <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
                       <Choice Kind="OperationCallFlag" Name="SetConnectedSource" />
                       <CategoryReference Kind="AssemblyCategory" Name="ReceiverTexture" NeedsToBeDirectParent="true" />
@@ -3045,7 +2741,7 @@
                     <Pin Id="J9wSatzgTo8M9bDrkLClHA" Name="Output" Kind="StateOutputPin" />
                   </Node>
                   <Node Bounds="514,662,95,26" Id="BXY4thGs4RqPgfhti6a1cT">
-                    <p:NodeReference LastCategoryFullName="NewTek.NDI.VL.ReceiverTexture" LastSymbolSource="NDILibDotNet2_VL.dll">
+                    <p:NodeReference LastCategoryFullName="VL.IO.NDI.ReceiverTexture" LastSymbolSource="VL.IO.NDI.dll">
                       <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
                       <Choice Kind="OperationCallFlag" Name="ConnectedSource" />
                       <CategoryReference Kind="AssemblyCategory" Name="ReceiverTexture" NeedsToBeDirectParent="true" />
@@ -3082,11 +2778,17 @@
                   <FullNameCategoryReference ID="Primitive" />
                 </p:NodeReference>
                 <Pin Id="HuY7MGWfiO6PMjlYsTFzoR" Name="Condition" Kind="InputPin" />
+                <ControlPoint Id="I5yMtWsyLSPOlPyt1Lfzi1" Bounds="1858,639" Alignment="Bottom" />
+                <ControlPoint Id="VtVfaiJ8I4hOLAgT9G1abR" Bounds="1858,562" Alignment="Top" />
+                <ControlPoint Id="Ubq9r3xVw4tNC5uUUyKZn1" Bounds="1739,562" Alignment="Top" />
+                <ControlPoint Id="FK4k6Ce96p3M5lYeY0NrDE" Bounds="1739,639" Alignment="Bottom" />
+                <ControlPoint Id="RnSObfMYVIcPwePPJolQmN" Bounds="1805,639" Alignment="Bottom" />
+                <ControlPoint Id="OrcBpARpcqdNNMrWiVMc36" Bounds="1808,562" Alignment="Top" />
                 <Patch Id="DoVb5vceuxGM6rqUJphe9P" ManuallySortedPins="true">
                   <Patch Id="DXoH3DvxFQHLUGtSmXuuZc" Name="Create" ManuallySortedPins="true" />
                   <Patch Id="GAAl3Q641uzOrJHbHv4bYz" Name="Then" ManuallySortedPins="true" />
                   <Node Bounds="1737,589,123,26" Id="GwuW8nrhbY8OWDbs5tGtyZ">
-                    <p:NodeReference LastCategoryFullName="NewTek.NDI.VL.ReceiverTexture" LastSymbolSource="NDILibDotNet2_VL.dll">
+                    <p:NodeReference LastCategoryFullName="VL.IO.NDI.ReceiverTexture" LastSymbolSource="VL.IO.NDI.dll">
                       <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
                       <Choice Kind="OperationCallFlag" Name="ConnectedSource" />
                       <CategoryReference Kind="AssemblyCategory" Name="ReceiverTexture" NeedsToBeDirectParent="true" />
@@ -3096,12 +2798,6 @@
                     <Pin Id="VwtNMzAx3DXLHE9PQN6n2N" Name="Connected Source" Kind="OutputPin" />
                   </Node>
                 </Patch>
-                <ControlPoint Id="I5yMtWsyLSPOlPyt1Lfzi1" Bounds="1858,639" Alignment="Bottom" />
-                <ControlPoint Id="VtVfaiJ8I4hOLAgT9G1abR" Bounds="1858,562" Alignment="Top" />
-                <ControlPoint Id="Ubq9r3xVw4tNC5uUUyKZn1" Bounds="1739,562" Alignment="Top" />
-                <ControlPoint Id="FK4k6Ce96p3M5lYeY0NrDE" Bounds="1739,639" Alignment="Bottom" />
-                <ControlPoint Id="RnSObfMYVIcPwePPJolQmN" Bounds="1805,639" Alignment="Bottom" />
-                <ControlPoint Id="OrcBpARpcqdNNMrWiVMc36" Bounds="1808,562" Alignment="Top" />
               </Node>
               <Node Bounds="1725,515,65,19" Id="Ir2gndJiep6Qd2T8H24Sau">
                 <p:NodeReference LastCategoryFullName="Primitive.Object" LastSymbolSource="CoreLibBasics.vl">
@@ -3113,7 +2809,7 @@
                 <Pin Id="SxWOPSkwffDO76esVNet1k" Name="Not Assigned" Kind="OutputPin" />
               </Node>
               <Node Bounds="509,329,94,26" Id="RmPdv8g5B67PVV06eAqpa3">
-                <p:NodeReference LastCategoryFullName="NewTek.NDI.VL.ReceiverTexture" LastSymbolSource="NDILibDotNet2_VL.dll">
+                <p:NodeReference LastCategoryFullName="VL.IO.NDI.ReceiverTexture" LastSymbolSource="VL.IO.NDI.dll">
                   <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
                   <Choice Kind="OperationCallFlag" Name="SetReceiverName" />
                   <CategoryReference Kind="AssemblyCategory" Name="ReceiverTexture" NeedsToBeDirectParent="true" />
@@ -3159,7 +2855,7 @@
                   <Patch Id="EA0CvQPNoBhMOPULnQMEQ2" Name="Create" ManuallySortedPins="true" />
                   <Patch Id="ImeSwV5CnwsLfmgksZu4aR" Name="Then" ManuallySortedPins="true" />
                   <Node Bounds="1252,670,67,26" Id="SWtGZJPwuUsMTkEPXonxuE">
-                    <p:NodeReference LastCategoryFullName="NewTek.NDI.VL.ReceiverTexture" LastSymbolSource="NDILibDotNet2_VL.dll">
+                    <p:NodeReference LastCategoryFullName="VL.IO.NDI.ReceiverTexture" LastSymbolSource="VL.IO.NDI.dll">
                       <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
                       <Choice Kind="OperationCallFlag" Name="Disconnect" />
                       <CategoryReference Kind="AssemblyCategory" Name="ReceiverTexture" NeedsToBeDirectParent="true" />
@@ -3168,7 +2864,7 @@
                     <Pin Id="RQBvHqqAUzDNIhKU9oGmI5" Name="Output" Kind="StateOutputPin" />
                   </Node>
                   <Node Bounds="1252,624,109,26" Id="R3V1UZVsfrROQ875lZCP5k">
-                    <p:NodeReference LastCategoryFullName="NewTek.NDI.VL.ReceiverTexture" LastSymbolSource="NDILibDotNet2_VL.dll">
+                    <p:NodeReference LastCategoryFullName="VL.IO.NDI.ReceiverTexture" LastSymbolSource="VL.IO.NDI.dll">
                       <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
                       <Choice Kind="OperationCallFlag" Name="SetConnectedSource" />
                       <CategoryReference Kind="AssemblyCategory" Name="ReceiverTexture" NeedsToBeDirectParent="true" />
@@ -3235,7 +2931,7 @@
                   <Patch Id="JbbftQ1GNyTOeBmNQv0Mv3" Name="Create" ManuallySortedPins="true" />
                   <Patch Id="CzkGHognfiDNXR6RnP1UP0" Name="Then" ManuallySortedPins="true" />
                   <Node Bounds="1517,630,96,26" Id="N2TWuj0OJ6uOJOZguBJfGi">
-                    <p:NodeReference LastCategoryFullName="NewTek.NDI.VL.ReceiverTexture" LastSymbolSource="NDILibDotNet2_VL.dll">
+                    <p:NodeReference LastCategoryFullName="VL.IO.NDI.ReceiverTexture" LastSymbolSource="VL.IO.NDI.dll">
                       <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
                       <Choice Kind="OperationCallFlag" Name="SetTallyIndicators" />
                       <CategoryReference Kind="AssemblyCategory" Name="ReceiverTexture" NeedsToBeDirectParent="true" />
@@ -3254,7 +2950,7 @@
               <ControlPoint Id="NNGc3vfCpxLQQT9HYAsO49" Bounds="868,379" />
               <ControlPoint Id="E7eLAQaUg61LnQTQCMhzLc" Bounds="1763,774" />
               <Node Bounds="1692,688,74,26" Id="CZ0nyQbSaPjPbJ9dShigCo">
-                <p:NodeReference LastCategoryFullName="NewTek.NDI.VL.ReceiverTexture" LastSymbolSource="NDILibDotNet2_VL.dll">
+                <p:NodeReference LastCategoryFullName="NewTek.NDI.Receiver" LastSymbolSource="VL.IO.NDI.vl">
                   <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
                   <Choice Kind="OperationCallFlag" Name="Frames" />
                 </p:NodeReference>
@@ -3423,7 +3119,6 @@
               <p:buttonmode p:Assembly="VL.UI.Forms" p:Type="VL.HDE.PatchEditor.Editors.ButtonModeEnum">Bang</p:buttonmode>
             </p:ValueBoxSettings>
           </Pad>
-          <Pad Id="VLeZVdmQ53KMcFZakge3kp" Comment="Video Frame Image" Bounds="413,756,151,130" ShowValueBox="true" isIOBox="true" />
           <Pad Id="B13SUq7u5aUMyJClPsJf2Q" Comment="Connected Source" Bounds="623,791,302,15" ShowValueBox="true" isIOBox="true" />
           <Pad Id="C4UBBnF7piSQVoaZ65hF4o" Comment="Disconnect" Bounds="624,649,35,35" ShowValueBox="true" isIOBox="true" Value="False">
             <p:TypeAnnotation LastCategoryFullName="Primitive" LastSymbolSource="CoreLibBasics.vl">
@@ -3507,6 +3202,27 @@
               <p:stringtype p:Assembly="VL.Core" p:Type="VL.Core.StringType">Comment</p:stringtype>
             </p:ValueBoxSettings>
           </Pad>
+          <Node Bounds="485,806,65,19" Id="Agl2xooEgAnPIOKUARbvnP">
+            <p:NodeReference LastCategoryFullName="Reactive" LastSymbolSource="VL.Reactive.vl">
+              <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
+              <Choice Kind="ProcessAppFlag" Name="HoldLatest" />
+            </p:NodeReference>
+            <Pin Id="K6Mpre6TUF7O9cgro7fXI7" Name="Async Notifications" Kind="InputPin" />
+            <Pin Id="GQIRf1W5pepLYMMuWkahGc" Name="Reset" Kind="InputPin" />
+            <Pin Id="LRAs9tzJSrMN4uv9euqecD" Name="Value" Kind="OutputPin" />
+            <Pin Id="ElHc8zWx2hANx1XER2rLc4" Name="On Data" Kind="OutputPin" />
+          </Node>
+          <Pad Id="Qo8GqWA8HZ8NflmJJZBNsG" Comment="On Data" Bounds="547,866,35,35" ShowValueBox="true" isIOBox="true" />
+          <Pad Id="OelUTQdikdtM83VNhjw7hg" Comment="On Program" Bounds="742,649,35,35" ShowValueBox="true" isIOBox="true" Value="False">
+            <p:TypeAnnotation LastCategoryFullName="Primitive" LastSymbolSource="CoreLibBasics.vl">
+              <Choice Kind="TypeFlag" Name="Boolean" />
+            </p:TypeAnnotation>
+          </Pad>
+          <Pad Id="PkAtU4zjEXNPSfvAkunpvX" Comment="On Preview" Bounds="857,649,35,35" ShowValueBox="true" isIOBox="true" Value="False">
+            <p:TypeAnnotation LastCategoryFullName="Primitive" LastSymbolSource="CoreLibBasics.vl">
+              <Choice Kind="TypeFlag" Name="Boolean" />
+            </p:TypeAnnotation>
+          </Pad>
         </Canvas>
         <Patch Id="OpDl1Jif6bUODD4NrGAJDZ" Name="Create" />
         <Patch Id="HYBzuwZSII3LtdvbGwWooi" Name="Update" />
@@ -3519,7 +3235,6 @@
         <Link Id="TjHanZCdVIwLDJPDZB3yJz" Ids="PIDaflloCEZPDBc7baMM8f,L8qxWBte5bVNYLBuHYv9Ca" />
         <Link Id="MEAJDzvfzbSL5oRtUctqtY" Ids="BjtGOAexMyfLrkDvhJzMOo,N8eOTkY6unyMN9CvjQ3rW2" />
         <Link Id="ArGP97bgOY1MTcPaLWI1AU" Ids="GfakmszBRDeOe8ys350Kx9,AeA4t3F1W9eMlf0CQcFkZT" />
-        <Link Id="QqOLVI4L9WfL02AdcWMfra" Ids="VmjDlYUpHBvQYI459Ibi6a,VLeZVdmQ53KMcFZakge3kp" />
         <Link Id="AIknhITs5wuPfZhq6OZKgU" Ids="DzH7RttyKwePmd04hmumju,B13SUq7u5aUMyJClPsJf2Q" />
         <Link Id="KZC5hbOJ7OAPyjT1MNju4S" Ids="R7qDM0EiFY0Lot51l1owzM,J80OmBiIN5NQZGfdzjPbSR" />
         <Link Id="MF49If3SGj9PqcKO4MeS8L" Ids="C4UBBnF7piSQVoaZ65hF4o,JFTUxv9XavGPD24HqgxBPV" />
@@ -3529,9 +3244,13 @@
         <Link Id="Q99PJ0zS6a6OsNWe6cFbQd" Ids="RxfigjZzSFsNis5sW2M2uI,TmBAEHsCM61N4HiYneyZi7" />
         <Link Id="QIjhQf5NB3nODjrQBFJt3a" Ids="E1yxg0ODWNGPAeQ7jBAseo,HpmgME77kODNd8jCJkaSKW" />
         <Link Id="RXf6cc49FlmOWfz9wR20h6" Ids="M4lAb9q2BAzLHmlmwKbHZ3,R7qDM0EiFY0Lot51l1owzM" />
+        <Link Id="DKV1k6ni881OQSGXtH1EQR" Ids="VmjDlYUpHBvQYI459Ibi6a,K6Mpre6TUF7O9cgro7fXI7" />
+        <Link Id="UTbWAaes6RGOdPtXce3Srj" Ids="ElHc8zWx2hANx1XER2rLc4,Qo8GqWA8HZ8NflmJJZBNsG" />
+        <Link Id="SJrRreWo2gRQWOii1q9vv1" Ids="OelUTQdikdtM83VNhjw7hg,RgqvFSGtRvvLWtch3Z6190" />
+        <Link Id="E5CABhe7SkjONzEZw6Y7gL" Ids="PkAtU4zjEXNPSfvAkunpvX,SgZVRgGUg7FNbQN3y1VBoY" />
       </Patch>
     </Node>
   </Patch>
-  <PlatformDependency Id="FHF3IgwS5akQENUTuIGCVk" Location="./lib/netstandard2.0/NDILibDotNet2_VL.dll" />
   <PlatformDependency Id="LkvwleFmgyILglvCd3xlo8" Location="System.Collections.Concurrent" />
+  <PlatformDependency Id="PbBDxB1VqidPbC5834fuSg" Location="./lib/netstandard2.0/VL.IO.NDI.dll" />
 </Document>

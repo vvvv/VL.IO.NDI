@@ -2,17 +2,9 @@
 using NewTek;
 using NewTek.NDI;
 using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.InteropServices;
 using System.Threading;
-//using System.Windows;
-//using System.Windows.Controls;
-//using System.Windows.Media;
-//using System.Windows.Media.Imaging;
-
-using System.Drawing;
-
 using System.Reactive.Subjects;
 
 using VL.Lib.Basics.Imaging;
@@ -27,32 +19,81 @@ namespace VL.IO.NDI
     // to free any audio frames received.
     public class Receiver : IDisposable, INotifyPropertyChanged
     {
+        #region private properties
+        private readonly Subject<IImage> videoFrames = new Subject<IImage>();
+
+        // a pointer to our unmanaged NDI receiver instance
+        private IntPtr _recvInstancePtr = IntPtr.Zero;
+
+        // a thread to receive frames on so that the UI is still functional
+        private Thread _receiveThread = null;
+
+        // a way to exit the thread safely
+        private bool _exitThread = false;
+
+        //        // the image that will show our bitmap source
+        //        private System.Windows.Controls.Image VideoSurface = new System.Windows.Controls.Image();
+
+        //// the bitmap source we copy received frames into
+        //public WriteableBitmap VideoBitmap;
+
+
+        //public IntPtrImage VideoFrameImage;
+
+        private IntPtr buffer0 = IntPtr.Zero;
+        private IntPtr buffer1 = IntPtr.Zero;
+        private int buffer01Size = 0;
+
+
+        // should we send audio to Windows or not?
+        private bool _audioEnabled = false;
+
+        // should we send video to Windows or not?
+        private bool _videoEnabled = true;
+
+        ////// the NAudio related
+        ////private WasapiOut _wasapiOut = null;
+        //private MultiplexingWaveProvider _multiplexProvider = null;
+        //private BufferedWaveProvider _bufferedProvider = null;
+
+        //// The last WaveFormat we used.
+        //// This may change over time, so remember how we are configured currently.
+        //private WaveFormat _waveFormat = null;
+
+        //// the current audio volume
+        //private float _volume = 1.0f;
+
+        private bool _isPtz = false;
+        private bool _canRecord = false;
+        private String _webControlUrl = String.Empty;
+        private String _receiverName = String.Empty;
+
+        private Source _connectedSource;
+        #endregion
+
         #region public properties
-        [Category("NewTek NDI"),
-        Description("The name of this receiver channel. Required or else an invalid argument exception will be thrown.")]
+        /// <summary>
+        /// The name of this receiver channel. Required or else an invalid argument exception will be thrown.
+        /// </summary>
         public String ReceiverName
         {
             get { return _receiverName; }
             set { _receiverName = value; }
         }
-        //public static readonly DependencyProperty ReceiverNameProperty =
-        //    DependencyProperty.Register("ReceiverName", typeof(String), typeof(ReceiveView), new PropertyMetadata(""));
 
-
-
-        [Category("NewTek NDI"),
-        Description("The NDI source to connect to. An empty new Source() or a Source with no Name will disconnect.")]
+        /// <summary>
+        /// The NDI source to connect to. An empty new Source() or a Source with no Name will disconnect.
+        /// </summary>
         public Source ConnectedSource
         {
             get { return _connectedSource; }
             set { _connectedSource = value; }
         }
-        //public static readonly DependencyProperty ConnectedSourceProperty =
-        //    DependencyProperty.Register("ConnectedSource", typeof(Source), typeof(ReceiveView), new PropertyMetadata(new Source(), OnConnectedSourceChanged));
 
 
-        [Category("NewTek NDI"),
-        Description("If true (default) received audio will be sent to the default Windows audio playback device.")]
+        /// <summary>
+        /// If true (default) received audio will be sent to the default Windows audio playback device.
+        /// </summary>
         public bool IsAudioEnabled
         {
             get { return _audioEnabled; }
@@ -65,8 +106,9 @@ namespace VL.IO.NDI
             }
         }
 
-        [Category("NewTek NDI"),
-        Description("If true (default) received video will be sent to the screen.")]
+        /// <summary>
+        /// If true (default) received video will be sent to the screen.
+        /// </summary>
         public bool IsVideoEnabled
         {
             get { return _videoEnabled; }
@@ -98,8 +140,9 @@ namespace VL.IO.NDI
         //    }
         //}
 
-        [Category("NewTek NDI"),
-        Description("Does the current source support PTZ functionality?")]
+        /// <summary>
+        /// Does the current source support PTZ functionality?
+        /// </summary>
         public bool IsPtz
         {
             get { return _isPtz; }
@@ -112,8 +155,9 @@ namespace VL.IO.NDI
             }
         }
 
-        [Category("NewTek NDI"),
-        Description("Does the current source support record functionality?")]
+        /// <summary>
+        /// Does the current source support record functionality?
+        /// </summary>
         public bool IsRecordingSupported
         {
             get { return _canRecord; }
@@ -126,8 +170,9 @@ namespace VL.IO.NDI
             }
         }
 
-        [Category("NewTek NDI"),
-        Description("The web control URL for the current device, as a String, or an Empty String if not supported.")]
+        /// <summary>
+        /// The web control URL for the current device, as a String, or an Empty String if not supported.
+        /// </summary>
         public String WebControlUrl
         {
             get { return _webControlUrl; }
@@ -139,19 +184,20 @@ namespace VL.IO.NDI
                 }
             }
         }
-        #endregion
+        /// <summary>
+        /// What and Why do we need This?
+        /// </summary>
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        /// <summary>
+        /// Received Images
+        /// </summary>
+        public IObservable<IImage> Frames => videoFrames;
+        #endregion  
 
         public Receiver()
         {
-            //if (System.ComponentModel.DesignerProperties.GetIsInDesignMode(this))
-            //    return;
         }
-
-        private readonly Subject<IImage> videoFrames = new Subject<IImage>();
-
-        public IObservable<IImage> Frames => videoFrames;
-
-        public event PropertyChangedEventHandler PropertyChanged;
 
         #region PTZ Methods
         public bool SetPtzZoom(double value)
@@ -391,6 +437,7 @@ namespace VL.IO.NDI
             }
         }
 
+        #region dispose and finalize
         public void Dispose()
         {
             Dispose(true);
@@ -449,8 +496,13 @@ namespace VL.IO.NDI
         }
 
         private bool _disposed = false;
+        #endregion
 
-        // when the ConnectedSource changes, connect to it.
+        /// <summary>
+        /// when the ConnectedSource changes, connect to it.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private static void OnConnectedSourceChanged(object sender, EventArgs e)
         {
             Receiver s = sender as Receiver;
@@ -460,7 +512,13 @@ namespace VL.IO.NDI
             s.Connect(s.ConnectedSource);
         }
 
-        // connect to an NDI source in our Dictionary by name
+        /// <summary>
+        /// connect to an NDI source in our Dictionary by name
+        /// </summary>
+        /// <param name="source"></param>
+        /// <param name="colorFormat"></param>
+        /// <param name="bandwidth"></param>
+        /// <param name="allowVideoFields"></param>
         public void Connect(Source source, 
             NDIlib.recv_color_format_e colorFormat = NDIlib.recv_color_format_e.recv_color_format_BGRX_BGRA,
             NDIlib.recv_bandwidth_e bandwidth = NDIlib.recv_bandwidth_e.recv_bandwidth_highest, 
@@ -808,52 +866,6 @@ namespace VL.IO.NDI
             }
         }
 
-        // a pointer to our unmanaged NDI receiver instance
-        IntPtr _recvInstancePtr = IntPtr.Zero;
-
-        // a thread to receive frames on so that the UI is still functional
-        Thread _receiveThread = null;
-
-        // a way to exit the thread safely
-        bool _exitThread = false;
-
-//        // the image that will show our bitmap source
-//        private System.Windows.Controls.Image VideoSurface = new System.Windows.Controls.Image();
-
-        //// the bitmap source we copy received frames into
-        //public WriteableBitmap VideoBitmap;
-
         
-        //public IntPtrImage VideoFrameImage;
-
-        private IntPtr buffer0 = IntPtr.Zero;
-        private IntPtr buffer1 = IntPtr.Zero;
-        int buffer01Size = 0; 
-
-
-        // should we send audio to Windows or not?
-        private bool _audioEnabled = false;
-
-        // should we send video to Windows or not?
-        private bool _videoEnabled = true;
-
-        ////// the NAudio related
-        ////private WasapiOut _wasapiOut = null;
-        //private MultiplexingWaveProvider _multiplexProvider = null;
-        //private BufferedWaveProvider _bufferedProvider = null;
-
-        //// The last WaveFormat we used.
-        //// This may change over time, so remember how we are configured currently.
-        //private WaveFormat _waveFormat = null;
-
-        //// the current audio volume
-        //private float _volume = 1.0f;
-
-        private bool _isPtz = false;
-        private bool _canRecord = false;
-        private String _webControlUrl = String.Empty;
-        private String _receiverName = String.Empty;
-
-        private Source _connectedSource;
     }
 }

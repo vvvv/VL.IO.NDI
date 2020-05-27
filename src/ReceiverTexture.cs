@@ -35,32 +35,76 @@ namespace VL.IO.NDI
     // to free any audio frames received.
     public class ReceiverTexture : IDisposable, INotifyPropertyChanged
     {
+        readonly IResourceProvider<Device> deviceProvider;
+
+        #region private properties
+        // a pointer to our unmanaged NDI receiver instance
+        private IntPtr _recvInstancePtr = IntPtr.Zero;
+
+        // a thread to receive frames on so that the UI is still functional
+        private Thread _receiveThread = null;
+
+        // a way to exit the thread safely
+        private bool _exitThread = false;
+
+        private IntPtr buffer0 = IntPtr.Zero;
+        private IntPtr buffer1 = IntPtr.Zero;
+        private int buffer01Size = 0;
+
+        // should we send audio to Windows or not?
+        private bool _audioEnabled = false;
+
+        ////// the NAudio related
+        ////private WasapiOut _wasapiOut = null;
+        //private MultiplexingWaveProvider _multiplexProvider = null;
+        //private BufferedWaveProvider _bufferedProvider = null;
+
+        //// The last WaveFormat we used.
+        //// This may change over time, so remember how we are configured currently.
+        //private WaveFormat _waveFormat = null;
+
+        //// the current audio volume
+        //private float _volume = 1.0f;
+
+        private bool _isPtz = false;
+        private bool _canRecord = false;
+        private String _webControlUrl = String.Empty;
+        private String _receiverName = String.Empty;
+
+        private Source _connectedSource;
+
+        private readonly Subject<Texture2D> videoFrames = new Subject<Texture2D>();
+
+        private Texture2D outputTexture;
+        private Texture2DDescription textureDesc;
+
+        private bool _videoEnabled = true;
+
+        #endregion
+
         #region public properties
-        [Category("NewTek NDI"),
-        Description("The name of this receiver channel. Required or else an invalid argument exception will be thrown.")]
+        /// <summary>
+        /// The name of this receiver channel. Required or else an invalid argument exception will be thrown.
+        /// </summary>
         public String ReceiverName
         {
             get { return _receiverName; }
             set { _receiverName = value; }
         }
-        //public static readonly DependencyProperty ReceiverNameProperty =
-        //    DependencyProperty.Register("ReceiverName", typeof(String), typeof(ReceiveView), new PropertyMetadata(""));
 
-
-
-        [Category("NewTek NDI"),
-        Description("The NDI source to connect to. An empty new Source() or a Source with no Name will disconnect.")]
+        /// <summary>
+        /// The NDI source to connect to. An empty new Source() or a Source with no Name will disconnect.
+        /// </summary>
         public Source ConnectedSource
         {
             get { return _connectedSource; }
             set { _connectedSource = value; }
         }
-        //public static readonly DependencyProperty ConnectedSourceProperty =
-        //    DependencyProperty.Register("ConnectedSource", typeof(Source), typeof(ReceiveView), new PropertyMetadata(new Source(), OnConnectedSourceChanged));
 
 
-        [Category("NewTek NDI"),
-        Description("If true (default) received audio will be sent to the default Windows audio playback device.")]
+        /// <summary>
+        /// If true (default) received audio will be sent to the default Windows audio playback device.
+        /// </summary>
         public bool IsAudioEnabled
         {
             get { return _audioEnabled; }
@@ -73,8 +117,9 @@ namespace VL.IO.NDI
             }
         }
 
-        [Category("NewTek NDI"),
-        Description("If true (default) received video will be sent to the screen.")]
+        /// <summary>
+        /// If true (default) received video will be sent to the screen.
+        /// </summary>
         public bool IsVideoEnabled
         {
             get { return _videoEnabled; }
@@ -106,8 +151,9 @@ namespace VL.IO.NDI
         //    }
         //}
 
-        [Category("NewTek NDI"),
-        Description("Does the current source support PTZ functionality?")]
+        /// <summary>
+        /// Does the current source support PTZ functionality?
+        /// </summary>
         public bool IsPtz
         {
             get { return _isPtz; }
@@ -120,8 +166,9 @@ namespace VL.IO.NDI
             }
         }
 
-        [Category("NewTek NDI"),
-        Description("Does the current source support record functionality?")]
+        /// <summary>
+        /// Does the current source support record functionality?
+        /// </summary>
         public bool IsRecordingSupported
         {
             get { return _canRecord; }
@@ -134,8 +181,9 @@ namespace VL.IO.NDI
             }
         }
 
-        [Category("NewTek NDI"),
-        Description("The web control URL for the current device, as a String, or an Empty String if not supported.")]
+        /// <summary>
+        /// The web control URL for the current device, as a String, or an Empty String if not supported.
+        /// </summary>
         public String WebControlUrl
         {
             get { return _webControlUrl; }
@@ -147,22 +195,23 @@ namespace VL.IO.NDI
                 }
             }
         }
-        #endregion
+        /// <summary>
+        /// What and Why do we need This?
+        /// </summary>
+        public event PropertyChangedEventHandler PropertyChanged;
 
-
-        readonly IResourceProvider<Device> deviceProvider;
+        /// <summary>
+        /// Received Textures
+        /// </summary>
+        public IObservable<Texture2D> Frames => videoFrames;
+        #endregion        
+        
 
         public ReceiverTexture(NodeContext nodeContext)
         {
             deviceProvider = nodeContext.Factory.CreateService<IResourceProvider<Device>>(nodeContext);
 
         }
-
-        private readonly Subject<Texture2D> videoFrames = new Subject<Texture2D>();
-
-        public IObservable<Texture2D> Frames => videoFrames;
-
-        public event PropertyChangedEventHandler PropertyChanged;
 
         #region PTZ Methods
         public bool SetPtzZoom(double value)
@@ -288,9 +337,17 @@ namespace VL.IO.NDI
         #endregion PTZ Methods
 
         #region Recording Methods
-        // This will start recording.If the recorder was already recording then the message is ignored.A filename is passed in as a ‘hint’.Since the recorder might 
-        // already be recording(or might not allow complete flexibility over its filename), the filename might or might not be used.If the filename is empty, or 
-        // not present, a name will be chosen automatically. 
+
+        /// <summary>
+        /// This will start recording.If the recorder was already recording then the message is ignored. A filename is passed in as a ‘hint’.Since the recorder might
+        /// already be recording (or might not allow complete flexibility over its filename), the filename might or might not be used.If the filename is empty, or
+        /// not present, a name will be chosen automatically. 
+        /// </summary>
+        /// <param name="filenameHint">
+        /// A filename is passed in as a ‘hint’.Since the recorder might already be recording (or might not allow complete flexibility over its filename), the filename 
+        /// might or might not be used.If the filename is empty, or not present, a name will be chosen automatically.
+        /// </param>
+        /// <returns>true if recording started</returns>
         public bool RecordingStart(String filenameHint = "")
         {
             if (!_canRecord || _recvInstancePtr == IntPtr.Zero)
@@ -316,7 +373,10 @@ namespace VL.IO.NDI
             return retVal;
         }
 
-        // Stop recording.
+        /// <summary>
+        /// Stop recording.
+        /// </summary>
+        /// <returns></returns>
         public bool RecordingStop()
         {
             if (!_canRecord || _recvInstancePtr == IntPtr.Zero)
@@ -325,7 +385,11 @@ namespace VL.IO.NDI
             return NDIlib.recv_recording_stop(_recvInstancePtr);
         }
 
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="level"></param>
+        /// <returns></returns>
         public bool RecordingSetAudioLevel(double level)
         {
             if (!_canRecord || _recvInstancePtr == IntPtr.Zero)
@@ -334,6 +398,10 @@ namespace VL.IO.NDI
             return NDIlib.recv_recording_set_audio_level(_recvInstancePtr, (float)level);
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
         public bool IsRecording()
         {
             if (!_canRecord || _recvInstancePtr == IntPtr.Zero)
@@ -342,6 +410,10 @@ namespace VL.IO.NDI
             return NDIlib.recv_recording_is_recording(_recvInstancePtr);
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
         public String GetRecordingFilename()
         {
             if (!_canRecord || _recvInstancePtr == IntPtr.Zero)
@@ -363,6 +435,10 @@ namespace VL.IO.NDI
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns>Error as String</returns>
         public String GetRecordingError()
         {
             if (!_canRecord || _recvInstancePtr == IntPtr.Zero)
@@ -384,6 +460,11 @@ namespace VL.IO.NDI
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="recordingTimes"></param>
+        /// <returns></returns>
         public bool GetRecordingTimes(ref NDIlib.recv_recording_time_t recordingTimes)
         {
             if (!_canRecord || _recvInstancePtr == IntPtr.Zero)
@@ -402,17 +483,7 @@ namespace VL.IO.NDI
             }
         }
 
-        public void Dispose()
-        {
-            Dispose(true);
-            GC.SuppressFinalize(this);
-        }
-
-        ~ReceiverTexture()
-        {
-            Dispose(false);
-        }
-
+        #region dispose and finalize
         protected virtual void Dispose(bool disposing)
         {
             if (!_disposed)
@@ -437,6 +508,11 @@ namespace VL.IO.NDI
                     //    _wasapiOut.Dispose();
                     //    _wasapiOut = null;
                     //}
+
+
+                    videoFrames.Dispose();
+                    outputTexture.Dispose();
+
                 }
 
                 // Destroy the receiver
@@ -449,19 +525,33 @@ namespace VL.IO.NDI
                 // Not required, but "correct". (see the SDK documentation)
                 NDIlib.destroy();
 
-                if(VideoFrameImage != null)
-                    VideoFrameImage.Dispose();
                 Marshal.FreeCoTaskMem(buffer0);
                 Marshal.FreeCoTaskMem(buffer1);
-                
+
 
                 _disposed = true;
             }
         }
 
-        private bool _disposed = false;
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
 
-        // when the ConnectedSource changes, connect to it.
+        ~ReceiverTexture()
+        {
+            Dispose(false);
+        }
+
+        private bool _disposed = false;
+        #endregion dispose and finalize
+
+        /// <summary>
+        /// when the ConnectedSource changes, connect to it.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private static void OnConnectedSourceChanged(object sender, EventArgs e)
         {
             ReceiverTexture s = sender as ReceiverTexture;
@@ -471,7 +561,13 @@ namespace VL.IO.NDI
             s.Connect(s.ConnectedSource);
         }
 
-        // connect to an NDI source in our Dictionary by name
+        /// <summary>
+        /// connect to an NDI source in our Dictionary by name
+        /// </summary>
+        /// <param name="source"></param>
+        /// <param name="colorFormat"></param>
+        /// <param name="bandwidth"></param>
+        /// <param name="allowVideoFields"></param>
         public void Connect(Source source, 
             NDIlib.recv_color_format_e colorFormat = NDIlib.recv_color_format_e.recv_color_format_BGRX_BGRA,
             NDIlib.recv_bandwidth_e bandwidth = NDIlib.recv_bandwidth_e.recv_bandwidth_highest, 
@@ -593,14 +689,9 @@ namespace VL.IO.NDI
             }
         }
 
-        [DllImport("msvcrt.dll", EntryPoint = "memcpy", CallingConvention = CallingConvention.Cdecl, SetLastError = false)]
-        public unsafe static extern IntPtr memcpy(byte* dest, byte* src, int count);
-
-
-        private Texture2D outputTexture;
-        private Texture2DDescription textureDesc;
-
-        // the receive thread runs though this loop until told to exit
+        /// <summary>
+        /// the receive thread runs though this loop until told to exit
+        /// </summary>
         void ReceiveThreadProc()
         {
             bool newVideo = true;
@@ -864,52 +955,7 @@ namespace VL.IO.NDI
             }
         }
 
-        // a pointer to our unmanaged NDI receiver instance
-        IntPtr _recvInstancePtr = IntPtr.Zero;
-
-        // a thread to receive frames on so that the UI is still functional
-        Thread _receiveThread = null;
-
-        // a way to exit the thread safely
-        bool _exitThread = false;
-
-//        // the image that will show our bitmap source
-//        private System.Windows.Controls.Image VideoSurface = new System.Windows.Controls.Image();
-
-        //// the bitmap source we copy received frames into
-        //public WriteableBitmap VideoBitmap;
-
-        
-        public IntPtrImage VideoFrameImage;
-
-        private IntPtr buffer0 = IntPtr.Zero;
-        private IntPtr buffer1 = IntPtr.Zero;
-        int buffer01Size = 0; 
-
-
-        // should we send audio to Windows or not?
-        private bool _audioEnabled = false;
-
-        // should we send video to Windows or not?
-        private bool _videoEnabled = true;
-
-        ////// the NAudio related
-        ////private WasapiOut _wasapiOut = null;
-        //private MultiplexingWaveProvider _multiplexProvider = null;
-        //private BufferedWaveProvider _bufferedProvider = null;
-
-        //// The last WaveFormat we used.
-        //// This may change over time, so remember how we are configured currently.
-        //private WaveFormat _waveFormat = null;
-
-        //// the current audio volume
-        //private float _volume = 1.0f;
-
-        private bool _isPtz = false;
-        private bool _canRecord = false;
-        private String _webControlUrl = String.Empty;
-        private String _receiverName = String.Empty;
-
-        private Source _connectedSource;
+        [DllImport("msvcrt.dll", EntryPoint = "memcpy", CallingConvention = CallingConvention.Cdecl, SetLastError = false)]
+        public unsafe static extern IntPtr memcpy(byte* dest, byte* src, int count);
     }
 }
