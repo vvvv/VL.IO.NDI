@@ -2,8 +2,11 @@
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
+using NewTek;
 
-namespace NewTek.NDI
+//namespace NewTek.NDI
+namespace VL.IO.NDI
+
 {
     public class Sender : IDisposable
     {

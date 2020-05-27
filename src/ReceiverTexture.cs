@@ -1,6 +1,5 @@
 ﻿//using NAudio.Wave;
 using NewTek;
-using NewTek.NDI;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;

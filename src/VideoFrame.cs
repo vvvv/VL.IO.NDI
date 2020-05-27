@@ -2,10 +2,15 @@
 using System.Runtime.InteropServices;
 using System.Xml.Linq;
 
-using System.Drawing;
+using SharpDX.Direct3D11;
+
+using VL.Core;
+using VL.Lib.Basics.Resources;
 using VL.Lib.Basics.Imaging;
 
-namespace NewTek.NDI
+using NewTek;
+
+namespace VL.IO.NDI
 {
     public class VideoFrame : IDisposable
     {
@@ -40,8 +45,51 @@ namespace NewTek.NDI
             };
         }
 
+        /// <summary>
+        /// Create a VideoFrame from a <see cref="SharpDX.Direct3D11.Texture2D"/>
+        /// </summary>
+        /// <param name="texture"></param>
+        /// <param name="aspectRatio"></param>
+        /// <param name="fourCC"></param>
+        /// <param name="frameRateNumerator"></param>
+        /// <param name="frameRateDenominator"></param>
+        /// <param name="format"></param>
+        /// <param name="nodeContext"></param>
+        public VideoFrame(Texture2D texture, NDIlib.FourCC_type_e fourCC,
+            int frameRateNumerator, int frameRateDenominator, NDIlib.frame_format_type_e format, NodeContext nodeContext)
 
-        public VideoFrame(IImage image, bool clone, float aspectRatio,  NDIlib.FourCC_type_e fourCC,
+        {
+            var provider = nodeContext.Factory.CreateService<IResourceProvider<Device>>(nodeContext);
+            using var deviceHandle = provider.GetHandle();
+            var device = deviceHandle.Resource;
+
+            int width = texture.Description.Width;
+            int height = texture.Description.Height;
+            int stride = width * SharpDX.DXGI.FormatHelper.SizeOfInBytes(texture.Description.Format);
+            int bufferSize = height * stride;
+
+            IntPtr videoBufferPtr = Marshal.AllocHGlobal(bufferSize);
+
+            texture.CopyToPointer(device, videoBufferPtr, bufferSize);
+
+            _ndiVideoFrame = new NDIlib.video_frame_v2_t()
+            {
+                xres = width,
+                yres = height,
+                FourCC = texture.Description.Format.ToFourCC(),
+                frame_rate_N = frameRateNumerator,
+                frame_rate_D = frameRateDenominator,
+                picture_aspect_ratio = (float)width / height,
+                frame_format_type = format,
+                timecode = NDIlib.send_timecode_synthesize,
+                p_data = videoBufferPtr,
+                line_stride_in_bytes = stride,
+                p_metadata = IntPtr.Zero,
+                timestamp = 0
+            };
+        }
+
+        public VideoFrame(IImage image, bool clone, float aspectRatio, NDIlib.FourCC_type_e fourCC,
             int frameRateNumerator, int frameRateDenominator, NDIlib.frame_format_type_e format)
         {
             var ar = aspectRatio;
@@ -63,7 +111,7 @@ namespace NewTek.NDI
                 {
                     unsafe
                     {
-                        Buffer.MemoryCopy((void*)handle.Pointer, (void*)videoBufferPtr.ToPointer(), bufferSize, bufferSize);
+                        System.Buffer.MemoryCopy((void*)handle.Pointer, (void*)videoBufferPtr.ToPointer(), bufferSize, bufferSize);
                     }
                 }
             }

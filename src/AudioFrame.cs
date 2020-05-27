@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Runtime.InteropServices;
 using System.Xml.Linq;
+using NewTek;
 
-namespace NewTek.NDI
+namespace VL.IO.NDI
 {
     public class AudioFrame : IDisposable
     {

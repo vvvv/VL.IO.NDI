@@ -7,7 +7,9 @@ using System.Threading;
 //using System.Windows.Data;
 using System.Collections.Concurrent;
 
-namespace NewTek.NDI
+using NewTek;
+
+namespace VL.IO.NDI
 {
     public class Finder : IDisposable
     {

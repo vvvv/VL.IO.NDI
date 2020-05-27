@@ -1,0 +1,9 @@
+{
+  "profiles": {
+    "VL.IO.NDI": {
+      "commandName": "Executable",
+      "executablePath": "C:\\vvvv\\vvvv_gamma_2020.1.2\\vvvv.exe",
+      "commandLineArgs": "--package-repositories $(PackageRepositories) -o \"$(MSBuildThisFileDirectory)..\\VL.IO.NDI.vl\""
+    }
+  }
+}

@@ -1,14 +1,15 @@
 ﻿//using NAudio.Wave;
 using NewTek;
-using NewTek.NDI;
 using System;
-using System.ComponentModel;
 using System.Runtime.InteropServices;
 using System.Threading;
 using System.Reactive.Subjects;
 
 using VL.Lib.Basics.Imaging;
 using ImagingPixelFormat = VL.Lib.Basics.Imaging.PixelFormat;
+
+using VVVV.Audio;
+using NAudio.Wave;
 
 namespace VL.IO.NDI
 {
@@ -23,6 +24,11 @@ namespace VL.IO.NDI
     {
         #region private properties
         private readonly Subject<IImage> videoFrames = new Subject<IImage>();
+
+        VVVV.Audio.BufferWiseResampler bufferwiseResampler = new BufferWiseResampler();
+
+        private AudioOut audioOutSignal = new AudioOut();
+
 
         // a pointer to our unmanaged NDI receiver instance
         private IntPtr _recvInstancePtr = IntPtr.Zero;
@@ -43,14 +49,14 @@ namespace VL.IO.NDI
         // should we send video to Windows or not?
         private bool _videoEnabled = true;
 
-        ////// the NAudio related
-        ////private WasapiOut _wasapiOut = null;
-        //private MultiplexingWaveProvider _multiplexProvider = null;
-        //private BufferedWaveProvider _bufferedProvider = null;
+        //// the NAudio related
+        //private WasapiOut _wasapiOut = null;
+        private MultiplexingWaveProvider _multiplexProvider = null;
+        private BufferedWaveProvider _bufferedProvider = null;
 
-        //// The last WaveFormat we used.
-        //// This may change over time, so remember how we are configured currently.
-        //private WaveFormat _waveFormat = null;
+        // The last WaveFormat we used.
+        // This may change over time, so remember how we are configured currently.
+        private WaveFormat _waveFormat = null;
 
         //// the current audio volume
         //private float _volume = 1.0f;
@@ -152,6 +158,11 @@ namespace VL.IO.NDI
         /// </summary>
         public IObservable<IImage> Frames => videoFrames;
         #endregion  
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public AudioSignal AudioOutput => audioOutSignal;
 
         public Receiver()
         {
@@ -708,7 +719,7 @@ namespace VL.IO.NDI
 
                     // audio is beyond the scope of this example
                     case NDIlib.frame_type_e.frame_type_audio:
-
+                      
                         // if no audio or disabled, nothing to do
                         if (!_audioEnabled || audioFrame.p_data == IntPtr.Zero || audioFrame.no_samples == 0)
                         {
@@ -717,44 +728,6 @@ namespace VL.IO.NDI
 
                             break;
                         }
-
-                        //// if the audio format changed, we need to reconfigure the audio device
-                        //bool formatChanged = false;
-
-                        //// make sure our format has been created and matches the incomming audio
-                        //if (_waveFormat == null ||
-                        //    _waveFormat.Channels != audioFrame.no_channels ||
-                        //    _waveFormat.SampleRate != audioFrame.sample_rate)
-                        //{
-                        //    //// Create a wavformat that matches the incomming frames
-                        //    //_waveFormat = WaveFormat.CreateIeeeFloatWaveFormat((int)audioFrame.sample_rate, (int)audioFrame.no_channels);
-
-                        //    formatChanged = true;
-                        //}
-                        
-                        //// set up our audio buffer if needed
-                        //if (_bufferedProvider == null || formatChanged)
-                        //{
-                        //    _bufferedProvider = new BufferedWaveProvider(_waveFormat);
-                        //    _bufferedProvider.DiscardOnBufferOverflow = true;
-                        //}
-
-                        //// set up our multiplexer used to mix down to 2 output channels)
-                        //if (_multiplexProvider == null || formatChanged)
-                        //{
-                        //    _multiplexProvider = new MultiplexingWaveProvider(new List<IWaveProvider>() { _bufferedProvider }, 2);
-                        //}
-
-                        //    // set up our audio output device
-                        //    if (_wasapiOut == null || formatChanged)
-                        //    {
-                        //        // We can't guarantee audio sync or buffer fill, that's beyond the scope of this example.
-                        //        // This is close enough to show that audio is received and converted correctly.
-                        //        _wasapiOut = new WasapiOut(NAudio.CoreAudioApi.AudioClientShareMode.Shared, 50);
-                        //        _wasapiOut.Init(_multiplexProvider);
-                        //        _wasapiOut.Volume = _volume;
-                        //        _wasapiOut.Play();
-                        //    }
 
                         // we're working in bytes, so take the size of a 32 bit sample (float) into account
                         int sizeInBytes = (int)audioFrame.no_samples * (int)audioFrame.no_channels * sizeof(float);
@@ -782,6 +755,7 @@ namespace VL.IO.NDI
 
                         // Convert from float planar to float interleaved audio
                         // There is a matching version of this that converts to interleaved 16 bit audio frames if you need 16 bit
+
                         NDIlib.util_audio_to_interleaved_32f_v2(ref audioFrame, ref interleavedFrame);
 
                         // release the pin on the byte[]
@@ -789,13 +763,22 @@ namespace VL.IO.NDI
                         // that IntPtr will no longer be valid.
                         handle.Free();
 
-                        //// push the byte[] buffer into the bufferedProvider for output
-                        //_bufferedProvider.AddSamples(audBuffer, 0, sizeInBytes);
+                        int channelStride = audioFrame.channel_stride_in_bytes;
+
+                        var floatBuffer = ConvertByteArrayToFloat(audBuffer, channelStride);
+
+                        float[] outBuffer = new float[512];
+
+                        Buffer.BlockCopy(floatBuffer, 0, outBuffer, 0, 512);
+
+                        audioOutSignal.Read(outBuffer, 0, 512);
 
                         // free the frame that was received
                         NDIlib.recv_free_audio_v2(_recvInstancePtr, ref audioFrame);
 
                         break;
+
+
                     // Metadata
                     case NDIlib.frame_type_e.frame_type_metadata:
 
@@ -808,9 +791,26 @@ namespace VL.IO.NDI
                         NDIlib.recv_free_metadata(_recvInstancePtr, ref metadataFrame);
                         break;
                 }
+
             }
         }
 
-        
+        static float[] ConvertByteArrayToFloat(byte[] bytes, int stopAt)
+        {
+            if (bytes.Length % 4 != 0) throw new ArgumentException();
+
+            float[] floats = new float[bytes.Length / 4];
+            for (int i = 0; i < floats.Length; i++)
+            {
+                if (i >= stopAt)
+                    break;
+                else
+                    floats[i] = BitConverter.ToSingle(bytes, i * 4);
+            }
+
+            return floats;
+        }
     }
+
+    
 }

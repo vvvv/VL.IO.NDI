@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Text.RegularExpressions;
+using NewTek;
 
-namespace NewTek.NDI
+namespace VL.IO.NDI
 {
     public class Source
     {
