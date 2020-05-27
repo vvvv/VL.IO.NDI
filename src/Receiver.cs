@@ -12,12 +12,14 @@ using ImagingPixelFormat = VL.Lib.Basics.Imaging.PixelFormat;
 
 namespace VL.IO.NDI
 {
-    // If you do not use this control, you can remove this file
-    // and remove the dependency on naudio.
-    // Alternatively you can also remove any naudio related entries
-    // and use it for video only, but don't forget that you will still need
-    // to free any audio frames received.
-    public class Receiver : IDisposable, INotifyPropertyChanged
+    /// <summary>
+    /// If you do not use this control, you can remove this file
+    /// and remove the dependency on naudio.
+    /// Alternatively you can also remove any naudio related entries
+    /// and use it for video only, but don't forget that you will still need
+    /// to free any audio frames received.
+    /// </summary>
+    public class Receiver : IDisposable
     {
         #region private properties
         private readonly Subject<IImage> videoFrames = new Subject<IImage>();
@@ -31,19 +33,9 @@ namespace VL.IO.NDI
         // a way to exit the thread safely
         private bool _exitThread = false;
 
-        //        // the image that will show our bitmap source
-        //        private System.Windows.Controls.Image VideoSurface = new System.Windows.Controls.Image();
-
-        //// the bitmap source we copy received frames into
-        //public WriteableBitmap VideoBitmap;
-
-
-        //public IntPtrImage VideoFrameImage;
-
         private IntPtr buffer0 = IntPtr.Zero;
         private IntPtr buffer1 = IntPtr.Zero;
         private int buffer01Size = 0;
-
 
         // should we send audio to Windows or not?
         private bool _audioEnabled = false;
@@ -97,13 +89,7 @@ namespace VL.IO.NDI
         public bool IsAudioEnabled
         {
             get { return _audioEnabled; }
-            set
-            {
-                if (value != _audioEnabled)
-                {
-                    NotifyPropertyChanged("IsAudioEnabled");
-                }
-            }
+            set { _audioEnabled = value; }
         }
 
         /// <summary>
@@ -112,13 +98,7 @@ namespace VL.IO.NDI
         public bool IsVideoEnabled
         {
             get { return _videoEnabled; }
-            set
-            {
-                if (value != _videoEnabled)
-                {
-                    NotifyPropertyChanged("IsVideoEnabled");
-                }
-            }
+            set { _videoEnabled = value; }
         }
 
         //[Category("NewTek NDI"),
@@ -146,13 +126,7 @@ namespace VL.IO.NDI
         public bool IsPtz
         {
             get { return _isPtz; }
-            set
-            {
-                if (value != _isPtz)
-                {
-                    NotifyPropertyChanged("IsPtz");
-                }
-            }
+            set { _isPtz = value; }
         }
 
         /// <summary>
@@ -161,13 +135,7 @@ namespace VL.IO.NDI
         public bool IsRecordingSupported
         {
             get { return _canRecord; }
-            set
-            {
-                if (value != _canRecord)
-                {
-                    NotifyPropertyChanged("IsRecordingSupported");
-                }
-            }
+            set { _canRecord = value; }
         }
 
         /// <summary>
@@ -176,18 +144,8 @@ namespace VL.IO.NDI
         public String WebControlUrl
         {
             get { return _webControlUrl; }
-            set
-            {
-                if (value != _webControlUrl)
-                {
-                    NotifyPropertyChanged("WebControlUrl");
-                }
-            }
+            set { _webControlUrl = value; }
         }
-        /// <summary>
-        /// What and Why do we need This?
-        /// </summary>
-        public event PropertyChangedEventHandler PropertyChanged;
 
         /// <summary>
         /// Received Images
@@ -429,14 +387,6 @@ namespace VL.IO.NDI
 
         #endregion Recording Methods
 
-        private void NotifyPropertyChanged(String info)
-        {
-            if (PropertyChanged != null)
-            {
-                PropertyChanged(this, new PropertyChangedEventArgs(info));
-            }
-        }
-
         #region dispose and finalize
         public void Dispose()
         {
@@ -532,11 +482,6 @@ namespace VL.IO.NDI
 
             // just in case we're already connected
             Disconnect();
-
-            //// before we are connected, we need to set up our image
-            //// it's bad practice to do this in the constructor
-            //if (Child == null)
-            //    Child = VideoSurface;
 
             // Sanity
             if (source == null || String.IsNullOrEmpty(source.Name))
