@@ -7,6 +7,7 @@
     <authors>vvvv, Matthias Husinsky, sebl, NewTek</authors>
     <owners>vvvv, Matthias Husinsky, sebl, NewTek</owners>
     <projectUrl>https://github.com/sebllll/VL.IO.NDI</projectUrl>
+    <repository type="git" url="https://github.com/sebllll/VL.IO.NDI" branch="master"/>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <summary>Set of nodes to use NDI-Sender and NDI-Receiver in VL for NDI 4.5.1</summary>
     <description>NewTek NDI Plugins for VVVV Gamma</description>
