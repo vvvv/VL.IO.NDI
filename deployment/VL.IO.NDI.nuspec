@@ -16,7 +16,7 @@
     <dependencies>
 		<group targetFramework="netstandard2.0">
 			<dependency id="SharpDX.Direct3D11" version="4.2.0" />
-			<dependency id="VL.Audio" Version="0.1.24-alpha" />
+			<dependency id="VL.Audio" version="0.1.24-alpha" />
 		</group>
     </dependencies>
     <icon>icon\nugeticon.png</icon>
