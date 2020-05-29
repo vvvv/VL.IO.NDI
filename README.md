@@ -1,5 +1,7 @@
 # VL.IO.NDI
 
+![push_nuget](https://github.com/sebllll/VL.IO.NDI/workflows/push_nuget/badge.svg?branch=master)
+
 Repository containing:
 
 * *src\\\** : Visual Studio Project with a .net wrapper for native NDI libs (tested with version 4.x)
