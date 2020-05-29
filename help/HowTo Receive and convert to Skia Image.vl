@@ -96,6 +96,7 @@
               <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
               <Choice Kind="ProcessAppFlag" Name="SourceFinder" />
             </p:NodeReference>
+            <p:HelpFocus p:Assembly="VL.Lang" p:Type="VL.Model.HelpPriority">High</p:HelpFocus>
             <Pin Id="UHbcAbCRKxPPx0b3GAQBzw" Name="Sources" Kind="OutputPin" />
             <Pin Id="Onb3C3eFn9IMbIrCJf4rAZ" Name="Name" Kind="OutputPin" />
             <Pin Id="Azk0ZIAov79PM7C82Lo2Uq" Name="Computer Name" Kind="OutputPin" />
@@ -120,6 +121,7 @@
                 <p:OuterCategoryReference Kind="Category" Name="IO" NeedsToBeDirectParent="true" />
               </CategoryReference>
             </p:NodeReference>
+            <p:HelpFocus p:Assembly="VL.Lang" p:Type="VL.Model.HelpPriority">High</p:HelpFocus>
             <Pin Id="K1Yl6dijezQLTEkZDB5uLu" Name="Source" Kind="InputPin" />
             <Pin Id="UvR3jLdF3xDOgMskvrJdRm" Name="Connect" Kind="InputPin" />
             <Pin Id="NMzest2bgYSNAeUcj2rcAP" Name="Disconnect" Kind="InputPin" />
@@ -169,6 +171,7 @@
               <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
               <Choice Kind="OperationCallFlag" Name="SourceSelector" />
             </p:NodeReference>
+            <p:HelpFocus p:Assembly="VL.Lang" p:Type="VL.Model.HelpPriority">High</p:HelpFocus>
             <Pin Id="CY8kk37VFZENyj1QLaU4SJ" Name="Input" Kind="InputPin" />
             <Pin Id="CX3ZzuKuBS2QOpCgQ9WyOP" Name="Source Name" Kind="InputPin" />
             <Pin Id="Kkr2an0GHSnP8lHUBUpbHG" Name="Result" Kind="OutputPin" />

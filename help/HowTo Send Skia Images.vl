@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Document xmlns:p="property" Id="QHpr0fv5ZhbPHgd1D9pUc5" LanguageVersion="2020.1.2.135" Version="0.128">
+<Document xmlns:p="property" Id="EDpXcQUiaNFMZEqe06FgkO" LanguageVersion="2020.1.2.135" Version="0.128">
   <NugetDependency Id="QDKWB4liQfJMDPWein5ERc" Location="VL.Core" Version="2020.1.2" />
   <NugetDependency Id="JngbdjrQttWP3C056ivUGZ" Location="VL.CoreLib" Version="2020.1.2" />
   <NugetDependency Id="FDjgov6DOmvM906MD3ltdI" Location="VL.Skia" Version="2020.1.2" />
@@ -54,6 +54,7 @@
               <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
               <Choice Kind="ProcessAppFlag" Name="Sender (Async)" />
             </p:NodeReference>
+            <p:HelpFocus p:Assembly="VL.Lang" p:Type="VL.Model.HelpPriority">High</p:HelpFocus>
             <Pin Id="PICQfWviun5P0MIRuV1gQv" Name="Source Name" Kind="InputPin" />
             <Pin Id="Cf7AVnZmgQhOHKJhRIMK1E" Name="Name" Kind="InputPin" />
             <Pin Id="HEcm7xajcHDNZO9cZ4GJFi" Name="Frame Rate" Kind="InputPin" />
@@ -78,13 +79,14 @@
               <p:stringtype p:Assembly="VL.Core" p:Type="VL.Core.StringType">Comment</p:stringtype>
             </p:ValueBoxSettings>
           </Pad>
-          <Overlay Id="IPojQgC4d5iNw41gimTq44" Name="Demo Content" Bounds="87,227,1045,189" />
+          <Overlay Id="IPojQgC4d5iNw41gimTq44" Name="Demo Content" Bounds="87,227,1045,196" />
           <Overlay Id="PyowFH5cc40P7gR4GdjLZT" Name="Reactive NDI Sender (Experimental)" Bounds="87,454,1046,458" />
           <Node Bounds="468,367,303,19" Id="KwgFkVJLsWrMZZTlwURdO6">
             <p:NodeReference LastCategoryFullName="Main" LastSymbolSource="DemoContent.vl">
               <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
               <Choice Kind="ProcessAppFlag" Name="SkiaDemoContent" />
             </p:NodeReference>
+            <p:HelpFocus p:Assembly="VL.Lang" p:Type="VL.Model.HelpPriority">Low</p:HelpFocus>
             <Pin Id="AkBJN8FTUQcQdE9kEhx1B4" Name="ColorBars" Kind="InputPin" />
             <Pin Id="SiJgs4cjXNfM4caYKgvOEj" Name="Rectangle" Kind="InputPin" />
             <Pin Id="DqlvUvEFDrbNHOXIbI3ThL" Name="Lines" Kind="InputPin" />
@@ -127,6 +129,7 @@
               <Choice Kind="OperationCallFlag" Name="FromImage" />
               <CategoryReference Kind="Category" Name="VideoFrame" NeedsToBeDirectParent="true" />
             </p:NodeReference>
+            <p:HelpFocus p:Assembly="VL.Lang" p:Type="VL.Model.HelpPriority">High</p:HelpFocus>
             <Pin Id="Eek1VhuNY0wPH1tUew24GJ" Name="Image" Kind="InputPin" />
             <Pin Id="GhMZKVGGYeYOQuYpxS1IJ3" Name="VideoFrame" Kind="OutputPin" />
           </Node>
