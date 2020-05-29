@@ -28,7 +28,7 @@ jobs:
     - name: Download Icon
       uses: carlosperate/download-file-action@v1.0.3
       with:
-        file-url: 'https://raw.githubusercontent.com/vvvv/PublicContent/master/nugeticon.png'
+        file-url: 'https://raw.githubusercontent.com/sebllll/VL.IO.NDI/master/deployment/nugeticon.png'
         location: './deployment'
 
     - name: Setup Nuget.exe
