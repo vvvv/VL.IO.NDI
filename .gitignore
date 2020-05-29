@@ -360,3 +360,5 @@ MigrationBackup/
 .ionide/
 
 !x64/*here.txt
+
+/lib/

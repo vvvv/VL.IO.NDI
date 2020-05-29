@@ -4,12 +4,13 @@
     <LangVersion>8.0</LangVersion>
     <TargetFramework>netstandard2.0</TargetFramework>
     <Platforms>AnyCPU;x64</Platforms>
-    <Version>0.0.1</Version>
+    <Version>0.2.0</Version>
     <Authors>NewTek, Motzi, sebl</Authors>
     <Company />
     <Product />
-    <Description>NewTek NDI Plugin for VVVV Gamma</Description>
-    <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
+    <Description>NewTek NDI Plugins for VVVV Gamma</Description>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <PackageLicenseExpression>LGPL-3.0-only</PackageLicenseExpression>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -34,7 +35,8 @@
 
   <ItemGroup>
     <PackageReference Include="SharpDX.Direct3D11" Version="4.2.0" />
-    <PackageReference Include="VL.Core" Version="2020.1.0" />
+    <PackageReference Include="VL.Audio" Version="0.1.24-alpha" />
+    <PackageReference Include="VL.Core" Version="2020.1.2" />
   </ItemGroup>
 
   <ItemGroup>
