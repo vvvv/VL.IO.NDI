@@ -1,0 +1,35 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2011/10/nuspec.xsd">
+  <metadata>
+    <id>VL.IO.NDI</id>
+    <version>0.2.0</version>
+    <title>VL.IO.NDI</title>
+    <authors>vvvv, Matthias Husinsky, sebl, NewTek</authors>
+    <owners>vvvv, Matthias Husinsky, sebl, NewTek</owners>
+    <projectUrl>https://github.com/sebllll/VL.IO.NDI</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <summary>Set of nodes to use NDI-Sender and NDI-Receiver in VL for NDI 4.5.1</summary>
+    <description>NewTek NDI Plugins for VVVV Gamma</description>
+    <copyright>NDI is copyright by VizRT. see /licenses/ VL wrapper by Matthias Husinsky, sebl, vvvv/copyright>
+    <tags>VL, NDI, network, video, audio</tags>
+	<license type="expression">LGPL-3.0-only</license>
+    <dependencies>
+		<group targetFramework="netstandard2.0">
+			<dependency id="SharpDX.Direct3D11" version="4.2.0" />
+			<dependency id="VL.Audio" Version="0.1.24-alpha" />
+		</group>
+    </dependencies>
+    <icon>icon\nugeticon.png</icon>
+  </metadata>
+  <files>
+	<file src="..\lib\netstandard2.0\VL.IO.NDI.dll" target="lib\" exclude="" />
+    <file src="..\lib\netstandard2.0\VL.IO.NDI.xml" target="lib\" exclude="" />
+    <file src="..\lib\netstandard2.0\VL.IO.NDI.pdb" target="lib\" exclude="" />
+    <file src="..\lib-native\x64\Processing.NDI.Lib.x64.dll" target="lib-native\x64\" exclude="" />
+    <file src="..\*.vl" target="" exclude="" />
+    <file src="..\vl\*.vl" target="vl\" exclude="" />
+    <file src="..\help\**" target="help\" exclude="" />
+	<file src="nugeticon.png" target="icon\" />
+    <file src="..\licenses\**" target="licenses\" exclude="" />
+  </files>
+</package>
