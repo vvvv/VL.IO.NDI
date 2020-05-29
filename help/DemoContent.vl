@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Document xmlns:p="property" Id="EgEABBuGixVNoRFZyeQ4PC" LanguageVersion="2020.1.0.53" Version="0.128">
-  <NugetDependency Id="RyKgeRC2uTnLJUly3RKQlk" Location="VL.CoreLib" Version="2020.1.0" />
+<Document xmlns:p="property" Id="EgEABBuGixVNoRFZyeQ4PC" LanguageVersion="2020.1.2.135" Version="0.128">
+  <NugetDependency Id="RyKgeRC2uTnLJUly3RKQlk" Location="VL.CoreLib" Version="2020.1.2" />
   <Patch Id="H03k0tYy7lPNEksWr60oeq">
     <Canvas Id="JNGIh771lsdMsu9yAsIAKz" DefaultCategory="Main" CanvasType="FullCategory">
       <!--
@@ -639,11 +639,6 @@
             <Pin Id="JWi2HL2jRFpOCX4TgqoZGZ" Name="Height" Kind="InputPin" Bounds="1160,160" />
             <Pin Id="D9iJCiuUuKeP3C512JuqKc" Name="Period" Kind="InputPin" Bounds="453,195" />
           </Patch>
-          <!--
-
-    ************************  ************************
-
--->
           <ProcessDefinition Id="AMaL43kh6reMQm4hLqDQ6M">
             <Fragment Id="JeSjzUHy1gSQEPyuDoAB9g" Patch="JWDuSmT47EvLo3wPMAW1ck" Enabled="true" />
             <Fragment Id="AT4IxPfGuOELZJg45xV7hK" Patch="Tvn8QXFzhcrMxtiTgVXMbA" Enabled="true" />
@@ -734,11 +729,6 @@
         <Canvas Id="G6JQ6UFohwXMCBLuKnNrU5" CanvasType="Group" />
         <Patch Id="BwjAsLFmPqeNCrr9C0FXZX" Name="Create" />
         <Patch Id="EACZk4nkf5vOcWqBBikzqW" Name="Update" />
-        <!--
-
-    ************************  ************************
-
--->
         <ProcessDefinition Id="OLnfcr6xdKtPtIGCEFzI1R">
           <Fragment Id="AA1Y2GGsYExMjdtHPAZ9qR" Patch="BwjAsLFmPqeNCrr9C0FXZX" Enabled="true" />
           <Fragment Id="KgmuhifJtk2PMX8qY7fsJx" Patch="EACZk4nkf5vOcWqBBikzqW" Enabled="true" />
@@ -746,5 +736,5 @@
       </Patch>
     </Node>
   </Patch>
-  <NugetDependency Id="AQLGbm1ILQzM41CD3DsB5z" Location="VL.Skia" Version="2020.1.0" />
+  <NugetDependency Id="AQLGbm1ILQzM41CD3DsB5z" Location="VL.Skia" Version="2020.1.2" />
 </Document>
