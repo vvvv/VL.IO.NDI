@@ -148,6 +148,19 @@ namespace VL.IO.NDI
             NDIlib.send_send_video_v2(_sendInstancePtr, ref videoFrame);
         }
 
+        public void SendAsync(VideoFrame videoFrame)
+        {
+            SendAsync(ref videoFrame._ndiVideoFrame);
+        }
+
+        public void SendAsync(ref NDIlib.video_frame_v2_t videoFrame)
+        {
+            if (_sendInstancePtr == IntPtr.Zero)
+                return;
+
+            NDIlib.send_send_video_async_v2(_sendInstancePtr, ref videoFrame);
+        }
+
         public void Send(AudioFrame audioFrame)
         {
             Send(ref audioFrame._ndiAudioFrame);

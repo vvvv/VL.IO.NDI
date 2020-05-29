@@ -12,10 +12,91 @@ using NewTek;
 
 namespace VL.IO.NDI
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public class VideoFrame : IDisposable
     {
-        // the simple constructor only deals with BGRA. For other color formats you'll need to handle it manually.
-        // Defaults to progressive but can be changed.
+        internal NDIlib.video_frame_v2_t _ndiVideoFrame;
+        private bool _memoryOwned = false;
+
+        private bool _pinnedBytes = false;
+        private System.Buffers.MemoryHandle _handle;
+
+        #region public properties
+
+        public int Width
+        {
+            get
+            {
+                return _ndiVideoFrame.xres;
+            }
+        }
+
+        public int Height
+        {
+            get
+            {
+                return _ndiVideoFrame.yres;
+            }
+        }
+
+        public int Stride
+        {
+            get
+            {
+                return _ndiVideoFrame.line_stride_in_bytes;
+            }
+        }
+
+        public IntPtr BufferPtr
+        {
+            get
+            {
+                return _ndiVideoFrame.p_data;
+            }
+        }
+
+        public Int64 TimeStamp
+        {
+            get
+            {
+                return _ndiVideoFrame.timestamp;
+            }
+            set
+            {
+                _ndiVideoFrame.timestamp = value;
+            }
+        }
+
+        public XElement MetaData
+        {
+            get
+            {
+                if (_ndiVideoFrame.p_metadata == IntPtr.Zero)
+                    return null;
+
+                String mdString = UTF.Utf8ToString(_ndiVideoFrame.p_metadata);
+                if (String.IsNullOrEmpty(mdString))
+                    return null;
+
+                return XElement.Parse(mdString);
+            }
+        }
+        #endregion
+
+
+        #region constructors
+        /// <summary>
+        /// the simple constructor only deals with BGRA.For other color formats you'll need to handle it manually.
+        /// Defaults to progressive but can be changed.
+        /// </summary>
+        /// <param name="width"></param>
+        /// <param name="height"></param>
+        /// <param name="aspectRatio"></param>
+        /// <param name="frameRateNumerator"></param>
+        /// <param name="frameRateDenominator"></param>
+        /// <param name="format"></param>
         public VideoFrame( int width, int height, float aspectRatio, int frameRateNumerator, int frameRateDenominator,
                             NDIlib.frame_format_type_e format = NDIlib.frame_format_type_e.frame_format_type_progressive)
         {
@@ -89,6 +170,16 @@ namespace VL.IO.NDI
             };
         }
 
+        /// <summary>
+        /// Constructor that Takes an IImage
+        /// </summary>
+        /// <param name="image"></param>
+        /// <param name="clone"></param>
+        /// <param name="aspectRatio"></param>
+        /// <param name="fourCC"></param>
+        /// <param name="frameRateNumerator"></param>
+        /// <param name="frameRateDenominator"></param>
+        /// <param name="format"></param>
         public VideoFrame(IImage image, bool clone, float aspectRatio, NDIlib.FourCC_type_e fourCC,
             int frameRateNumerator, int frameRateDenominator, NDIlib.frame_format_type_e format)
         {
@@ -161,66 +252,9 @@ namespace VL.IO.NDI
                 timestamp = 0
             };
         }
+        #endregion
 
-        public int Width
-        {
-            get
-            {
-                return _ndiVideoFrame.xres;
-            }
-        }
-
-        public int Height
-        {
-            get
-            {
-                return _ndiVideoFrame.yres;
-            }
-        }
-
-        public int Stride
-        {
-            get
-            {
-                return _ndiVideoFrame.line_stride_in_bytes;
-            }
-        }
-
-        public IntPtr BufferPtr
-        {
-            get
-            {
-                return _ndiVideoFrame.p_data;
-            }
-        }
-
-        public Int64 TimeStamp
-        {
-            get
-            {
-                return _ndiVideoFrame.timestamp;
-            }
-            set
-            {
-                _ndiVideoFrame.timestamp = value;
-            }
-        }
-
-        public XElement MetaData
-        {
-            get
-            {
-                if(_ndiVideoFrame.p_metadata == IntPtr.Zero)
-                    return null;
-
-                String mdString = UTF.Utf8ToString(_ndiVideoFrame.p_metadata);
-                if (String.IsNullOrEmpty(mdString))
-                    return null;
-
-                return XElement.Parse(mdString);
-            }
-        }
-
+        #region dispose and finalize
         public void Dispose()
         {
             Dispose(true);
@@ -251,11 +285,7 @@ namespace VL.IO.NDI
                 NDIlib.destroy();
             }
         }
+        #endregion
 
-        internal NDIlib.video_frame_v2_t _ndiVideoFrame;
-        bool _memoryOwned = false;
-
-        bool _pinnedBytes = false;
-        System.Buffers.MemoryHandle _handle;
-    }    
+    }
 }
