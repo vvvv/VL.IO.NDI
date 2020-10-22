@@ -19,7 +19,7 @@ namespace NDILibDotNet2_VL
                 {
                     // One per entry point
                     var key = nodeContext.Path.Stack.Last();
-                    return ResourceProvider.NewPooled(key, _ => new Device(DriverType.Hardware, DeviceCreationFlags.BgraSupport | DeviceCreationFlags.VideoSupport));
+                    return ResourceProvider.NewPooledSystemWide(key, _ => new Device(DriverType.Hardware, DeviceCreationFlags.BgraSupport | DeviceCreationFlags.VideoSupport));
                 });
             }
         }
