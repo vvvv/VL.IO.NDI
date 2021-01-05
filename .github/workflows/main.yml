@@ -17,27 +17,16 @@ jobs:
       uses: actions/checkout@master
       
     - name: Setup MSBuild.exe
-      uses: warrenbuckley/Setup-MSBuild@v1
-      
-    - name: Setup .NET Core SDK
-      uses: actions/setup-dotnet@v1.4.0
-  
-    - name: Build
-      run: msbuild src\VL.IO.NDI.sln /t:Build /v:m /m /restore /p:Configuration=Release 
-      
-    - name: Download Icon
-      uses: carlosperate/download-file-action@v1.0.3
-      with:
-        file-url: 'https://raw.githubusercontent.com/mhusinsky/VL.IO.NDI/master/deployment/nugeticon.png'
-        location: './deployment'
+      uses: microsoft/setup-msbuild@v1.0.2
 
     - name: Setup Nuget.exe
       uses: nuget/setup-nuget@v1
       
-    - name: Nuget Pack
-      run: nuget pack ./deployment/VL.IO.NDI.nuspec -Version ${{env.VERSION}}
-      env:
-        VERSION: 0.2.${{github.run_number}}-alpha
-      
-    - name: Nuget Push
-      run: nuget push *.nupkg ${{secrets.NUGET_KEY}} -src https://api.nuget.org/v3/index.json -NoSymbols
+    - name: Publish VL Nuget
+      uses: vvvv/PublishVLNuget@1.0.29
+      with:
+        csproj: src\VL.IO.NDI.csproj
+        nuspec: deployment\VL.IO.NDI.nuspec
+        icon-src: https://raw.githubusercontent.com/mhusinsky/VL.IO.NDI/master/deployment/nugeticon.png
+        icon-dst: ./deployment/nugeticon.png
+        nuget-key: ${{ secrets.NUGET_KEY }}
