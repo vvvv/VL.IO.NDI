@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2011/10/nuspec.xsd">
   <metadata>
     <id>VL.IO.NDI</id>
-    <version>0.0.0</version>
+    <version>0.2.2-alpha</version>
     <title>VL.IO.NDI</title>
     <authors>vvvv, Matthias Husinsky, sebl, NewTek</authors>
     <owners>vvvv, Matthias Husinsky, sebl, NewTek</owners>
