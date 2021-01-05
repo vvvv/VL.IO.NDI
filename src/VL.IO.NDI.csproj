@@ -37,7 +37,7 @@
 
   <ItemGroup>
     <PackageReference Include="SharpDX.Direct3D11" Version="4.2.0" />
-    <PackageReference Include="VL.Audio" Version="0.2.3-alpha" />
+    <PackageReference Include="VL.Audio" Version="0.2.18-alpha" />
     <PackageReference Include="VL.Core" Version="2020.2.1" />
   </ItemGroup>
 
