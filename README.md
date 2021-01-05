@@ -1,6 +1,6 @@
 # VL.IO.NDI
 
-![Publish VL Nuget](https://github.com/mhusinsky/VL.IO.NDI/workflows/Publish%20VL%20Nuget/badge.svg?branch=master)
+![Publish VL Nuget](https://github.com/mhusinsky/VL.IO.NDI/workflows/push_nuget/badge.svg?branch=master)
 
 Repository containing:
 
