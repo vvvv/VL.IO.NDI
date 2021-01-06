@@ -1,8 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Document xmlns:p="property" Id="QHpr0fv5ZhbPHgd1D9pUc5" LanguageVersion="2020.1.2.135" Version="0.128">
-  <NugetDependency Id="QDKWB4liQfJMDPWein5ERc" Location="VL.Core" Version="2020.1.2" />
-  <NugetDependency Id="JngbdjrQttWP3C056ivUGZ" Location="VL.CoreLib" Version="2020.1.2" />
-  <NugetDependency Id="FDjgov6DOmvM906MD3ltdI" Location="VL.Skia" Version="2020.1.2" />
+<Document xmlns:p="property" Id="QHpr0fv5ZhbPHgd1D9pUc5" LanguageVersion="2020.3.0.129" Version="0.128">
+  <NugetDependency Id="QDKWB4liQfJMDPWein5ERc" Location="VL.Core" Version="2020.3.0-0129-g9910d9a3ec" />
+  <NugetDependency Id="JngbdjrQttWP3C056ivUGZ" Location="VL.CoreLib" Version="2020.3.0-0129-g9910d9a3ec" />
+  <NugetDependency Id="FDjgov6DOmvM906MD3ltdI" Location="VL.Skia" Version="2020.3.0-0129-g9910d9a3ec" />
   <Patch Id="IiCA7zHpiE6LeILS7YZGKy">
     <Canvas Id="PmobLB0HSYAL6JU48f5ahA" DefaultCategory="Main" CanvasType="FullCategory" />
     <!--
@@ -66,8 +66,8 @@
               <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
               <Choice Kind="ProcessAppFlag" Name="Renderer" />
             </p:NodeReference>
-            <Pin Id="RV0tdWZzMuCMqZYcoFhTnC" Name="Bounds" Kind="InputPin" DefaultValue="1364, 38, 556, 348">
-              <p:TypeAnnotation LastCategoryFullName="System.Drawing" LastSymbolSource="System.Drawing.dll">
+            <Pin Id="RV0tdWZzMuCMqZYcoFhTnC" Name="Bounds" Kind="InputPin" DefaultValue="-1542, -6, 1550, 878">
+              <p:TypeAnnotation LastCategoryFullName="System.Windows" LastSymbolSource="VL.CoreLib.Windows.vl">
                 <Choice Kind="TypeFlag" Name="Rectangle" />
               </p:TypeAnnotation>
             </Pin>
@@ -77,11 +77,7 @@
             <Pin Id="BtXCUtmY6ejQXyQrwNyt5J" Name="Space" Kind="InputPin" />
             <Pin Id="QI2SAUlE0kOODoTkCbGnLa" Name="Show Cursor" Kind="InputPin" />
             <Pin Id="NWVhNV9iWtwPxyqJ1ViF9p" Name="VSync" Kind="InputPin" />
-            <Pin Id="Axkl0ta5hMrNg0X1UdVLVz" Name="Enabled" Kind="InputPin">
-              <p:TypeAnnotation LastCategoryFullName="Primitive" LastSymbolSource="CoreLibBasics.vl">
-                <Choice Kind="TypeFlag" Name="Boolean" />
-              </p:TypeAnnotation>
-            </Pin>
+            <Pin Id="Axkl0ta5hMrNg0X1UdVLVz" Name="Enabled" Kind="InputPin" />
             <Pin Id="InTLPuYbXHQL1l7d0V40qL" Name="Form" Kind="OutputPin" />
             <Pin Id="OInwHvAjpkjNqvJ1X3k4Md" Name="ClientBounds" Kind="OutputPin" />
             <Pin Id="VUyXFJhMjiuPjiM7Z0nlWo" Name="Render Time" Kind="OutputPin" />
@@ -114,12 +110,12 @@
             </p:Value>
           </Pad>
           <Node Bounds="881,645,391,19" Id="EWUKRy4N86xMyNSasBzzkV">
-            <p:NodeReference LastCategoryFullName="IO.NDI" LastSymbolSource="VL.IO.NDI.vl">
+            <p:NodeReference>
               <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
-              <Choice Kind="ProcessAppFlag" Name="Receiver" />
               <CategoryReference Kind="Category" Name="NDI" NeedsToBeDirectParent="true">
                 <p:OuterCategoryReference Kind="Category" Name="IO" NeedsToBeDirectParent="true" />
               </CategoryReference>
+              <Choice Kind="ProcessAppFlag" Name="Receiver (Image)" />
             </p:NodeReference>
             <p:HelpFocus p:Assembly="VL.Lang" p:Type="VL.Model.HelpPriority">High</p:HelpFocus>
             <Pin Id="K1Yl6dijezQLTEkZDB5uLu" Name="Source" Kind="InputPin" />
@@ -133,7 +129,7 @@
             <Pin Id="PLl1Eqrr8X0L1e2zA5YVGu" Name="Audio Output" Kind="OutputPin" />
             <Pin Id="LDOiAc3opH8LCTXcU1h5sA" Name="Connected Source" Kind="OutputPin" />
           </Node>
-          <Pad Id="ROdb3TJr6FTM1DcCUzDL3S" Comment="Connect" Bounds="952,594,35,35" ShowValueBox="true" isIOBox="true" Value="False">
+          <Pad Id="ROdb3TJr6FTM1DcCUzDL3S" Comment="Connect" Bounds="937,579,35,35" ShowValueBox="true" isIOBox="true" Value="False">
             <p:TypeAnnotation LastCategoryFullName="Primitive" LastSymbolSource="CoreLibBasics.vl">
               <Choice Kind="TypeFlag" Name="Boolean" />
             </p:TypeAnnotation>
@@ -141,7 +137,7 @@
               <p:buttonmode p:Assembly="VL.UI.Forms" p:Type="VL.HDE.PatchEditor.Editors.ButtonModeEnum">Bang</p:buttonmode>
             </p:ValueBoxSettings>
           </Pad>
-          <Pad Id="Mxh64bA6gtNOnSn14W66ZR" Comment="Disconnect" Bounds="1055,593,35,35" ShowValueBox="true" isIOBox="true" Value="False">
+          <Pad Id="Mxh64bA6gtNOnSn14W66ZR" Comment="Disconnect" Bounds="1040,578,35,35" ShowValueBox="true" isIOBox="true" Value="False">
             <p:TypeAnnotation LastCategoryFullName="Primitive" LastSymbolSource="CoreLibBasics.vl">
               <Choice Kind="TypeFlag" Name="Boolean" />
             </p:TypeAnnotation>
@@ -245,17 +241,17 @@
               <p:stringtype p:Assembly="VL.Core" p:Type="VL.Core.StringType">Comment</p:stringtype>
             </p:ValueBoxSettings>
           </Pad>
-          <Pad Id="IFzRQtSJucQOhvqCMfLNbL" Comment="On Program" Bounds="1173,595,35,35" ShowValueBox="true" isIOBox="true" Value="False">
+          <Pad Id="IFzRQtSJucQOhvqCMfLNbL" Comment="On Program" Bounds="1158,580,35,35" ShowValueBox="true" isIOBox="true" Value="False">
             <p:TypeAnnotation LastCategoryFullName="Primitive" LastSymbolSource="CoreLibBasics.vl">
               <Choice Kind="TypeFlag" Name="Boolean" />
             </p:TypeAnnotation>
           </Pad>
-          <Pad Id="GKmXFN4l7xDONxcvR7EP9o" Comment="On Preview" Bounds="1288,595,35,35" ShowValueBox="true" isIOBox="true" Value="False">
+          <Pad Id="GKmXFN4l7xDONxcvR7EP9o" Comment="On Preview" Bounds="1273,580,35,35" ShowValueBox="true" isIOBox="true" Value="False">
             <p:TypeAnnotation LastCategoryFullName="Primitive" LastSymbolSource="CoreLibBasics.vl">
               <Choice Kind="TypeFlag" Name="Boolean" />
             </p:TypeAnnotation>
           </Pad>
-          <Pad Id="TOm9Y5yr2eIOSGOVFAqRQr" Bounds="1172,565,189,19" ShowValueBox="true" isIOBox="true" Value="Signal tally state to the sender">
+          <Pad Id="TOm9Y5yr2eIOSGOVFAqRQr" Bounds="1157,550,189,19" ShowValueBox="true" isIOBox="true" Value="Signal tally state to the sender">
             <p:TypeAnnotation>
               <Choice Kind="TypeFlag" Name="String" />
             </p:TypeAnnotation>
@@ -264,8 +260,8 @@
               <p:stringtype p:Assembly="VL.Core" p:Type="VL.Core.StringType">Comment</p:stringtype>
             </p:ValueBoxSettings>
           </Pad>
-          <Pad Id="KzqHaMcuV2XPJkeiFG5SKZ" Comment="Connected Source" Bounds="1269,689,222,15" ShowValueBox="true" isIOBox="true" />
-          <Pad Id="SKDUob0v9MHMKikrTciGLo" Bounds="1268,712,365,87" ShowValueBox="true" isIOBox="true" Value="Be aware that NDI Receiver can connect to sources and remain “connected” to them even when they are no longer available on the network; it will automatically reconnect if the source becomes available again.">
+          <Pad Id="KzqHaMcuV2XPJkeiFG5SKZ" Comment="Connected Source" Bounds="1269,734,224,32" ShowValueBox="true" isIOBox="true" />
+          <Pad Id="SKDUob0v9MHMKikrTciGLo" Bounds="1268,772,365,87" ShowValueBox="true" isIOBox="true" Value="Be aware that NDI Receiver can connect to sources and remain “connected” to them even when they are no longer available on the network; it will automatically reconnect if the source becomes available again.">
             <p:TypeAnnotation LastCategoryFullName="Primitive" LastSymbolSource="CoreLibBasics.vl">
               <Choice Kind="TypeFlag" Name="String" />
             </p:TypeAnnotation>
@@ -305,6 +301,14 @@
               </Node>
             </Patch>
           </Node>
+          <Node Bounds="1267,682,55,19" Id="JIvdms1f2ruPomVUvkSZxk">
+            <p:NodeReference LastCategoryFullName="System.Conversion" LastSymbolSource="CoreLibBasics.vl">
+              <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
+              <Choice Kind="OperationCallFlag" Name="ToString" />
+            </p:NodeReference>
+            <Pin Id="TyI27q1Ai9xNFZEEmhrfzK" Name="Input" Kind="InputPin" />
+            <Pin Id="DXinrN8qXDeMCvoxb7Ghwq" Name="Result" Kind="OutputPin" />
+          </Node>
         </Canvas>
         <Patch Id="RXbXPrEDZ5UN9J32SGvmAW" Name="Create" />
         <Patch Id="QpxSgEoztp6NSBKwkBB7d3" Name="Update" />
@@ -333,13 +337,14 @@
         <Link Id="Ca4CuToUjPXLyQZhj89m8g" Ids="ENCQzsOOzPwQMGiUZ2Nsv5,CV8kRMgBESgLnNA4qtv4M3" />
         <Link Id="Jqx5gRV2dYJN2KJff0XeMN" Ids="IFzRQtSJucQOhvqCMfLNbL,OksYNMbUsT0LmanUYBU9ex" />
         <Link Id="HgDePrLkdHuPycjcx2yWES" Ids="GKmXFN4l7xDONxcvR7EP9o,IWxHpzdcWnyO5JvRJRadeS" />
-        <Link Id="G3pYnh8SBBwNnpg3OxKfB2" Ids="LDOiAc3opH8LCTXcU1h5sA,KzqHaMcuV2XPJkeiFG5SKZ" />
+        <Link Id="G3pYnh8SBBwNnpg3OxKfB2" Ids="LDOiAc3opH8LCTXcU1h5sA,TyI27q1Ai9xNFZEEmhrfzK" />
         <Link Id="MixekXx8aSxLmN7D0B1J6c" Ids="NQLP5Ramz3dOmUWYxguYwH,KM4UPMBKW5bMSYz7OgMboZ" IsHidden="true" />
         <Link Id="UPojUrUMHqANKvhWtQihNI" Ids="Rlsc7HmXECzMP2ZPPRC8hI,IoHUhD5lu68M048dkiUIeg" IsHidden="true" />
         <Link Id="ErmsqQHANExPkCCn47L7ZR" Ids="SYI5FZ6FTcUPzWtG0XOyzo,Luw4Kd9pQ4UO477X8jWRVS" />
         <Link Id="QueMqLTa61POkwN6B82PLM" Ids="KM4UPMBKW5bMSYz7OgMboZ,FNhBoruN6TpPbwIeqI8PCc" />
         <Link Id="QbG9FfIdfaLNfSd10mf1YX" Ids="LOLkBLYepI9Pl4jnaxAeYx,Rlsc7HmXECzMP2ZPPRC8hI" />
         <Link Id="PRf2sPIchIZO5EWjVElmgI" Ids="DWUfdX6MIZAOjT0fOSJiFl,CMxQyrjLLI1OYTxIrAHjzU" />
+        <Link Id="M7mWigP1kgwQGOvkVPIZse" Ids="DXinrN8qXDeMCvoxb7Ghwq,KzqHaMcuV2XPJkeiFG5SKZ" />
       </Patch>
     </Node>
   </Patch>
