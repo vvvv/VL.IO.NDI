@@ -4,7 +4,7 @@
 
 Repository containing:
 
-* *src\\\** : Visual Studio Project with a .net wrapper for native NDI libs (tested with version 4.x)
+* *src\\\** : Visual Studio Project with a .net wrapper for native NDI libs 
   * Based on NDILibDotNet2 wrapper example from [NDI SDK](https://www.ndi.tv/sdk/) and adapted for use with VL
 * *VL.IO.NDI.vl*: VL-nodes to receive NDI streams
 
@@ -18,7 +18,7 @@ Repository containing:
 
 ### Recommended
 
-Download the [NDI Tools](https://www.ndi.tv/tools/). They contain several applications (like *Test Patterns* and *Scan Converter*) to create NDI Sources on your computer.
+Download the [NDI Tools](https://www.ndi.tv/tools/). They contain several applications (like *Test Patterns* and *Screen Capture*) to create NDI Sources on your computer.
 
 
 

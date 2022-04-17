@@ -4,7 +4,7 @@
     <LangVersion>8.0</LangVersion>
     <TargetFramework>netstandard2.0</TargetFramework>
     <Platforms>AnyCPU;x64</Platforms>
-    <Version>0.2.0</Version>
+    <Version>0.3.0</Version>
     <Authors>NewTek, Motzi, sebl</Authors>
     <Company />
     <Product />
@@ -37,7 +37,7 @@
 
   <ItemGroup>
     <PackageReference Include="SharpDX.Direct3D11" Version="4.2.0" />
-    <PackageReference Include="VL.Audio" Version="0.2.18-alpha" />
+    <PackageReference Include="VL.Audio" Version="1.0.11" />
     <PackageReference Include="VL.Core" Version="2020.2.1" />
   </ItemGroup>
 
