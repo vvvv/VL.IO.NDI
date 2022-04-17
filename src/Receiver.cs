@@ -8,7 +8,7 @@ using System.Reactive.Subjects;
 using VL.Lib.Basics.Imaging;
 using ImagingPixelFormat = VL.Lib.Basics.Imaging.PixelFormat;
 
-using VVVV.Audio;
+using VL.Audio;
 using NAudio.Wave;
 
 namespace VL.IO.NDI
@@ -25,7 +25,7 @@ namespace VL.IO.NDI
         #region private properties
         private readonly Subject<IImage> videoFrames = new Subject<IImage>();
 
-        VVVV.Audio.BufferWiseResampler bufferwiseResampler = new BufferWiseResampler();
+        VL.Audio.BufferWiseResampler bufferwiseResampler = new BufferWiseResampler();
 
         private AudioOut audioOutSignal = new AudioOut();
 

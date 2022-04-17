@@ -36,6 +36,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="NAudio" Version="2.0.1" />
     <PackageReference Include="SharpDX.Direct3D11" Version="4.2.0" />
     <PackageReference Include="VL.Audio" Version="1.0.11" />
     <PackageReference Include="VL.Core" Version="2020.2.1" />

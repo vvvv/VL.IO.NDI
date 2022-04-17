@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using VVVV.Audio;
+using VL.Audio;
 
 namespace VL.IO.NDI
 {
