@@ -362,3 +362,5 @@ MigrationBackup/
 !x64/*here.txt
 
 /lib/
+.vl/*.dll
+help/.vl/*.dll
