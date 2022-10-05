@@ -1,3 +1,24 @@
+// NOTE : The following MIT license applies to this file ONLY and not to the SDK as a whole. Please review the SDK documentation 
+// for the description of the full license terms, which are also provided in the file "NDI License Agreement.pdf" within the SDK or 
+// online at http://new.tk/ndisdk_license/. Your use of any part of this SDK is acknowledgment that you agree to the SDK license 
+// terms. The full NDI SDK may be downloaded at http://ndi.tv/
+//
+//*************************************************************************************************************************************
+// 
+// Copyright (C)2014-2021, NewTek, inc.
+// 
+// Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation 
+// files(the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, 
+// merge, publish, distribute, sublicense, and / or sell copies of the Software, and to permit persons to whom the Software is 
+// furnished to do so, subject to the following conditions :
+//
+// The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+// 
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF 
+// MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE 
+// FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION 
+// WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
 using System;
 using System.Runtime.InteropServices;
 using System.Security;
@@ -30,9 +51,9 @@ namespace NewTek
 			FourCC_type_UYVY = 0x59565955,
 
             // 4:2:0 formats
-            NDIlib_FourCC_type_YV12 = 0x32315659,
-            NDIlib_FourCC_type_NV12 = 0x3231564E,
-            NDIlib_FourCC_type_I420 = 0x30323449,
+            NDIlib_FourCC_video_type_YV12 = 0x32315659,
+            NDIlib_FourCC_video_type_NV12 = 0x3231564E,
+            NDIlib_FourCC_video_type_I420 = 0x30323449,
 
 			// BGRA
 			FourCC_type_BGRA = 0x41524742,
@@ -62,8 +83,19 @@ namespace NewTek
 			frame_format_type_field_1 = 3
 		}
 
-		// This is a descriptor of a NDI source available on the network.
-		[StructLayoutAttribute(LayoutKind.Sequential)]
+        // FourCC values for audio frames
+        public enum FourCC_audio_type_e
+        {
+            // Planar 32-bit floating point. Be sure to specify the channel stride.
+            FourCC_audio_type_FLTP = 0x70544c46,
+            FourCC_type_FLTP = FourCC_audio_type_FLTP,
+
+            // Ensure that the size is 32bits
+            FourCC_audio_type_max = 0x7fffffff
+        }
+
+        // This is a descriptor of a NDI source available on the network.
+        [StructLayoutAttribute(LayoutKind.Sequential)]
 		public struct source_t
 		{
 			// A UTF8 string that provides a user readable name for this source.
@@ -75,7 +107,7 @@ namespace NewTek
 			public IntPtr	p_ndi_name;
 
             // A UTF8 string that provides the actual network address and any parameters. 
-            // This is not meant to be application readable and might well change in teh future.
+            // This is not meant to be application readable and might well change in the future.
             // This can be nullptr if you do not know it and the API internally will instantiate
             // a finder that is used to discover it even if it is not yet available on the network.
             public IntPtr p_url_address;
@@ -154,8 +186,46 @@ namespace NewTek
 			public Int64	timestamp;
 		}
 
-		// The data description for metadata
-		[StructLayoutAttribute(LayoutKind.Sequential)]
+        // This describes an audio frame
+        [StructLayoutAttribute(LayoutKind.Sequential)]
+        public struct audio_frame_v3_t
+        {
+            // The sample-rate of this buffer
+            public int sample_rate;
+
+            // The number of audio channels
+            public int no_channels;
+
+            // The number of audio samples per channel
+            public int no_samples;
+
+            // The timecode of this frame in 100ns intervals
+            public Int64 timecode;
+
+            // What FourCC describing the type of data for this frame
+            FourCC_audio_type_e FourCC;
+
+            // The audio data
+            public IntPtr p_data;
+
+            // If the FourCC is not a compressed type and the audio format is planar,
+            // then this will be the stride in bytes for a single channel.
+            // If the FourCC is a compressed type, then this will be the size of the
+            // p_data buffer in bytes.
+            public int channel_stride_in_bytes;
+
+            // Per frame metadata for this frame. This is a NULL terminated UTF8 string that should be
+            // in XML format. If you do not want any metadata then you may specify NULL here.
+            public IntPtr p_metadata;
+
+            // This is only valid when receiving a frame and is specified as a 100ns time that was the exact
+            // moment that the frame was submitted by the sending side and is generated by the SDK. If this
+            // value is NDIlib_recv_timestamp_undefined then this value is not available and is NDIlib_recv_timestamp_undefined.
+            public Int64 timestamp;
+        }
+
+        // The data description for metadata
+        [StructLayoutAttribute(LayoutKind.Sequential)]
 		public struct metadata_frame_t
 		{
 			// The length of the string in UTF8 characters. This includes the NULL terminating character.
@@ -196,7 +266,7 @@ namespace NewTek
 		// If you specify a timecode at a particular frame (audio or video), then ask for all subsequent
 		// ones to be synthesized. The subsequent ones will be generated to continue this sequency
 		// maintining the correct relationship both the between streams and samples generated, avoiding
-		// them deviating in time from teh timecode that you specified in any meanginfful way.
+		// them deviating in time from the timecode that you specified in any meanginfful way.
 		//
 		// If you specify timecodes on one stream (e.g. video) and ask for the other stream (audio) to
 		// be sythesized, the correct timecodes will be generated for the other stream and will be synthesize
