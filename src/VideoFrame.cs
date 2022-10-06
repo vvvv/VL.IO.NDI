@@ -55,8 +55,16 @@ namespace VL.IO.NDI
             };
         }
 
-        public VideoFrame(IntPtr bufferPtr, int width, int height, int stride, NDIlib.FourCC_type_e fourCC,
-                            float aspectRatio, int frameRateNumerator, int frameRateDenominator, NDIlib.frame_format_type_e format, IDisposable deallocator)
+        public VideoFrame(IntPtr bufferPtr,
+                          int width,
+                          int height,
+                          int stride,
+                          NDIlib.FourCC_type_e fourCC = NDIlib.FourCC_type_e.FourCC_type_BGRA,
+                          float aspectRatio = 1f,
+                          int frameRateNumerator = 1,
+                          int frameRateDenominator = 1,
+                          NDIlib.frame_format_type_e format = NDIlib.frame_format_type_e.frame_format_type_progressive,
+                          IDisposable deallocator = null)
         {
             _ndiVideoFrame = new NDIlib.video_frame_v2_t()
             {

@@ -1,122 +1,124 @@
 ﻿using Stride.Graphics;
 using Stride.Rendering;
 using System;
-using System.Buffers;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.Reactive.Concurrency;
 using System.Reactive.Disposables;
-using System.Text;
+using VL.Core;
 using VL.Lib.Basics.Resources;
 
 namespace VL.IO.NDI
 {
-    public class ImageDownloader : RendererBase
+    public sealed class ImageDownloader : RendererBase
     {
         private readonly Queue<Texture> textureDownloads = new Queue<Texture>();
-        private readonly Stack<Texture> texturePool = new Stack<Texture>();
-        private readonly Stack<Image> imagePool = new Stack<Image>();
-        private readonly SerialDisposable imageProviderSubscription = new SerialDisposable();
-        private TextureDescription textureDescription;
+        private readonly Stopwatch stopwatch = new Stopwatch();
+        private readonly ServiceRegistry serviceRegistry;
+        private readonly CompositeDisposable subscriptions;
+        private readonly SerialDisposable texturePoolSubscription;
+        private readonly SerialDisposable imagePoolSubscription;
+        private readonly SerialDisposable imageSubscription;
+
+        public ImageDownloader()
+        {
+            serviceRegistry = ServiceRegistry.Current;
+            subscriptions = new CompositeDisposable()
+            {
+                (texturePoolSubscription = new SerialDisposable()),
+                (imagePoolSubscription = new SerialDisposable()),
+                (imageSubscription = new SerialDisposable())
+            };
+        }
 
         public Texture Texture { get; set; }
 
         public IResourceProvider<Image> ImageProvider { get; private set; }
 
+        public bool DownloadAsync { get; set; } = true;
+
+        public TimeSpan ElapsedTime { get; private set; }
+
         /// <inheritdoc />
         protected override void DrawCore(RenderDrawContext context)
         {
-            // Request copy
+            var texture = Texture;
+            if (texture is null)
             {
-                var texture = Texture;
-                if (texture is null)
-                    return;
+                texturePoolSubscription.Disposable = null;
+                imagePoolSubscription.Disposable = null;
+                imageSubscription.Disposable = null;
+                return;
+            }
 
-                if (texture.Description != textureDescription)
-                {
-                    textureDescription = texture.Description;
-                    DisposeResources();
-                }
+            // Workaround: Re-install the service registry - should be done by vvvv itself in the render callback
+            using var _ = serviceRegistry.MakeCurrentIfNone();
 
-                var stagingTexture = RentStagingTexture(texture);
-                context.CommandList.Copy(texture, stagingTexture);
+            stopwatch.Restart();
+
+            var texturePool = GetTexturePool(context.GraphicsDevice, texture);
+
+            {
+                // Request copy
+                var stagingTexture = texturePool.Rent();
+                context.CommandList.Copy(Texture, stagingTexture);
                 textureDownloads.Enqueue(stagingTexture);
             }
 
-            // Try to download
+            if (!DownloadAsync)
             {
-                var texture = textureDownloads.Peek();
-                var image = RentImage(texture);
+                // Drain the queue
+                while (textureDownloads.Count > 1)
+                    textureDownloads.Dequeue().Dispose();
+            }
+
+            {
+                // Download recently staged
+                var stagedTexture = textureDownloads.Peek();
+                var imagePool = GetImagePool(stagedTexture);
+                var image = imagePool.Rent();
                 var pixelBuffer = image.PixelBuffer[0, 0];
                 var dataPointer = new DataPointer(pixelBuffer.DataPointer, pixelBuffer.BufferStride);
-                if (texture.GetData(context.CommandList, texture, dataPointer, 0, 0, doNotWait: true))
+                if (stagedTexture.GetData(context.CommandList, stagedTexture, dataPointer, 0, 0, doNotWait: DownloadAsync))
                 {
-                    ReturnTexture(textureDownloads.Dequeue());
+                    // Dequeue and return to the pool
+                    texturePool.Return(textureDownloads.Dequeue());
 
-                    ImageProvider = ResourceProvider.Return(image, i => ReturnImage(i))
+                    // Setup the new image resource
+                    ImageProvider = ResourceProvider.Return(image, i => imagePool.Return(i))
                         .SharePooled(delayDisposalInMilliseconds: 0, resetResource: null);
 
                     // Subscribe to our own provider to ensure the image is returned if no one else is using it
-                    imageProviderSubscription.Disposable = ImageProvider.GetHandle();
+                    imageSubscription.Disposable = ImageProvider.GetHandle();
+
+                    ElapsedTime = stopwatch.Elapsed;
                 }
                 else
                 {
-                    ReturnImage(image);
+                    imagePool.Return(image);
                 }
             }
         }
 
-        private void DisposeResources()
+        private TexturePool GetTexturePool(GraphicsDevice graphicsDevice, Texture texture)
         {
-            DisposeTextureDownloads();
-            DisposePool(texturePool);
-            DisposePool(imagePool);
+            return TexturePool.Get(graphicsDevice, texture.Description.ToStagingDescription())
+                .Subscribe(texturePoolSubscription);
         }
 
-        private Texture RentStagingTexture(Texture texture)
+        private ImagePool GetImagePool(Texture texture)
         {
-            if (texturePool.Count > 0)
-                return texturePool.Pop();
-            return texture.ToStaging();
-        }
-
-        private Image RentImage(Texture texture)
-        {
-            if (imagePool.Count > 0)
-                return imagePool.Pop();
-            return Image.New(texture.Description);
-        }
-
-        private void ReturnTexture(Texture texture)
-        {
-            if (texture.Description == textureDescription)
-                texturePool.Push(texture);
-            else
-                texture.Dispose();
-        }
-
-        private void ReturnImage(Image image)
-        {
-            ImageDescription imageDescription = textureDescription;
-            if (image.Description == imageDescription)
-                imagePool.Push(image);
-            else
-                image.Dispose();
-        }
-
-        private void DisposeTextureDownloads()
-        {
-            while (textureDownloads.Count > 0)
-                textureDownloads.Dequeue().Dispose();
-        }
-
-        private static void DisposePool<T>(Stack<T> pool) where T : IDisposable
-        {
-            while (pool.Count > 0)
-                pool.Pop().Dispose();
+            return ImagePool.Get(texture.Description)
+                .Subscribe(imagePoolSubscription);
         }
 
         protected override void Destroy()
         {
-            DisposeResources();
+            while (textureDownloads.Count > 0)
+                textureDownloads.Dequeue().Dispose();
+
+            subscriptions.Dispose();
+
             base.Destroy();
         }
     }

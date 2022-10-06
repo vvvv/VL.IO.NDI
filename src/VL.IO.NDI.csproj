@@ -8,7 +8,10 @@
     <OutputPath>..\lib\</OutputPath>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <NoWarn>1701;1702;1591</NoWarn>
-    <DocumentationFile>VL.IO.NDI.xml</DocumentationFile>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    
+    <!-- Startup properties -->
+    <PackageRepositories>$(MsBuildThisFileDirectory)..\..</PackageRepositories>
     
     <Version>0.3.0</Version>
     <Authors>NewTek, Motzi, sebl, vvvv group</Authors>
