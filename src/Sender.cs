@@ -1,8 +1,12 @@
 ﻿using System;
 using System.Linq;
+using System.Reactive.Disposables;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Text;
 using NewTek;
+using VL.Lib.Basics.Imaging;
+using VL.Lib.Basics.Resources;
 
 //namespace NewTek.NDI
 namespace VL.IO.NDI
@@ -148,18 +152,47 @@ namespace VL.IO.NDI
             NDIlib.send_send_video_v2(_sendInstancePtr, ref videoFrame);
         }
 
-        public void SendAsync(VideoFrame videoFrame)
-        {
-            SendAsync(ref videoFrame._ndiVideoFrame);
-        }
-
-        public void SendAsync(ref NDIlib.video_frame_v2_t videoFrame)
+        public unsafe void SendAsync(IResourceProvider<IImage> videoFrame)
         {
             if (_sendInstancePtr == IntPtr.Zero)
                 return;
 
-            NDIlib.send_send_video_async_v2(_sendInstancePtr, ref videoFrame);
+             videoFrame.BindNew(image =>
+            {
+                var info = image.Info;
+                var imageData = image.GetData();
+                var memoryHanlde = imageData.Bytes.Pin();
+                return new VideoFrame(
+                    new IntPtr(memoryHanlde.Pointer),
+                    width: info.Width,
+                    height: info.Height,
+                    stride: imageData.ScanSize,
+                    fourCC: NDIlib.FourCC_type_e.FourCC_type_BGRA,
+                    aspectRatio: (float)info.Width / info.Height,
+                    frameRateDenominator: 0,
+                    frameRateNumerator: 0,
+                    format: NDIlib.frame_format_type_e.frame_format_type_interleaved,
+                    deallocator: Disposable.Create(() =>
+                    {
+                        memoryHanlde.Dispose();
+                        imageData.Dispose();
+                    }));
+            });
         }
+
+        public void SendAsync(IResourceProvider<VideoFrame> videoFrame)
+        {
+            if (_sendInstancePtr == IntPtr.Zero)
+                return;
+
+            var handle = videoFrame.GetHandle();
+            var frame = handle.Resource._ndiVideoFrame;
+            NDIlib.send_send_video_async_v2(_sendInstancePtr, ref frame);
+            // Release the previous frame and hold on to this one
+            _sendAsyncRequestSubscription.Disposable = handle;
+        }
+
+        private readonly SerialDisposable _sendAsyncRequestSubscription = new SerialDisposable();
 
         public void Send(AudioFrame audioFrame)
         {
@@ -185,12 +218,20 @@ namespace VL.IO.NDI
             Dispose(false);
         }
 
-        protected virtual void Dispose(bool disposing)
+        protected virtual unsafe void Dispose(bool disposing)
         {
             if (disposing) 
             {
                 if (_sendInstancePtr != IntPtr.Zero)
                 {
+                    if (_sendAsyncRequestSubscription.Disposable != null)
+                    {
+                        // NDIlib_send_send_video_v2_async(pSend, NULL); // Sync here
+                        NDIlib.send_send_video_async_v2(_sendInstancePtr, ref Unsafe.AsRef<NDIlib.video_frame_v2_t>(IntPtr.Zero.ToPointer()));
+                        _sendAsyncRequestSubscription.Disposable = null;
+                    }
+                    _sendAsyncRequestSubscription.Dispose();
+
                     NDIlib.send_destroy(_sendInstancePtr);
                     _sendInstancePtr = IntPtr.Zero;
                 }
