@@ -27,6 +27,7 @@
     <PackageReference Include="Stride.Rendering" Version="4.0.1.1428" />
     <PackageReference Include="VL.Audio" Version="1.0.11" />
     <PackageReference Include="VL.Core" Version="2021.4.10" />
+    <PackageReference Include="VL.Skia" Version="2021.4.10" />
   </ItemGroup>
 
   <ItemGroup>

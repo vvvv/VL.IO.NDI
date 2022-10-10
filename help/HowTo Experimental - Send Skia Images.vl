@@ -113,10 +113,10 @@
               <p:stringtype p:Assembly="VL.Core" p:Type="VL.Core.StringType">Comment</p:stringtype>
             </p:ValueBoxSettings>
           </Pad>
-          <Node Bounds="465,521,98,19" Id="UhSIC2QpBX6LCDvnIZfk6e">
+          <Node Bounds="432,530,85,19" Id="UhSIC2QpBX6LCDvnIZfk6e">
             <p:NodeReference LastCategoryFullName="IO.NDI" LastSymbolSource="VL.IO.NDI.vl">
               <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
-              <Choice Kind="ProcessAppFlag" Name="ImageDownloader" />
+              <Choice Kind="ProcessAppFlag" Name="TextureDownload" />
             </p:NodeReference>
             <Pin Id="Vjo37d4oogBLzUHYoASvhI" Name="Input" Kind="InputPin" />
             <Pin Id="HXIwCli2M4yMDEsIVlyich" Name="Download Async" Kind="InputPin" DefaultValue="True" />
@@ -152,4 +152,5 @@
   <DocumentDependency Id="F1CrQZCRnTSLVHgFz8rWMB" Location="../VL.IO.NDI.vl" />
   <DocumentDependency Id="JN6UyzLn3UALVb8auyml7S" Location="./DemoContent.vl" />
   <NugetDependency Id="KZigFv0HjRzMkckft6Q8KE" Location="VL.Stride" Version="2021.4.10" />
+  <NugetDependency Id="PIM6toq5WDXPXIicEYBgXV" Location="VL.Video.MediaFoundation" Version="1.0.12" />
 </Document>

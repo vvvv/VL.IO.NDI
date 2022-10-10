@@ -10,6 +10,8 @@ using ImagingPixelFormat = VL.Lib.Basics.Imaging.PixelFormat;
 
 using VL.Audio;
 using NAudio.Wave;
+using VL.Lib.Basics.Resources;
+using System.Reactive.Disposables;
 
 namespace VL.IO.NDI
 {
@@ -23,7 +25,7 @@ namespace VL.IO.NDI
     public class Receiver : IDisposable
     {
         #region private properties
-        private readonly Subject<IImage> videoFrames = new Subject<IImage>();
+        private readonly Subject<IResourceProvider<IImage>> _videoFrames = new Subject<IResourceProvider<IImage>>();
 
         VL.Audio.BufferWiseResampler bufferwiseResampler = new BufferWiseResampler();
 
@@ -38,10 +40,6 @@ namespace VL.IO.NDI
 
         // a way to exit the thread safely
         private bool _exitThread = false;
-
-        private IntPtr buffer0 = IntPtr.Zero;
-        private IntPtr buffer1 = IntPtr.Zero;
-        private int buffer01Size = 0;
 
         // should we send audio to Windows or not?
         private bool _audioEnabled = false;
@@ -156,7 +154,7 @@ namespace VL.IO.NDI
         /// <summary>
         /// Received Images
         /// </summary>
-        public IObservable<IImage> Frames => videoFrames;
+        public IObservable<IResourceProvider<IImage>> Frames => _videoFrames;
         #endregion  
 
         /// <summary>
@@ -446,12 +444,6 @@ namespace VL.IO.NDI
                 // Not required, but "correct". (see the SDK documentation)
                 NDIlib.destroy();
 
-                //if(VideoFrameImage != null)
-                //    VideoFrameImage.Dispose();
-                Marshal.FreeCoTaskMem(buffer0);
-                Marshal.FreeCoTaskMem(buffer1);
-                
-
                 _disposed = true;
             }
         }
@@ -600,6 +592,7 @@ namespace VL.IO.NDI
         // the receive thread runs though this loop until told to exit
         void ReceiveThreadProc()
         {
+            using var videoFrameSubscription = new SerialDisposable();
             while (!_exitThread && _recvInstancePtr != IntPtr.Zero)
             {
                 // The descriptors
@@ -654,42 +647,11 @@ namespace VL.IO.NDI
                         }
 
                         // get all our info so that we can free the frame
-                        int yres = (int)videoFrame.yres;
-                        int xres = (int)videoFrame.xres;
+                        int yres = videoFrame.yres;
+                        int xres = videoFrame.xres;
 
-                        // quick and dirty aspect ratio correction for non-square pixels - SD 4:3, 16:9, etc.
-                        double dpiX = 96.0 * (videoFrame.picture_aspect_ratio / ((double)xres / (double)yres));
-
-                        int stride = (int)videoFrame.line_stride_in_bytes;
+                        int stride = videoFrame.line_stride_in_bytes;
                         int bufferSize = yres * stride;
-
-
-                        if(bufferSize != buffer01Size)
-                        {
-                            buffer0 = Marshal.ReAllocCoTaskMem(buffer0, bufferSize);
-                            buffer1 = Marshal.ReAllocCoTaskMem(buffer1, bufferSize);
-                            buffer01Size = bufferSize;
-                        }
-
-
-                        // Copy data
-                        unsafe
-                        {
-                            byte* dst = (byte*)buffer0.ToPointer() ;
-                            byte* src = (byte*)videoFrame.p_data.ToPointer();
-
-                            for (int y = 0; y < yres; y++)
-                            {
-                                memcpy(dst, src, stride);
-                                dst += stride;
-                                src += stride;
-                            }
-                        }
-
-                        // swap
-                        IntPtr temp = buffer0;
-                        buffer0 = buffer1;
-                        buffer1 = temp;
 
                         ImagingPixelFormat pixFmt;
                         switch (videoFrame.FourCC)
@@ -707,13 +669,20 @@ namespace VL.IO.NDI
                                 break;
                         }
 
-                        var VideoFrameImage = buffer1.ToImage(bufferSize, xres, yres, pixFmt, videoFrame.FourCC.ToString());
+                        var image = videoFrame.p_data.ToImage(bufferSize, xres, yres, pixFmt, videoFrame.FourCC.ToString());
+                        var imageProvider = ResourceProvider.Return(image, i =>
+                        {
+                            image.Dispose();
 
-                        videoFrames.OnNext(VideoFrameImage);
+                            // free frames that were received AFTER use!
+                            NDIlib.recv_free_video_v2(_recvInstancePtr, ref videoFrame);
+                        });
 
-                        // free frames that were received AFTER use!
-                        // This writepixels call is dispatched, so we must do it inside this scope.
-                        NDIlib.recv_free_video_v2(_recvInstancePtr, ref videoFrame);
+                        // Release the previous frame and hold on to this one
+                        videoFrameSubscription.Disposable = imageProvider.GetHandle();
+
+                        // Tell consumers about it
+                        _videoFrames.OnNext(imageProvider);
                        
                         break;
 
