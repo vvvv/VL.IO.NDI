@@ -2947,19 +2947,19 @@
       </Node>
       <!--
 
-    ************************ ImageUtils ************************
+    ************************ SkiaUtils ************************
 
 -->
-      <Node Name="ImageUtils" Bounds="774,1030" Id="Lc4ysHqJnJMOyAnI5PUU0o">
+      <Node Name="SkiaUtils" Bounds="774,1030" Id="Lc4ysHqJnJMOyAnI5PUU0o">
         <p:NodeReference>
           <Choice Kind="ForwardDefinition" Name="Forward" />
           <FullNameCategoryReference ID="Primitive" />
         </p:NodeReference>
         <p:TypeAnnotation LastCategoryFullName="VL.IO.NDI" LastSymbolSource="VL.IO.NDI.dll">
-          <Choice Kind="TypeFlag" Name="ImageUtils" />
+          <Choice Kind="ClassType" Name="SkiaUtils" />
         </p:TypeAnnotation>
         <Patch Id="LmJR92fLXWFLSeGEFIRqWL">
-          <Canvas Id="ICn9gBbPrEPOjtH2VV3T3I" BordersChecked="false" CanvasType="Group" />
+          <Canvas Id="ICn9gBbPrEPOjtH2VV3T3I" CanvasType="Group" />
           <ProcessDefinition Id="MJPazHZjryjOqzyPCUWTc9" IsHidden="true" />
         </Patch>
       </Node>
@@ -2972,6 +2972,78 @@
           <p:stringtype p:Assembly="VL.Core" p:Type="VL.Core.StringType">Comment</p:stringtype>
         </p:ValueBoxSettings>
       </Pad>
+      <!--
+
+    ************************ TextureUpload ************************
+
+-->
+      <Node Name="TextureUpload" Bounds="575,1086" Id="BV8vTvuinvTM15XwgF5ynE">
+        <p:NodeReference LastCategoryFullName="Primitive" LastSymbolSource="builtin">
+          <Choice Kind="ContainerDefinition" Name="Process" />
+        </p:NodeReference>
+        <Patch Id="VPbcRErihFrOnMeTPmNe0M">
+          <Canvas Id="UmLRZn8rTbwP2mfiqySv8l" CanvasType="Group">
+            <Node Bounds="442,359,81,26" Id="AJvg3pT3FlfNnaWMZYPyDD">
+              <p:NodeReference LastCategoryFullName="VL.IO.NDI.TextureUpload" LastSymbolSource="VL.IO.NDI.dll">
+                <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
+                <CategoryReference Kind="AssemblyCategory" Name="TextureUpload" />
+                <Choice Kind="OperationCallFlag" Name="SetImageStream" />
+              </p:NodeReference>
+              <Pin Id="CjB8r7wqDdnOArUnSWVCq1" Name="Input" Kind="StateInputPin" />
+              <Pin Id="IpEJ6Wvqd9mNRXzY9jxDZ3" Name="Value" Kind="InputPin" />
+              <Pin Id="IvTy9trkYoLL66vgkG1mhw" Name="Output" Kind="StateOutputPin" />
+            </Node>
+            <Node Bounds="442,498,81,26" Id="CczAdMb5jEXNzNDSm56QxI">
+              <p:NodeReference LastCategoryFullName="VL.IO.NDI.TextureUpload" LastSymbolSource="VL.IO.NDI.dll">
+                <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
+                <CategoryReference Kind="AssemblyCategory" Name="TextureUpload" />
+                <Choice Kind="OperationCallFlag" Name="TextureProvider" />
+              </p:NodeReference>
+              <Pin Id="QKuZch3OE5ONUy1yuSQEx4" Name="Input" Kind="StateInputPin" />
+              <Pin Id="VnreJ4WavHMMtifBKVTs11" Name="Output" Kind="StateOutputPin" />
+              <Pin Id="TP5eeJcnVMkLGVgCaST0du" Name="Texture Provider" Kind="OutputPin" />
+            </Node>
+            <ControlPoint Id="Otzrr3aLG31NovQY1t7DJd" Bounds="625,601" />
+            <ControlPoint Id="J6O2zAOSyKIPFN2rrDdSmv" Bounds="635,246" />
+            <Node Bounds="332,229,81,26" Id="SBMZyQr6HJgMV2LBCbRO41">
+              <p:NodeReference LastCategoryFullName="VL.IO.NDI.TextureUpload" LastSymbolSource="VL.IO.NDI.dll">
+                <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
+                <Choice Kind="OperationCallFlag" Name="Create" />
+                <CategoryReference Kind="AssemblyCategory" Name="TextureUpload" NeedsToBeDirectParent="true" />
+              </p:NodeReference>
+              <Pin Id="HCmaBZbCTFGPh7v81bk9Tu" Name="Output" Kind="StateOutputPin" />
+            </Node>
+            <Pad Id="J84VO6bcIOyLWbMVaUOaIB" Bounds="334,273" />
+            <Node Bounds="291,332" Id="T3Zn15ZqWlfLiMT6Gkjl6F">
+              <p:NodeReference LastCategoryFullName="Primitive.IDisposable" LastSymbolSource="CoreLibBasics.vl">
+                <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
+                <FullNameCategoryReference ID="Primitive.IDisposable" />
+                <Choice Kind="OperationCallFlag" Name="Dispose" />
+              </p:NodeReference>
+              <Pin Id="JiOMhOFmFv1OZyu5LWo6xi" Name="Input" Kind="StateInputPin" />
+              <Pin Id="ASZjDqneFsSNgjPk82CVyc" Name="Output" Kind="StateOutputPin" />
+            </Node>
+          </Canvas>
+          <ProcessDefinition Id="HErhJtc5kCcOhBPjHo8DOP">
+            <Fragment Id="AAxqBq6YZYzOPLJyHTB2tK" Patch="CKEvbgGviGlObdIMiWjESk" Enabled="true" />
+            <Fragment Id="UqWaIkCI8UiNS7c85jAeou" Patch="Lm50sGphTJLPLp3n6AQBPd" Enabled="true" />
+          </ProcessDefinition>
+          <Link Id="EJGCsG6sKK7QUw5mSFIr1g" Ids="HCmaBZbCTFGPh7v81bk9Tu,J84VO6bcIOyLWbMVaUOaIB" />
+          <Link Id="U5l7zwEnKLnNNnVv5proD9" Ids="Otzrr3aLG31NovQY1t7DJd,PTDst1J1JbLQGUl3NmYcMY" IsHidden="true" />
+          <Link Id="GLnR8mJXv1ZNr4ukq4K8XQ" Ids="J6O2zAOSyKIPFN2rrDdSmv,IpEJ6Wvqd9mNRXzY9jxDZ3" />
+          <Link Id="E3jZmhFXJboPJ9ALVg0Rn1" Ids="KLJKk1SnPLXLZJ852OzbVa,J6O2zAOSyKIPFN2rrDdSmv" IsHidden="true" />
+          <Patch Id="CKEvbgGviGlObdIMiWjESk" Name="Create" ParticipatingElements="SBMZyQr6HJgMV2LBCbRO41" />
+          <Patch Id="Lm50sGphTJLPLp3n6AQBPd" Name="Update">
+            <Pin Id="KLJKk1SnPLXLZJ852OzbVa" Name="Input" Kind="InputPin" Bounds="635,245" />
+            <Pin Id="PTDst1J1JbLQGUl3NmYcMY" Name="Output" Kind="OutputPin" Bounds="595,573" />
+          </Patch>
+          <Link Id="IiNSCvPljeKOmlLUkTI2sL" Ids="J84VO6bcIOyLWbMVaUOaIB,CjB8r7wqDdnOArUnSWVCq1" />
+          <Link Id="TYNJXkZ9nypNwgOWh6XXT4" Ids="J84VO6bcIOyLWbMVaUOaIB,JiOMhOFmFv1OZyu5LWo6xi" />
+          <Patch Id="FJrAcMLH8WLOskrCXnFIQd" Name="Dispose" ParticipatingElements="T3Zn15ZqWlfLiMT6Gkjl6F" />
+          <Link Id="C5wNF5ZG5zML9ruBchvmhs" Ids="TP5eeJcnVMkLGVgCaST0du,Otzrr3aLG31NovQY1t7DJd" />
+          <Link Id="OmGjW2bb2ijLy2Cl8RxcZd" Ids="IvTy9trkYoLL66vgkG1mhw,QKuZch3OE5ONUy1yuSQEx4" />
+        </Patch>
+      </Node>
     </Canvas>
     <!--
 

@@ -23,6 +23,8 @@ namespace VL.IO.NDI
             this.description = description;
         }
 
+        public ref readonly TextureDescription Description => ref description;
+
         public void Dispose()
         {
             isDisposed = true;

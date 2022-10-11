@@ -676,7 +676,7 @@ namespace VL.IO.NDI
 
                             // free frames that were received AFTER use!
                             NDIlib.recv_free_video_v2(_recvInstancePtr, ref videoFrame);
-                        });
+                        }).ShareInParallel();
 
                         // Release the previous frame and hold on to this one
                         videoFrameSubscription.Disposable = imageProvider.GetHandle();

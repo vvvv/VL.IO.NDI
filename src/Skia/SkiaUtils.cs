@@ -8,9 +8,9 @@ using VL.Lib.Basics.Resources;
 
 namespace VL.IO.NDI
 {
-    public static class ImageUtils
+    public static class SkiaUtils
     {
-        public static unsafe IResourceProvider<SKImage> ToSkiaImageProvider(this IResourceProvider<IImage> imageProvider)
+        public static unsafe IResourceProvider<SKImage> ToSkia(this IResourceProvider<IImage> imageProvider)
         {
             return imageProvider.BindNew(image =>
             {
@@ -37,30 +37,20 @@ namespace VL.IO.NDI
         {
             switch (format)
             {
-                case PixelFormat.Unknown:
-                    return SKColorType.Unknown;
                 case PixelFormat.R8:
                     return SKColorType.Gray8;
-                case PixelFormat.R32F:
-                    break;
-                case PixelFormat.R8G8B8:
-                    break;
                 case PixelFormat.R8G8B8X8:
                     return SKColorType.Rgb888x;
                 case PixelFormat.R8G8B8A8:
                     return SKColorType.Rgba8888;
-                case PixelFormat.B8G8R8X8:
-                    break;
                 case PixelFormat.B8G8R8A8:
                     return SKColorType.Bgra8888;
                 case PixelFormat.R16G16B16A16F:
                     return SKColorType.RgbaF16;
                 case PixelFormat.R32G32B32A32F:
                     return SKColorType.RgbaF32;
-                default:
-                    break;
             }
-            return SKColorType.Unknown;
+            throw new UnsupportedPixelFormatException(format);
         }
     }
 }
