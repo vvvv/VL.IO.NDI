@@ -290,7 +290,6 @@
               </Pin>
               <Pin Id="U6bQ65xsG6MNSoAPVK76MF" Name="Output" Kind="OutputPin" />
             </Node>
-            <ControlPoint Id="AMVdNwMimmGNl9ls9XHBAd" Bounds="478,1010" />
             <Node Bounds="733,406,105,19" Id="QVIXanSIKEpNH6JIDmUrOp">
               <p:NodeReference LastCategoryFullName="Graphics.Skia.Paint" LastSymbolSource="VL.Skia.vl">
                 <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
@@ -575,30 +574,6 @@
               </p:Value>
             </Pad>
             <ControlPoint Id="Lrf7ZeFUPiaMq2cEiemiDV" Bounds="1069,110" />
-            <Node Bounds="476,917,76,19" Id="O0cGBwzTmcPN24mN5UIi5r">
-              <p:NodeReference LastCategoryFullName="Stride.Rendering" LastSymbolSource="VL.Stride.Windows.vl">
-                <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
-                <Choice Kind="ProcessAppFlag" Name="SkiaRenderer" />
-              </p:NodeReference>
-              <Pin Id="VqjvbiXeP76QdY2vvHSZIN" Name="Input" Kind="InputPin" />
-              <Pin Id="UHvW0hTsUuiQMRy0aa5LdF" Name="Space" Kind="InputPin" />
-              <Pin Id="QOPUVyPF1XeQZ0y4HKvd96" Name="Output" Kind="OutputPin" />
-            </Node>
-            <Node Bounds="476,960,125,19" Id="B6RqjEZic6IMOP9xhpsY01">
-              <p:NodeReference LastCategoryFullName="Stride" LastSymbolSource="VL.Stride.Engine.vl">
-                <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
-                <Choice Kind="ProcessAppFlag" Name="RenderTexture" />
-              </p:NodeReference>
-              <Pin Id="Hq14bKjmZJxLxGVtmzmn2l" Name="Input" Kind="InputPin" />
-              <Pin Id="AMOSwSyqygxNxPDUJLH4mM" Name="Size" Kind="InputPin" />
-              <Pin Id="Kru71m0m63ANMKmnicD4ot" Name="Render View" Kind="InputPin" />
-              <Pin Id="URCItRt77d2ObJSb9B4qm3" Name="Format" Kind="InputPin" DefaultValue="B8G8R8A8_UNorm_SRgb" />
-              <Pin Id="HjNSJP6Hd6BLKf8vrlan59" Name="Depth Format" Kind="InputPin" />
-              <Pin Id="Ut5nVjc0wABPFpyeaJD8Tk" Name="Clear Color" Kind="InputPin" />
-              <Pin Id="FOczsSXl8ogOUVyfFnJdzf" Name="Clear" Kind="InputPin" />
-              <Pin Id="UzFJrhzLJM9PTCviOv4TN1" Name="Color" Kind="OutputPin" />
-              <Pin Id="BEkSKXxJZnEQc1uSFNVYOl" Name="Depth" Kind="OutputPin" />
-            </Node>
             <ControlPoint Id="Vd30yjDkvq2LRNcPqrs3TW" Bounds="1342,110" />
             <Node Bounds="1342,167,34,19" Id="AzJONSP3SX4QdwJOmloNCH">
               <p:NodeReference LastCategoryFullName="Primitive.Int2" LastSymbolSource="CoreLibBasics.vl">
@@ -609,6 +584,7 @@
               <Pin Id="Vg8zZaWSlBnLfx28zEkVJW" Name="X" Kind="OutputPin" />
               <Pin Id="T2CCBgOAZTsPdXUbcMAUlk" Name="Y" Kind="OutputPin" />
             </Node>
+            <ControlPoint Id="F14MWDDjzqXLnNixhQrgRk" Bounds="477,953" />
           </Canvas>
           <ProcessDefinition Id="AMaL43kh6reMQm4hLqDQ6M">
             <Fragment Id="JeSjzUHy1gSQEPyuDoAB9g" Patch="JWDuSmT47EvLo3wPMAW1ck" Enabled="true" />
@@ -631,7 +607,6 @@
           <Link Id="DnaWK6brHCQMRx3BFh0ECk" Ids="VgOkRQghC98L6Aoj0V77bp,ACt6exCgXOMOF16Gv9B0X6" />
           <Link Id="L7YmADjTpiqLNSgPO6HSvu" Ids="U6bQ65xsG6MNSoAPVK76MF,UgEuj9SbNXfQXE9GOqOdlk" />
           <Link Id="AFhv4eopJl2Ov7FVeiqlyk" Ids="VgOkRQghC98L6Aoj0V77bp,BI5Xudw0fpdMvg0x3dtK9z" />
-          <Link Id="LYXdwTIJbnMPMsEkMuFA7i" Ids="AMVdNwMimmGNl9ls9XHBAd,NRmaXfDPEbPOYXdYArGZh0" IsHidden="true" />
           <Link Id="QltXEfPCaaYPz0x4QwIgcR" Ids="MCdjPi9m5kMNjvYFRXJG09,Us1C2IAyIqMP2BhgBecSPU" />
           <Link Id="O31GlMrDZ4ALsCNC6yhyfa" Ids="ASUaW8bseGPPl8GyrytkW1,TyzHQw2xE5YLpHyElJsGrD" />
           <Link Id="PpsEdjeBEKRL0Urw8Jbl08" Ids="MCdjPi9m5kMNjvYFRXJG09,R7nM3beVV7PLD0ewUzUl3g" />
@@ -673,16 +648,14 @@
           <Link Id="HniVmjOBZ7jOoEMl13jeIf" Ids="Lrf7ZeFUPiaMq2cEiemiDV,L0uJvUt7oxMOl7a7S09rZ3" />
           <Link Id="TXbLk7aWz3TNspyghqmNUc" Ids="D9iJCiuUuKeP3C512JuqKc,Lrf7ZeFUPiaMq2cEiemiDV" IsHidden="true" />
           <Link Id="Oor9ykWvVrePd8aXBgkme9" Ids="Lrf7ZeFUPiaMq2cEiemiDV,Jyw49BZ1NlQPnWufsRv1Yd" />
-          <Link Id="LmRD0Nhwb7aNF9qRj9A5AH" Ids="CULaKbM0aryLVoc6G4BQ6r,VqjvbiXeP76QdY2vvHSZIN" />
-          <Link Id="DxiJZEhyJq0OQIp3ftPDLJ" Ids="QOPUVyPF1XeQZ0y4HKvd96,Hq14bKjmZJxLxGVtmzmn2l" />
           <Link Id="UNQMjBDriRtOSGwkZRYzjX" Ids="Vd30yjDkvq2LRNcPqrs3TW,KI0n70EY0A4NC7bXb1XcUQ" />
           <Link Id="KQdN66blirOQP1flwd2ry5" Ids="Jz4xGSPP0ujPmwWuO1TsY3,Vd30yjDkvq2LRNcPqrs3TW" IsHidden="true" />
-          <Link Id="HSD59kWtJMJOh43QZX0r29" Ids="Vd30yjDkvq2LRNcPqrs3TW,AMOSwSyqygxNxPDUJLH4mM" />
           <Link Id="KMqDfdtFhCDMmq0PUDMRxn" Ids="Vg8zZaWSlBnLfx28zEkVJW,MSzyDeG6qdQOtBGs7pDc40" />
           <Link Id="RLyYG4W0sR4O9BBHbOa1j2" Ids="T2CCBgOAZTsPdXUbcMAUlk,IPbXrRzi6EsNzR41zZKPyY" />
-          <Link Id="Lnic08RhtlTNA1vDkkBgd7" Ids="UzFJrhzLJM9PTCviOv4TN1,AMVdNwMimmGNl9ls9XHBAd" />
           <Link Id="TCqgXQExLbgMyBIvLHB6do" Ids="Vg8zZaWSlBnLfx28zEkVJW,RpPROVnHSN6NqSMlh6TaFG" />
           <Link Id="Mow42CWIM0lLDogLUAWQO2" Ids="T2CCBgOAZTsPdXUbcMAUlk,OQepEYeJt3xMS1bYPKLvdE" />
+          <Link Id="QaSc0svGToNNYg6kGxlG0f" Ids="CULaKbM0aryLVoc6G4BQ6r,F14MWDDjzqXLnNixhQrgRk" />
+          <Link Id="D58lOtUeXd1PewJh9MmZpo" Ids="F14MWDDjzqXLnNixhQrgRk,E3JEzRPIYv9PLQ1EHNdDiW" IsHidden="true" />
           <Patch Id="JWDuSmT47EvLo3wPMAW1ck" Name="Create" />
           <Patch Id="Tvn8QXFzhcrMxtiTgVXMbA" Name="Update">
             <Pin Id="NpweTohKiyfLnCSbAddxg1" Name="ColorBars" Kind="InputPin" Bounds="562,798" />
@@ -690,7 +663,7 @@
             <Pin Id="PbiiV8zCdIBNRQFsXFrS1l" Name="Lines" Kind="InputPin" Bounds="691,814" />
             <Pin Id="D9iJCiuUuKeP3C512JuqKc" Name="Period" Kind="InputPin" Bounds="453,195" />
             <Pin Id="Jz4xGSPP0ujPmwWuO1TsY3" Name="Size" Kind="InputPin" Bounds="1342,110" />
-            <Pin Id="NRmaXfDPEbPOYXdYArGZh0" Name="Texture" Kind="OutputPin" Bounds="361,793" />
+            <Pin Id="E3JEzRPIYv9PLQ1EHNdDiW" Name="Output" Kind="OutputPin" Bounds="398,981" />
           </Patch>
         </Patch>
       </Node>

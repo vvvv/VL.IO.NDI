@@ -23,6 +23,7 @@ namespace VL.IO.NDI
                 {
                     handle.Dispose();
                     imageData.Dispose();
+                    pixmap.Dispose();
                 });
             });
         }
