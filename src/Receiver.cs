@@ -32,8 +32,11 @@ namespace VL.IO.NDI
         private AudioOut audioOutSignal = new AudioOut();
 
 
-        // a pointer to our unmanaged NDI receiver instance
-        private IntPtr _recvInstancePtr = IntPtr.Zero;
+        // our unmanaged NDI receiver instance
+        private IResourceProvider<IntPtr> _recvInstanceProvider;
+        private IResourceHandle<IntPtr> _recvInstanceHandle;
+
+        private IntPtr _recvInstancePtr => _recvInstanceHandle != null ? _recvInstanceHandle.Resource : default;
 
         // a thread to receive frames on so that the UI is still functional
         private Thread _receiveThread = null;
@@ -435,11 +438,8 @@ namespace VL.IO.NDI
                 }
 
                 // Destroy the receiver
-                if (_recvInstancePtr != IntPtr.Zero)
-                {
-                    NDIlib.recv_destroy(_recvInstancePtr);
-                    _recvInstancePtr = IntPtr.Zero;
-                }
+                _recvInstanceHandle?.Dispose();
+                _recvInstanceHandle = null;
 
                 // Not required, but "correct". (see the SDK documentation)
                 NDIlib.destroy();
@@ -518,11 +518,13 @@ namespace VL.IO.NDI
             };
 
             // create a new instance connected to this source
-            _recvInstancePtr = NDIlib.recv_create_v3(ref recvDescription);
+            _recvInstanceProvider = ResourceProvider.Return(NDIlib.recv_create_v3(ref recvDescription), NDIlib.recv_destroy)
+                .ShareInParallel();
+            _recvInstanceHandle = _recvInstanceProvider.GetHandle();
 
             // free the memory we allocated with StringToUtf8
             Marshal.FreeHGlobal(source_t.p_ndi_name);
-            Marshal.FreeHGlobal(recvDescription.p_ndi_recv_name = UTF.StringToUtf8(ReceiverName));
+            Marshal.FreeHGlobal(recvDescription.p_ndi_recv_name);
 
             // did it work?
             System.Diagnostics.Debug.Assert(_recvInstancePtr != IntPtr.Zero, "Failed to create NDI receive instance.");
@@ -558,10 +560,11 @@ namespace VL.IO.NDI
             _exitThread = false;
 
             // Destroy the receiver
-            NDIlib.recv_destroy(_recvInstancePtr);
+            _recvInstanceHandle?.Dispose();
+            _recvInstanceHandle = null;
 
             // set it to a safe value
-            _recvInstancePtr = IntPtr.Zero;
+            _recvInstanceProvider = null;
 
             // set function status to defaults
             IsPtz = false;
@@ -585,9 +588,6 @@ namespace VL.IO.NDI
                 NDIlib.recv_set_tally(_recvInstancePtr, ref tallyState);
             }
         }
-
-        [DllImport("msvcrt.dll", EntryPoint = "memcpy", CallingConvention = CallingConvention.Cdecl, SetLastError = false)]
-        public unsafe static extern IntPtr memcpy(byte* dest, byte* src, int count);
 
         // the receive thread runs though this loop until told to exit
         void ReceiveThreadProc()
@@ -670,12 +670,16 @@ namespace VL.IO.NDI
                         }
 
                         var image = videoFrame.p_data.ToImage(bufferSize, xres, yres, pixFmt, videoFrame.FourCC.ToString());
+                        var receiverHandle = _recvInstanceProvider.GetHandle();
                         var imageProvider = ResourceProvider.Return(image, i =>
                         {
                             image.Dispose();
 
                             // free frames that were received AFTER use!
-                            NDIlib.recv_free_video_v2(_recvInstancePtr, ref videoFrame);
+                            NDIlib.recv_free_video_v2(receiverHandle.Resource, ref videoFrame);
+
+                            // Release receiver
+                            receiverHandle.Dispose();
                         }).ShareInParallel();
 
                         // Release the previous frame and hold on to this one

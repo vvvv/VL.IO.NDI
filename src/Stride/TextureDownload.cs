@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Reactive.Disposables;
+using System.Reactive.Subjects;
 using VL.Core;
 using VL.Lib.Basics.Imaging;
 using VL.Lib.Basics.Resources;
@@ -16,6 +17,7 @@ namespace VL.IO.NDI
     {
         private readonly Queue<Texture> textureDownloads = new Queue<Texture>();
         private readonly Stopwatch stopwatch = new Stopwatch();
+        private readonly Subject<IResourceProvider<IImage>> imageStream = new Subject<IResourceProvider<IImage>>();
         private readonly ServiceRegistry serviceRegistry;
         private readonly CompositeDisposable subscriptions;
         private readonly SerialDisposable texturePoolSubscription;
@@ -35,7 +37,7 @@ namespace VL.IO.NDI
 
         public Texture Texture { get; set; }
 
-        public IResourceProvider<IImage> ImageProvider { get; private set; }
+        public IObservable<IResourceProvider<IImage>> ImageStream => imageStream;
 
         public bool DownloadAsync { get; set; } = true;
 
@@ -87,12 +89,15 @@ namespace VL.IO.NDI
                     texturePool.Return(textureDownloads.Dequeue());
 
                     // Setup the new image resource
-                    ImageProvider = ResourceProvider.Return(image, i => imagePool.Return(i))
+                    var imageProvider = ResourceProvider.Return(image, i => imagePool.Return(i))
                         .BindNew(i => i.DataPointer.ToImage(i.TotalSizeInBytes, i.Description.Width, i.Description.Height, ToPixelFormat(i.Description.Format), i.Description.Format.ToString()))
-                        .SharePooled(delayDisposalInMilliseconds: 0, resetResource: null);
+                        .ShareInParallel();
 
                     // Subscribe to our own provider to ensure the image is returned if no one else is using it
-                    imageSubscription.Disposable = ImageProvider.GetHandle();
+                    imageSubscription.Disposable = imageProvider.GetHandle();
+
+                    // Push it downstream
+                    imageStream.OnNext(imageProvider);
 
                     ElapsedTime = stopwatch.Elapsed;
                 }

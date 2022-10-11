@@ -17,10 +17,13 @@ namespace VL.IO.NDI
 {
     public class Sender : IDisposable
     {
+        private readonly Task _sendTask;
+        private readonly BlockingCollection<IResourceHandle<IImage>> _videoFrames = new BlockingCollection<IResourceHandle<IImage>>(boundedCapacity: 1);
+        private readonly SerialDisposable _imageStreamSubscription = new SerialDisposable();
+
         private IntPtr _sendInstancePtr = IntPtr.Zero;
         private NDIlib.tally_t _ndiTally = new NDIlib.tally_t();
-        private readonly Task _sendTask;
-        private BlockingCollection<IResourceHandle<IImage>> _videoFrames = new BlockingCollection<IResourceHandle<IImage>>(boundedCapacity: 1);
+        private IObservable<IResourceProvider<IImage>> _imageStream;
 
         public unsafe Sender(String sourceName, bool clockVideo=true, bool clockAudio=false, String[] groups = null, String failoverName=null)
         {
@@ -212,6 +215,24 @@ namespace VL.IO.NDI
             return NDIlib.send_get_no_connections(_sendInstancePtr, (uint)waitMs);
         }
 
+        public IObservable<IResourceProvider<IImage>> ImageStream
+        {
+            get => _imageStream;
+            set
+            {
+                if (value != _imageStream)
+                {
+                    _imageStream = value;
+                    _imageStreamSubscription.Disposable = value?.Subscribe(image =>
+                    {
+                        var handle = image?.GetHandle();
+                        if (handle != null)
+                            _videoFrames.Add(handle);
+                    });
+                }
+            }
+        }
+
         public void Send(VideoFrame videoFrame)
         {
             Send(ref videoFrame._ndiVideoFrame);
@@ -264,6 +285,7 @@ namespace VL.IO.NDI
             {
                 if (_sendInstancePtr != IntPtr.Zero)
                 {
+                    _imageStreamSubscription.Dispose();
                     _videoFrames.CompleteAdding();
                     if (_sendTask != null)
                         _sendTask.Wait();

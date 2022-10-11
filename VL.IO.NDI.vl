@@ -359,10 +359,10 @@
                   <Pin Id="V22rjSUwFWdPpNIm1GRlg9" Name="Output" Kind="StateOutputPin" />
                 </Node>
                 <Node Bounds="225,622,109,26" Id="I1RJ7KR8oGIOwlespkziBn">
-                  <p:NodeReference LastCategoryFullName="NewTek.NDI.Receiver" LastSymbolSource="VL.IO.NDI.vl">
+                  <p:NodeReference LastCategoryFullName="IO.NDI.Receiver" LastSymbolSource="VL.IO.NDI.vl">
                     <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
                     <Choice Kind="OperationCallFlag" Name="SetConnectedSource" />
-                    <CategoryReference Name="Receiver" NeedsToBeDirectParent="true" />
+                    <CategoryReference Kind="ClassType" Name="Receiver" NeedsToBeDirectParent="true" />
                   </p:NodeReference>
                   <Pin Id="IXr3jxbxr7FLYDAyCk11vJ" Name="Input" Kind="InputPin" />
                   <Pin Id="QUt1IKift2dNMtaTMwHuM6" Name="Source" Kind="InputPin" />
@@ -2081,12 +2081,12 @@
               <p:NodeReference LastCategoryFullName="VL.IO.NDI.Sender" LastSymbolSource="VL.IO.NDI.dll">
                 <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
                 <CategoryReference Kind="AssemblyCategory" Name="Sender" NeedsToBeDirectParent="true" />
-                <Choice Kind="OperationCallFlag" Name="SendAsync" />
+                <Choice Kind="OperationCallFlag" Name="SetImageStream" />
               </p:NodeReference>
               <Pin Id="TtsIvyXNqIlLBYp1neokE1" Name="Input" Kind="StateInputPin" />
-              <Pin Id="FlhrI0PenG1QEzT7xIRkSs" Name="Video Frame" Kind="InputPin" />
-              <Pin Id="R61GbXF1zo8LcGesnub6j2" Name="Apply" Kind="InputPin" />
+              <Pin Id="RUM8YZrdHGOQYKh3JR4Bk3" Name="Value" Kind="InputPin" />
               <Pin Id="NGRUoHIwBl0L7HmMOjz4tx" Name="Output" Kind="StateOutputPin" />
+              <Pin Id="R61GbXF1zo8LcGesnub6j2" Name="Apply" Kind="InputPin" />
             </Node>
             <Node Bounds="1497,534,37,19" Id="Km5TdquBJYAPI0bXa9Txzu">
               <p:NodeReference LastCategoryFullName="Primitive.Boolean" LastSymbolSource="CoreLibBasics.vl">
@@ -2262,7 +2262,6 @@
           <Link Id="JRSPThx2jNQPGqVB93ouWA" Ids="M0BzLTIuWEBPh2xhCqowaA,R61GbXF1zo8LcGesnub6j2" />
           <Link Id="POcmTcHbKRvQQsDYzfVNQw" Ids="GlWiwLClV7XM8vUlErAdot,VQExMPxfjAINi5enSQMywl" IsHidden="true" />
           <Link Id="AzACUYsSAx3QdQB2Dvu5rK" Ids="VQExMPxfjAINi5enSQMywl,JwMog2FIxRWOyNfaNUjvd1" />
-          <Link Id="F8c65BDA1AmLMyl6dLvtJN" Ids="UnvaC35lsKoMtQtWsaWw6R,FlhrI0PenG1QEzT7xIRkSs" />
           <Link Id="RWlsKUp738kLbZNId8FYgc" Ids="AaVZ1k9C0KINfFvSc6RvUG,UnvaC35lsKoMtQtWsaWw6R" IsHidden="true" />
           <Slot Id="SW7IsYy02goOzedhzeB3JU" Name="is Connected" />
           <Link Id="Ai5A37ZTHUDLUevaSlZIYy" Ids="TrcJpeDjDM7LGqEpFYvBHd,VFP03tF5RqrMVnGapzZaOb" />
@@ -2280,6 +2279,7 @@
             <Fragment Id="SpTq91fdq1ePWIxP1YAztS" Patch="IM8EBGSCs58NOFQMAxdh3P" Enabled="true" />
             <Fragment Id="B7w5QvxjulFNVYpKerAO4C" Patch="Q90iMytwFM6PiIw6BoTLVV" Enabled="true" />
           </ProcessDefinition>
+          <Link Id="BJUe0o7csHaOIzRpie5cn6" Ids="UnvaC35lsKoMtQtWsaWw6R,RUM8YZrdHGOQYKh3JR4Bk3" />
           <Patch Id="KFP4jXWliClN2mZi4Jtsnr" Name="Create" ParticipatingElements="Q4driSLLnjfLpTlVeZB6dx,Le5wQ3IKdKQMe740pp5Duh,O9Y5rdObZ2iMMDo9GapEAG">
             <Pin Id="GgnVBLfJuzxOQYmplHCh97" Name="Source Name" Kind="InputPin" DefaultValue="vvvv" />
           </Patch>
@@ -2845,11 +2845,12 @@
             <Node Bounds="442,498,81,26" Id="RYd5K3H3w4iLLloqJcdsHm">
               <p:NodeReference LastCategoryFullName="VL.IO.NDI.TextureDownload" LastSymbolSource="VL.IO.NDI.dll">
                 <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
-                <Choice Kind="OperationCallFlag" Name="ImageProvider" />
+                <Choice Kind="OperationCallFlag" Name="ImageStream" />
+                <CategoryReference Kind="AssemblyCategory" Name="TextureDownload" NeedsToBeDirectParent="true" />
               </p:NodeReference>
               <Pin Id="TQQYnwNJHggPiEUG3jyQp9" Name="Input" Kind="StateInputPin" />
               <Pin Id="P07krOLOFcyPn8YuPAOeHt" Name="Output" Kind="StateOutputPin" />
-              <Pin Id="Txp5AcYVC3dQF9ixGcL78Y" Name="Image Provider" Kind="OutputPin" />
+              <Pin Id="AFTqWgVqwAFQGQa00ZaHFK" Name="Image Stream" Kind="OutputPin" />
             </Node>
             <ControlPoint Id="MEt5IlvuvE5P5CZ7JoEKtO" Bounds="625,601" />
             <ControlPoint Id="DOsHjzrBphgLSfQx7kvIo7" Bounds="726,321" />
@@ -2921,7 +2922,6 @@
           <Link Id="BkXWzb323V4NSeDCiNIvuK" Ids="TgRMwTwGupvN8oUxF61V1J,BM9JTrQ8QhNLCxgos8FFid" />
           <Link Id="T0o2BtH0hV5LzSWDLIkmRj" Ids="Mbmmf4kVJspNJr1PfMy0Lh,TQQYnwNJHggPiEUG3jyQp9" />
           <Link Id="MB4pEMSX5UmNPKPLkclVdO" Ids="P07krOLOFcyPn8YuPAOeHt,QDoa3Hx2laqPAUyQf95XAy" />
-          <Link Id="DYzb7eaMGeqNVtNLy9QmRS" Ids="Txp5AcYVC3dQF9ixGcL78Y,MEt5IlvuvE5P5CZ7JoEKtO" />
           <Link Id="FE6HQBxBmBNOCObIMZKJZc" Ids="MEt5IlvuvE5P5CZ7JoEKtO,VGLAuRjOgr3NjRkSpm751o" IsHidden="true" />
           <Link Id="FA2WxCD2J8XLoWY9MFhIOG" Ids="DOsHjzrBphgLSfQx7kvIo7,JTVdt47kafSPzEuUGQFfsj" />
           <Link Id="KHiTAtTFBmgPSS1YrUVbW7" Ids="UymBKrX2CgbPePHW9KArYd,DOsHjzrBphgLSfQx7kvIo7" IsHidden="true" />
@@ -2943,6 +2943,7 @@
           <Link Id="NnqZo7041gSLAAbQY7ZOLo" Ids="Id5QHkbErwxQOEEYsZa6NZ,Bi2XEW8nx62O0CedWXZZSG" />
           <Link Id="Q4ANmUqUGj3O9Mkxsy63fP" Ids="OJ4AYPb1la7OkaRa4Zz8pp,LOu7kgNBpinM6Dew6PE2fE" />
           <Link Id="Ro2EZWjUJIjQNqbTTYT2u2" Ids="FJEorJLD2NXPZ98KtjdsLk,QEVd919NCPdMgGJMdOOe62" />
+          <Link Id="FY8uMrGiYEFNIAAFZK9A85" Ids="AFTqWgVqwAFQGQa00ZaHFK,MEt5IlvuvE5P5CZ7JoEKtO" />
         </Patch>
       </Node>
       <!--
@@ -3044,6 +3045,78 @@
           <Link Id="OmGjW2bb2ijLy2Cl8RxcZd" Ids="IvTy9trkYoLL66vgkG1mhw,QKuZch3OE5ONUy1yuSQEx4" />
         </Patch>
       </Node>
+      <!--
+
+    ************************ SKImageUpload ************************
+
+-->
+      <Node Name="SKImageUpload" Bounds="770,1086" Id="VduvXVYcG9uP2Kp3XPuaLq">
+        <p:NodeReference LastCategoryFullName="Primitive" LastSymbolSource="builtin">
+          <Choice Kind="ContainerDefinition" Name="Process" />
+        </p:NodeReference>
+        <Patch Id="UmggzEWbipELEXQFeqV3rq">
+          <Canvas Id="TAWC7VyILEqLKrgNB2LeZp" CanvasType="Group">
+            <Node Bounds="442,359,81,26" Id="LCf9HTxzPPMNJiBXE6fc2V">
+              <p:NodeReference LastCategoryFullName="VL.IO.NDI.ImageUpload" LastSymbolSource="VL.IO.NDI.dll">
+                <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
+                <Choice Kind="OperationCallFlag" Name="SetImageStream" />
+                <CategoryReference Kind="AssemblyCategory" Name="ImageUpload" NeedsToBeDirectParent="true" />
+              </p:NodeReference>
+              <Pin Id="UQWSrwr6YVyLTahYKKLpTH" Name="Input" Kind="StateInputPin" />
+              <Pin Id="K3uUDPzXzt7MqsokZgq1td" Name="Value" Kind="InputPin" />
+              <Pin Id="P4w5g2BijxaMYEqypSf0lz" Name="Output" Kind="StateOutputPin" />
+            </Node>
+            <Node Bounds="442,498,81,26" Id="JIBG5esINxvPu2cYYHRmRK">
+              <p:NodeReference LastCategoryFullName="VL.IO.NDI.ImageUpload" LastSymbolSource="VL.IO.NDI.dll">
+                <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
+                <CategoryReference Kind="AssemblyCategory" Name="ImageUpload" />
+                <Choice Kind="OperationCallFlag" Name="Provider" />
+              </p:NodeReference>
+              <Pin Id="ERbLFALD9c3PszyIoCeU54" Name="Input" Kind="StateInputPin" />
+              <Pin Id="Ne1GkS5cADWM7heiDrKTC3" Name="Output" Kind="StateOutputPin" />
+              <Pin Id="AlIzrEcNqnRLjnWrYWZ5UT" Name="Provider" Kind="OutputPin" />
+            </Node>
+            <ControlPoint Id="RWuFT4rxpymMaRTyvZNdzp" Bounds="625,601" />
+            <ControlPoint Id="HDvUKJ1znfVO3w6x8uP6H3" Bounds="635,246" />
+            <Node Bounds="332,229,81,26" Id="QFTS1g50kWzPht6XKGG0ga">
+              <p:NodeReference LastCategoryFullName="VL.IO.NDI.ImageUpload" LastSymbolSource="VL.IO.NDI.dll">
+                <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
+                <Choice Kind="OperationCallFlag" Name="Create" />
+                <CategoryReference Kind="AssemblyCategory" Name="ImageUpload" NeedsToBeDirectParent="true" />
+              </p:NodeReference>
+              <Pin Id="A5Gl7mhoZ8NPGwrmgFf8Z4" Name="Output" Kind="StateOutputPin" />
+            </Node>
+            <Pad Id="OXYdibgfGCOPe7G8COIQgE" Bounds="334,273" />
+            <Node Bounds="291,332" Id="NiZCEl1xLk9OvVoQFKxUZb">
+              <p:NodeReference LastCategoryFullName="Primitive.IDisposable" LastSymbolSource="CoreLibBasics.vl">
+                <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
+                <FullNameCategoryReference ID="Primitive.IDisposable" />
+                <Choice Kind="OperationCallFlag" Name="Dispose" />
+              </p:NodeReference>
+              <Pin Id="CUpWYGhtDeOLbF3UfOO9m0" Name="Input" Kind="StateInputPin" />
+              <Pin Id="QyGOC6PZRnkOciG7MyoHtr" Name="Output" Kind="StateOutputPin" />
+            </Node>
+          </Canvas>
+          <ProcessDefinition Id="CPtraXAVwphM70P7gHAwfL">
+            <Fragment Id="Bom8zrDr7loMuCjY56Q5un" Patch="FymmRIByGevLDRU1FEyMek" Enabled="true" />
+            <Fragment Id="LJ7B27LaD4uQNVFUAIixJ8" Patch="AUsvjygpKioOZTA9PvNXwy" Enabled="true" />
+          </ProcessDefinition>
+          <Link Id="EzMAafG1ny4Prby4X3U9J9" Ids="A5Gl7mhoZ8NPGwrmgFf8Z4,OXYdibgfGCOPe7G8COIQgE" />
+          <Link Id="KqNGsISiobTMjtvdP8jVbN" Ids="RWuFT4rxpymMaRTyvZNdzp,KmlAoOYHCG9NwyuBxHd3pK" IsHidden="true" />
+          <Link Id="PlK1kkLYFFNLxJwJIyH5am" Ids="HDvUKJ1znfVO3w6x8uP6H3,K3uUDPzXzt7MqsokZgq1td" />
+          <Link Id="JsYEvliBsmrPOb3b064BTX" Ids="E9XOrAERPCUOUawpYbzBDe,HDvUKJ1znfVO3w6x8uP6H3" IsHidden="true" />
+          <Patch Id="FymmRIByGevLDRU1FEyMek" Name="Create" ParticipatingElements="QFTS1g50kWzPht6XKGG0ga" />
+          <Patch Id="AUsvjygpKioOZTA9PvNXwy" Name="Update">
+            <Pin Id="E9XOrAERPCUOUawpYbzBDe" Name="Input" Kind="InputPin" Bounds="635,245" />
+            <Pin Id="KmlAoOYHCG9NwyuBxHd3pK" Name="Output" Kind="OutputPin" Bounds="595,573" />
+          </Patch>
+          <Link Id="OXhdqjIedTGOQhyDx12ru0" Ids="OXYdibgfGCOPe7G8COIQgE,UQWSrwr6YVyLTahYKKLpTH" />
+          <Link Id="J4Ecsz6wF7qPNhXzIHIu41" Ids="OXYdibgfGCOPe7G8COIQgE,CUpWYGhtDeOLbF3UfOO9m0" />
+          <Patch Id="AuoTXa5jg24MDrm2LUfAgw" Name="Dispose" ParticipatingElements="NiZCEl1xLk9OvVoQFKxUZb" />
+          <Link Id="UEpPYRpneEkLG2X9v9lxwi" Ids="P4w5g2BijxaMYEqypSf0lz,ERbLFALD9c3PszyIoCeU54" />
+          <Link Id="Tw574p5ltoiNcCxxHPTs1u" Ids="AlIzrEcNqnRLjnWrYWZ5UT,RWuFT4rxpymMaRTyvZNdzp" />
+        </Patch>
+      </Node>
     </Canvas>
     <!--
 
@@ -3067,7 +3140,7 @@
     </Node>
   </Patch>
   <PlatformDependency Id="LkvwleFmgyILglvCd3xlo8" Location="System.Collections.Concurrent" />
-  <PlatformDependency Id="PbBDxB1VqidPbC5834fuSg" Location="./lib/netstandard2.0/VL.IO.NDI.dll" />
+  <PlatformDependency Id="PbBDxB1VqidPbC5834fuSg" Location="./lib/net472/VL.IO.NDI.dll" />
   <NugetDependency Id="ME1qVyIaycMPxPRpbfPJie" Location="VL.Audio" Version="0.2.23-alpha" />
   <NugetDependency Id="MXkgfRvHR8mLi2Lo4UP3Uz" Location="VL.Skia" Version="2021.4.10" />
   <NugetDependency Id="Nxw58NhCoslNV6E9s0Gelh" Location="VL.Stride.Runtime" Version="2021.4.10" />

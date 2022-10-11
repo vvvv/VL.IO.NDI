@@ -10,7 +10,7 @@ namespace VL.IO.NDI
 {
     public static class SkiaUtils
     {
-        public static unsafe IResourceProvider<SKImage> ToSkia(this IResourceProvider<IImage> imageProvider)
+        public static unsafe IResourceProvider<SKImage> ToSKImage(this IResourceProvider<IImage> imageProvider)
         {
             return imageProvider.BindNew(image =>
             {
