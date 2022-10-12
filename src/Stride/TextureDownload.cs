@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Reactive.Disposables;
 using System.Reactive.Subjects;
+using System.Threading;
 using VL.Core;
 using VL.Lib.Basics.Imaging;
 using VL.Lib.Basics.Resources;
@@ -15,6 +16,7 @@ namespace VL.IO.NDI
 {
     public sealed class TextureDownload : RendererBase
     {
+        private readonly SynchronizationContext synchronizationContext = SynchronizationContext.Current;
         private readonly Queue<Texture> textureDownloads = new Queue<Texture>();
         private readonly Stopwatch stopwatch = new Stopwatch();
         private readonly Subject<IResourceProvider<IImage>> imageStream = new Subject<IResourceProvider<IImage>>();
@@ -79,19 +81,17 @@ namespace VL.IO.NDI
             {
                 // Download recently staged
                 var stagedTexture = textureDownloads.Peek();
-                var imagePool = GetImagePool(stagedTexture);
-                var image = imagePool.Rent();
-                var pixelBuffer = image.PixelBuffer[0, 0];
-                var dataPointer = new DataPointer(pixelBuffer.DataPointer, pixelBuffer.BufferStride);
-                if (stagedTexture.GetData(context.CommandList, stagedTexture, dataPointer, 0, 0, doNotWait: DownloadAsync))
+                var doNotWait = DownloadAsync && textureDownloads.Count < 4;
+                var mappedResource = context.CommandList.MapSubresource(stagedTexture, 0, Stride.Graphics.MapMode.Read, doNotWait);
+                var data = mappedResource.DataBox;
+                if (!data.IsEmpty)
                 {
-                    // Dequeue and return to the pool
-                    texturePool.Return(textureDownloads.Dequeue());
+                    // Dequeue
+                    textureDownloads.Dequeue();
 
                     // Setup the new image resource
-                    var imageProvider = ResourceProvider.Return(image, i => imagePool.Return(i))
-                        .BindNew(i => i.DataPointer.ToImage(i.TotalSizeInBytes, i.Description.Width, i.Description.Height, ToPixelFormat(i.Description.Format), i.Description.Format.ToString()))
-                        .ShareInParallel();
+                    var image = data.DataPointer.ToImage(data.SlicePitch, texture.Width, texture.Height, ToPixelFormat(texture.Format), texture.Format.ToString());
+                    var imageProvider = ResourceProvider.Return(image, ReleaseImage).ShareInParallel();
 
                     // Subscribe to our own provider to ensure the image is returned if no one else is using it
                     imageSubscription.Disposable = imageProvider.GetHandle();
@@ -100,10 +100,18 @@ namespace VL.IO.NDI
                     imageStream.OnNext(imageProvider);
 
                     ElapsedTime = stopwatch.Elapsed;
-                }
-                else
-                {
-                    imagePool.Return(image);
+
+                    void ReleaseImage(IntPtrImage i)
+                    {
+                        if (SynchronizationContext.Current != synchronizationContext)
+                            synchronizationContext.Post(x => ReleaseImage((IntPtrImage)x), i);
+                        else
+                        {
+                            i.Dispose();
+                            context.CommandList.UnmapSubresource(mappedResource);
+                            texturePool.Return(stagedTexture);
+                        }
+                    }
                 }
             }
 
@@ -133,12 +141,6 @@ namespace VL.IO.NDI
         {
             return TexturePool.Get(graphicsDevice, texture.Description.ToStagingDescription())
                 .Subscribe(texturePoolSubscription);
-        }
-
-        private ImagePool GetImagePool(Texture texture)
-        {
-            return ImagePool.Get(texture.Description)
-                .Subscribe(imagePoolSubscription);
         }
 
         protected override void Destroy()

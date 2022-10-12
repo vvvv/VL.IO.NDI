@@ -148,7 +148,7 @@ namespace VL.IO.NDI
                     void ReleaseImage(IntPtrImage i)
                     {
                         if (SynchronizationContext.Current != synchronizationContext)
-                            synchronizationContext.Post(x => ReleaseImage((IntPtrImage)i), i);
+                            synchronizationContext.Post(x => ReleaseImage((IntPtrImage)x), i);
                         else
                         {
                             i.Dispose();
@@ -238,6 +238,9 @@ namespace VL.IO.NDI
             imageStream.Dispose();
             imageSubscription.Dispose();
             texturePoolSubscription.Dispose();
+
+            while (textureDownloads.Count > 0)
+                textureDownloads.Dequeue().Dispose();
 
             renderTarget?.Dispose();
             surface?.Dispose();
