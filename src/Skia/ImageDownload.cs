@@ -1,16 +1,14 @@
 ﻿using SharpDX;
 using SharpDX.Direct3D11;
 using SkiaSharp;
-using Stride.Core.Mathematics;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
 using System.Reactive.Subjects;
-using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
-using System.Runtime.Remoting.Contexts;
+using System.Threading;
 using VL.Lib.Basics.Imaging;
 using VL.Lib.Basics.Resources;
 using VL.Skia;
@@ -23,12 +21,17 @@ namespace VL.IO.NDI
         private static readonly IRefCounter<SKImage> refCounter = RefCounting.GetRefCounter<SKImage>();
         private static readonly IObservable<IResourceProvider<IImage>> emptyObservable = Observable.Empty<IResourceProvider<IImage>>();
 
+        // 2021.4.11 comes with crucial fix that
+        private static readonly bool isFastDownloadSupported = VL.Core.VersionUtils.ParseLanguageVersion(VL.Core.VersionUtils.FullVersionString) >= new Version(2021, 4, 11);
+
+        private readonly SynchronizationContext synchronizationContext = SynchronizationContext.Current;
         private readonly Queue<Texture2D> textureDownloads = new Queue<Texture2D>();
         private readonly Subject<IResourceProvider<IImage>> imageStream = new Subject<IResourceProvider<IImage>>();
         private readonly SerialDisposable imageSubscription = new SerialDisposable();
         private readonly SerialDisposable texturePoolSubscription = new SerialDisposable();
         private readonly RenderContext renderContext;
-        private readonly EglContext eglContext;
+
+        // Nullable
         private readonly Device device;
         private Texture2D renderTarget;
         private EglSurface eglSurface;
@@ -40,9 +43,9 @@ namespace VL.IO.NDI
         public ImageDownload()
         {
             renderContext = RenderContext.ForCurrentThread();
-            eglContext = renderContext.EglContext;
+            var eglContext = renderContext.EglContext;
             if (eglContext.Dislpay.TryGetD3D11Device(out var devicePtr))
-                device = new SharpDX.Direct3D11.Device(devicePtr);
+                device = new Device(devicePtr);
         }
 
         public IObservable<IResourceProvider<IImage>> Update(SKImage image)
@@ -51,7 +54,7 @@ namespace VL.IO.NDI
                 return emptyObservable;
 
             // Not working :( Output is black
-            if (device != null)
+            if (isFastDownloadSupported && device != null)
                 DownloadWithStagingTexture(image);
             else
                 DownloadWithRasterImage(image);
@@ -83,7 +86,7 @@ namespace VL.IO.NDI
             };
 
             var stagingDescription = description;
-            stagingDescription.CpuAccessFlags = CpuAccessFlags.Read | CpuAccessFlags.Write;
+            stagingDescription.CpuAccessFlags = CpuAccessFlags.Read;
             stagingDescription.BindFlags = BindFlags.None;
             stagingDescription.Usage = ResourceUsage.Staging;
             stagingDescription.OptionFlags = ResourceOptionFlags.None;
@@ -99,16 +102,13 @@ namespace VL.IO.NDI
                     renderTarget?.Dispose();
 
                     renderTarget = new Texture2D(device, description);
-                    //eglSurface = eglContext.CreateSurfaceFromClientBuffer(renderTarget.NativePointer);
 
+                    //eglSurface = eglContext.CreateSurfaceFromClientBuffer(renderTarget.NativePointer);
                     using var sharedResource = renderTarget.QueryInterface<SharpDX.DXGI.Resource>();
-                    eglSurface = eglContext.CreateSurfaceFromSharedHandle(description.Width, description.Height, sharedResource.SharedHandle);
+                    eglSurface = renderContext.EglContext.CreateSurfaceFromSharedHandle(description.Width, description.Height, sharedResource.SharedHandle);
 
                     // Setup a skia surface around the currently set render target
-                    surface = CreateSkSurface(renderContext.SkiaContext, eglSurface, renderTarget);
-
-                    //var info = new SKImageInfo(description.Width, description.Height, SKImageInfo.PlatformColorType, SKAlphaType.Premul);
-                    //surface = SKSurface.Create(renderContext.SkiaContext, budgeted: false, info, sampleCount: 0, origin: GRSurfaceOrigin.TopLeft, null, shouldCreateWithMips: false);
+                    surface = CreateSkSurface(renderContext, eglSurface, renderTarget);
                 }
 
                 // Render
@@ -118,11 +118,7 @@ namespace VL.IO.NDI
                 // Flush
                 surface.Flush();
 
-                //producer.Resource = surface.Snapshot();
-
-                //// Ensures surface gets released
-                //eglContext.MakeCurrent(default);
-
+                producer.Resource = surface.Snapshot();
 
                 var stagingTexture = texturePool.Rent();
                 device.ImmediateContext.CopyResource(renderTarget, stagingTexture);
@@ -130,59 +126,71 @@ namespace VL.IO.NDI
             }
 
             // Download recently staged
-            unsafe
             {
                 var stagedTexture = textureDownloads.Peek();
-                var data = device.ImmediateContext.MapSubresource(stagedTexture, 0, MapMode.Read, textureDownloads.Count <= 4 ? MapFlags.DoNotWait : MapFlags.None);
+                var waitOnGPU = textureDownloads.Count >= 4;
+                var data = device.ImmediateContext.MapSubresource(stagedTexture, 0, MapMode.Read, waitOnGPU ? MapFlags.None : MapFlags.DoNotWait);
                 if (!data.IsEmpty)
                 {
                     // Dequeue
                     textureDownloads.Dequeue();
 
-                    //device.ImmediateContext.UnmapSubresource(stagedTexture, 0);
-                    //texturePool.Return(stagedTexture);
-
                     // Setup the new image resource
                     var image = data.DataPointer.ToImage(data.SlicePitch, description.Width, description.Height, PixelFormat.B8G8R8A8, description.Format.ToString());
-                    var v = Unsafe.Read<ColorBGRA>(data.DataPointer.ToPointer());
-                    var imageProvider = ResourceProvider.Return(image, i =>
-                    {
-                        i.Dispose();
-                        device.ImmediateContext.UnmapSubresource(stagedTexture, 0);
-                        texturePool.Return(stagedTexture);
-                    }).ShareInParallel();
+                    var imageProvider = ResourceProvider.Return(image, ReleaseImage).ShareInParallel();
 
                     // Subscribe to our own provider to ensure the image is returned if no one else is using it
                     imageSubscription.Disposable = imageProvider.GetHandle();
 
                     // Push it downstream
                     imageStream.OnNext(imageProvider);
-                }
-                else
-                {
-                    //device.ImmediateContext.Flush();
+
+                    void ReleaseImage(IntPtrImage i)
+                    {
+                        if (SynchronizationContext.Current != synchronizationContext)
+                            synchronizationContext.Post(x => ReleaseImage((IntPtrImage)i), i);
+                        else
+                        {
+                            i.Dispose();
+                            device.ImmediateContext.UnmapSubresource(stagedTexture, 0);
+                            texturePool.Return(stagedTexture);
+                        }
+                    }
                 }
             }
 
-            SKSurface CreateSkSurface(GRContext context, EglSurface eglSurface, Texture2D texture)
+            SKSurface CreateSkSurface(RenderContext context, EglSurface eglSurface, Texture2D texture)
             {
+                var eglContext = context.EglContext;
+
                 var colorType = SKColorType.Bgra8888;
 
                 uint textureId = 0u;
                 NativeGles.glGenTextures(1, ref textureId);
-
                 NativeGles.glBindTexture(NativeGles.GL_TEXTURE_2D, textureId);
                 var result = NativeEgl.eglBindTexImage(eglContext.Dislpay, eglSurface, NativeEgl.EGL_BACK_BUFFER);
+                if (result == 0)
+                    throw new Exception("Failed to bind surface");
 
                 uint fbo = 0u;
                 NativeGles.glGenFramebuffers(1, ref fbo);
                 NativeGles.glBindFramebuffer(NativeGles.GL_FRAMEBUFFER, fbo);
                 glFramebufferTexture2D(NativeGles.GL_FRAMEBUFFER, NativeGles.GL_COLOR_ATTACHMENT0, NativeGles.GL_TEXTURE_2D, textureId, 0);
 
+                //uint rbf = 0;
+                //NativeGles.glGenRenderbuffers(1, ref rbf);
+                //NativeGles.glBindRenderbuffer(NativeGles.GL_RENDERBUFFER, rbf);
+                //var result = NativeEgl.eglBindTexImage(eglContext.Dislpay, eglSurface, NativeEgl.EGL_BACK_BUFFER);
+
+                //uint fbo = 0u;
+                //NativeGles.glGenFramebuffers(1, ref fbo);
+                //NativeGles.glBindFramebuffer(NativeGles.GL_FRAMEBUFFER, fbo);
+                //NativeGles.glFramebufferRenderbuffer(NativeGles.GL_FRAMEBUFFER, NativeGles.GL_COLOR_ATTACHMENT0, NativeGles.GL_RENDERBUFFER, rbf);
+
                 NativeGles.glGetIntegerv(NativeGles.GL_FRAMEBUFFER_BINDING, out var framebuffer);
                 NativeGles.glGetIntegerv(NativeGles.GL_STENCIL_BITS, out var stencil);
                 NativeGles.glGetIntegerv(NativeGles.GL_SAMPLES, out var samples);
-                var maxSamples = context.GetMaxSurfaceSampleCount(colorType);
+                var maxSamples = context.SkiaContext.GetMaxSurfaceSampleCount(colorType);
                 if (samples > maxSamples)
                     samples = maxSamples;
 
@@ -198,14 +206,11 @@ namespace VL.IO.NDI
                     glInfo: glInfo);
 
                 return SKSurface.Create(
-                    context,
+                    context.SkiaContext,
                     renderTarget,
                     GRSurfaceOrigin.TopLeft,
                     colorType,
                     colorspace: SKColorSpace.CreateSrgb());
-
-                [DllImport("libGLESv2.dll")]
-                static extern void glFramebufferTexture2D(uint target, uint attachment, uint textarget, uint texture, int level);
             }
 
             D3D11TexturePool GetTexturePool(Device graphicsDevice, in Texture2DDescription description )
@@ -213,6 +218,9 @@ namespace VL.IO.NDI
                 return D3D11TexturePool.Get(graphicsDevice, in description)
                     .Subscribe(texturePoolSubscription);
             }
+
+            [DllImport("libGLESv2.dll")]
+            static extern void glFramebufferTexture2D(uint target, uint attachment, uint textarget, uint texture, int level);
         }
 
         private void DownloadWithRasterImage(SKImage skImage)
@@ -228,6 +236,15 @@ namespace VL.IO.NDI
         public void Dispose()
         {
             imageStream.Dispose();
+            imageSubscription.Dispose();
+            texturePoolSubscription.Dispose();
+
+            renderTarget?.Dispose();
+            surface?.Dispose();
+            eglSurface?.Dispose();
+            device?.Dispose();
+
+            renderContext.Dispose();
         }
 
         static IResourceProvider<SKImage> GetProvider(SKImage image)
