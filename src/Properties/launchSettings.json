@@ -4,6 +4,9 @@
       "commandName": "Executable",
       "executablePath": "$(ProgramFiles)\\vvvv\\vvvv_gamma_2021.4.10\\vvvv.exe",
       "commandLineArgs": "--package-repositories $(PackageRepositories)"
+    },
+    "Profile 1": {
+      "commandName": "Project"
     }
   }
 }

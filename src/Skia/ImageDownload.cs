@@ -9,6 +9,7 @@ using System.Reactive.Disposables;
 using System.Reactive.Linq;
 using System.Reactive.Subjects;
 using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
 using System.Runtime.Remoting.Contexts;
 using VL.Lib.Basics.Imaging;
 using VL.Lib.Basics.Resources;
@@ -31,6 +32,10 @@ namespace VL.IO.NDI
         private readonly Device device;
         private Texture2D renderTarget;
         private EglSurface eglSurface;
+        private SKSurface surface;
+
+        public SKImage TempOutput => producer.Resource ?? Imaging.DefaultImage;
+        private readonly Producing<SKImage> producer = new Producing<SKImage>();
 
         public ImageDownload()
         {
@@ -46,9 +51,9 @@ namespace VL.IO.NDI
                 return emptyObservable;
 
             // Not working :( Output is black
-            //if (device != null)
-            //    DownloadWithStagingTexture(image);
-            //else
+            if (device != null)
+                DownloadWithStagingTexture(image);
+            else
                 DownloadWithRasterImage(image);
 
             return imageStream;
@@ -74,12 +79,14 @@ namespace VL.IO.NDI
                 Usage = ResourceUsage.Default,
                 CpuAccessFlags = CpuAccessFlags.None,
                 BindFlags = BindFlags.RenderTarget | BindFlags.ShaderResource,
+                OptionFlags = ResourceOptionFlags.Shared
             };
 
             var stagingDescription = description;
             stagingDescription.CpuAccessFlags = CpuAccessFlags.Read | CpuAccessFlags.Write;
             stagingDescription.BindFlags = BindFlags.None;
             stagingDescription.Usage = ResourceUsage.Staging;
+            stagingDescription.OptionFlags = ResourceOptionFlags.None;
 
             var texturePool = GetTexturePool(device, stagingDescription);
 
@@ -87,68 +94,45 @@ namespace VL.IO.NDI
             {
                 if (renderTarget is null || renderTarget.Description.Width != description.Width || renderTarget.Description.Height != description.Height)
                 {
-                    //eglSurface?.Dispose();
+                    surface?.Dispose();
+                    eglSurface?.Dispose();
                     renderTarget?.Dispose();
 
                     renderTarget = new Texture2D(device, description);
                     //eglSurface = eglContext.CreateSurfaceFromClientBuffer(renderTarget.NativePointer);
+
+                    using var sharedResource = renderTarget.QueryInterface<SharpDX.DXGI.Resource>();
+                    eglSurface = eglContext.CreateSurfaceFromSharedHandle(description.Width, description.Height, sharedResource.SharedHandle);
+
+                    // Setup a skia surface around the currently set render target
+                    surface = CreateSkSurface(renderContext.SkiaContext, eglSurface, renderTarget);
+
+                    //var info = new SKImageInfo(description.Width, description.Height, SKImageInfo.PlatformColorType, SKAlphaType.Premul);
+                    //surface = SKSurface.Create(renderContext.SkiaContext, budgeted: false, info, sampleCount: 0, origin: GRSurfaceOrigin.TopLeft, null, shouldCreateWithMips: false);
                 }
-                using var eglSurface = eglContext.CreateSurfaceFromClientBuffer(renderTarget.NativePointer);
 
-                using var rtv = new RenderTargetView(device, renderTarget);
-                device.ImmediateContext.OutputMerger.SetRenderTargets(rtv);
-                // Make the surface current (becomes default FBO)
-                renderContext.MakeCurrent(eglSurface);
-
-                // Setup a skia surface around the currently set render target
-                //using var surface = CreateSkSurface(renderContext.SkiaContext, renderTarget);
-
-                //// Render
-                //var canvas = surface.Canvas;
-                //canvas.Clear(SKColors.Red);
-                //canvas.Flush();
-                //canvas.DrawImage(skImage, 0f, 0f);
-
-                //static void SimpleStupidTestRendering()
-                //{
-                NativeGles.glClearColor(1, 1, 0, 1);
-                NativeGles.glClear(NativeGles.GL_COLOR_BUFFER_BIT);
-                NativeGles.glFlush();
-                //}
-                //int i = 0;
+                // Render
+                var canvas = surface.Canvas;
+                canvas.DrawImage(skImage, 0f, 0f);
 
                 // Flush
-                //surface.Flush();
+                surface.Flush();
 
-                // Ensures surface gets released
-                eglContext.MakeCurrent(default);
+                //producer.Resource = surface.Snapshot();
+
+                //// Ensures surface gets released
+                //eglContext.MakeCurrent(default);
 
 
                 var stagingTexture = texturePool.Rent();
-
-                ((IUnknown)stagingTexture).AddReference();
-                Trace.TraceInformation($"Before: {((IUnknown)stagingTexture).Release()}");
-
                 device.ImmediateContext.CopyResource(renderTarget, stagingTexture);
                 textureDownloads.Enqueue(stagingTexture);
-
-                ((IUnknown)stagingTexture).AddReference();
-                Trace.TraceInformation($"After: {((IUnknown)stagingTexture).Release()}");
             }
 
-            ((IUnknown)renderTarget).AddReference();
-            Trace.TraceInformation(((IUnknown)renderTarget).Release().ToString());
-
             // Download recently staged
-            unsafe {
+            unsafe
+            {
                 var stagedTexture = textureDownloads.Peek();
-
-                ((IUnknown)stagedTexture).AddReference();
-                Trace.TraceInformation($"Staged: {((IUnknown)stagedTexture).Release()}");
-
-                ((IUnknown)device).AddReference();
-                Trace.TraceInformation($"Device: {((IUnknown)device).Release()}");
-
                 var data = device.ImmediateContext.MapSubresource(stagedTexture, 0, MapMode.Read, textureDownloads.Count <= 4 ? MapFlags.DoNotWait : MapFlags.None);
                 if (!data.IsEmpty)
                 {
@@ -180,9 +164,21 @@ namespace VL.IO.NDI
                 }
             }
 
-            SKSurface CreateSkSurface(GRContext context, Texture2D texture)
+            SKSurface CreateSkSurface(GRContext context, EglSurface eglSurface, Texture2D texture)
             {
                 var colorType = SKColorType.Bgra8888;
+
+                uint textureId = 0u;
+                NativeGles.glGenTextures(1, ref textureId);
+
+                NativeGles.glBindTexture(NativeGles.GL_TEXTURE_2D, textureId);
+                var result = NativeEgl.eglBindTexImage(eglContext.Dislpay, eglSurface, NativeEgl.EGL_BACK_BUFFER);
+
+                uint fbo = 0u;
+                NativeGles.glGenFramebuffers(1, ref fbo);
+                NativeGles.glBindFramebuffer(NativeGles.GL_FRAMEBUFFER, fbo);
+                glFramebufferTexture2D(NativeGles.GL_FRAMEBUFFER, NativeGles.GL_COLOR_ATTACHMENT0, NativeGles.GL_TEXTURE_2D, textureId, 0);
+
                 NativeGles.glGetIntegerv(NativeGles.GL_FRAMEBUFFER_BINDING, out var framebuffer);
                 NativeGles.glGetIntegerv(NativeGles.GL_STENCIL_BITS, out var stencil);
                 NativeGles.glGetIntegerv(NativeGles.GL_SAMPLES, out var samples);
@@ -207,6 +203,9 @@ namespace VL.IO.NDI
                     GRSurfaceOrigin.TopLeft,
                     colorType,
                     colorspace: SKColorSpace.CreateSrgb());
+
+                [DllImport("libGLESv2.dll")]
+                static extern void glFramebufferTexture2D(uint target, uint attachment, uint textarget, uint texture, int level);
             }
 
             D3D11TexturePool GetTexturePool(Device graphicsDevice, in Texture2DDescription description )

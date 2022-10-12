@@ -3,7 +3,8 @@
   <PropertyGroup>
     <LangVersion>latest</LangVersion>
     <TargetFramework>net472</TargetFramework>
-    <Platforms>AnyCPU;x64</Platforms>
+    <!--<OutputType>WinExe</OutputType>-->
+    <!--<RuntimeIdentifier>win-x64</RuntimeIdentifier>-->
     
     <OutputPath>..\lib\</OutputPath>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>

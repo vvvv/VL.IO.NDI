@@ -3141,6 +3141,17 @@
               <Pin Id="Gj4rQLXOyirLXbrCuQIlyu" Name="Output" Kind="StateOutputPin" />
               <Pin Id="OZQAyQdrAqkQMFz2eBXagq" Name="Result" Kind="OutputPin" />
             </Node>
+            <Node Bounds="448,563" Id="LAZ8CIXKnENNUcGTbSz8qo">
+              <p:NodeReference LastCategoryFullName="VL.IO.NDI.ImageDownload" LastSymbolSource="VL.IO.NDI.dll">
+                <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
+                <CategoryReference Kind="AssemblyCategory" Name="ImageDownload" />
+                <Choice Kind="OperationCallFlag" Name="TempOutput" />
+              </p:NodeReference>
+              <Pin Id="Cbjuu6clUZVMaA0zvT4bxB" Name="Input" Kind="StateInputPin" />
+              <Pin Id="KV2ykaOcsgaLaqV7u3VGxr" Name="Output" Kind="StateOutputPin" />
+              <Pin Id="F0NQx8ix5AJQO26rhYjGA8" Name="Temp Output" Kind="OutputPin" />
+            </Node>
+            <ControlPoint Id="AwBzTiNt3EHMcKMewuEEuC" Bounds="680,655" />
           </Canvas>
           <ProcessDefinition Id="NHkL0NvsoNNMdywgQi6V7z">
             <Fragment Id="J5EGccTLGHhMOgCNLSuwAw" Patch="LCnwLPWSHB2MrQn8p4ZK1W" Enabled="true" />
@@ -3153,12 +3164,16 @@
           <Patch Id="NkeoJ3xNEAxMbMsguqaogA" Name="Update">
             <Pin Id="SjdHPWY2A5vNcpMvo4HtHN" Name="Input" Kind="InputPin" Bounds="635,245" />
             <Pin Id="Hzu2p48eIQ3P51Yt3G2Iiq" Name="Output" Kind="OutputPin" Bounds="595,573" />
+            <Pin Id="GLte68lFPkkNyYvytJAOwg" Name="Temp Output" Kind="OutputPin" Bounds="680,655" />
           </Patch>
           <Link Id="VeHCcWWCj2QMxdBlSlFJrI" Ids="UQO73IXtfSvOHccdZAd7T7,HdjrVxai1ZyPCDOTP8rBtN" />
           <Patch Id="JmpJhmrTuanN7TUsEVeYF8" Name="Dispose" ParticipatingElements="UmLyLHQ4Oo7NebtP2Pnns7" />
           <Link Id="DLWbPD4cqdZP49JvEogm2c" Ids="UQO73IXtfSvOHccdZAd7T7,JmrhBKBo1hrNkzaiUPRkad" />
           <Link Id="VzyjaKt6M7SPpS20zvi99w" Ids="QpAlsQhCPOmPAy2UaPaWFY,GdnuaksXARiOK5SMpMMgvD" />
           <Link Id="Bbp6AiEFOdqPGbUqrpCyli" Ids="OZQAyQdrAqkQMFz2eBXagq,FLRDkKnuLw7QJqEq80lWOC" />
+          <Link Id="LmKKiAcx0XrOMODXHK8FNq" Ids="Gj4rQLXOyirLXbrCuQIlyu,Cbjuu6clUZVMaA0zvT4bxB" />
+          <Link Id="NOFYviYKReWQOIcklAB5uu" Ids="F0NQx8ix5AJQO26rhYjGA8,AwBzTiNt3EHMcKMewuEEuC" />
+          <Link Id="ACCh6t7VAgaP3qCkXRaq15" Ids="AwBzTiNt3EHMcKMewuEEuC,GLte68lFPkkNyYvytJAOwg" IsHidden="true" />
         </Patch>
       </Node>
     </Canvas>
