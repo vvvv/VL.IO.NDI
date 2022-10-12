@@ -37,9 +37,6 @@ namespace VL.IO.NDI
         private EglSurface eglSurface;
         private SKSurface surface;
 
-        public SKImage TempOutput => producer.Resource ?? Imaging.DefaultImage;
-        private readonly Producing<SKImage> producer = new Producing<SKImage>();
-
         public ImageDownload()
         {
             renderContext = RenderContext.ForCurrentThread();
@@ -115,11 +112,6 @@ namespace VL.IO.NDI
                 var canvas = surface.Canvas;
                 canvas.DrawImage(skImage, 0f, 0f);
 
-                // Flush
-                surface.Flush();
-
-                producer.Resource = surface.Snapshot();
-
                 var stagingTexture = texturePool.Rent();
                 device.ImmediateContext.CopyResource(renderTarget, stagingTexture);
                 textureDownloads.Enqueue(stagingTexture);
@@ -136,7 +128,7 @@ namespace VL.IO.NDI
                     textureDownloads.Dequeue();
 
                     // Setup the new image resource
-                    var image = data.DataPointer.ToImage(data.SlicePitch, description.Width, description.Height, PixelFormat.B8G8R8A8, description.Format.ToString());
+                    var image = new IntPtrImage(data.DataPointer, data.SlicePitch, new ImageInfo(description.Width, description.Height, PixelFormat.B8G8R8A8, isPremultipliedAlpha: true, description.Format.ToString()));
                     var imageProvider = ResourceProvider.Return(image, ReleaseImage).ShareInParallel();
 
                     // Subscribe to our own provider to ensure the image is returned if no one else is using it
@@ -176,16 +168,6 @@ namespace VL.IO.NDI
                 NativeGles.glGenFramebuffers(1, ref fbo);
                 NativeGles.glBindFramebuffer(NativeGles.GL_FRAMEBUFFER, fbo);
                 glFramebufferTexture2D(NativeGles.GL_FRAMEBUFFER, NativeGles.GL_COLOR_ATTACHMENT0, NativeGles.GL_TEXTURE_2D, textureId, 0);
-
-                //uint rbf = 0;
-                //NativeGles.glGenRenderbuffers(1, ref rbf);
-                //NativeGles.glBindRenderbuffer(NativeGles.GL_RENDERBUFFER, rbf);
-                //var result = NativeEgl.eglBindTexImage(eglContext.Dislpay, eglSurface, NativeEgl.EGL_BACK_BUFFER);
-
-                //uint fbo = 0u;
-                //NativeGles.glGenFramebuffers(1, ref fbo);
-                //NativeGles.glBindFramebuffer(NativeGles.GL_FRAMEBUFFER, fbo);
-                //NativeGles.glFramebufferRenderbuffer(NativeGles.GL_FRAMEBUFFER, NativeGles.GL_COLOR_ATTACHMENT0, NativeGles.GL_RENDERBUFFER, rbf);
 
                 NativeGles.glGetIntegerv(NativeGles.GL_FRAMEBUFFER_BINDING, out var framebuffer);
                 NativeGles.glGetIntegerv(NativeGles.GL_STENCIL_BITS, out var stencil);
