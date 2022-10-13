@@ -12,6 +12,8 @@ using VL.Audio;
 using NAudio.Wave;
 using VL.Lib.Basics.Resources;
 using System.Reactive.Disposables;
+using System.Runtime.CompilerServices;
+using System.Buffers;
 
 namespace VL.IO.NDI
 {
@@ -22,7 +24,7 @@ namespace VL.IO.NDI
     /// and use it for video only, but don't forget that you will still need
     /// to free any audio frames received.
     /// </summary>
-    public class Receiver : IDisposable
+    public unsafe class Receiver : IDisposable
     {
         #region private properties
         private readonly Subject<IResourceProvider<IImage>> _videoFrames = new Subject<IResourceProvider<IImage>>();
@@ -310,12 +312,8 @@ namespace VL.IO.NDI
             else
             {
                 // convert to an unmanaged UTF8 IntPtr
-                IntPtr fileNamePtr = UTF.StringToUtf8(filenameHint);
-
-                retVal = NDIlib.recv_recording_start(_recvInstancePtr, IntPtr.Zero);
-
-                // don't forget to free it
-                Marshal.FreeHGlobal(fileNamePtr);
+                fixed (byte* fileNamePtr = UTF.StringToUtf8(filenameHint))
+                    retVal = NDIlib.recv_recording_start(_recvInstancePtr, new IntPtr(fileNamePtr));
             }
 
             return retVal;
@@ -490,41 +488,41 @@ namespace VL.IO.NDI
             if (source == null || String.IsNullOrEmpty(source.Name))
                 return;
 
-            // a source_t to describe the source to connect to.
-            NDIlib.source_t source_t = new NDIlib.source_t()
+            fixed (byte* sourceNamePtr = UTF.StringToUtf8(source.Name))
+            fixed (byte* receiverNamePtr = UTF.StringToUtf8(ReceiverName))
             {
-                p_ndi_name = UTF.StringToUtf8(source.Name)
-            };
-            
-            // make a description of the receiver we want
-            NDIlib.recv_create_v3_t recvDescription = new NDIlib.recv_create_v3_t()
-            {
-                // the source we selected
-                source_to_connect_to = source_t,
+                // a source_t to describe the source to connect to.
+                NDIlib.source_t source_t = new NDIlib.source_t()
+                {
+                    p_ndi_name = new IntPtr(sourceNamePtr)
+                };
 
-                // we want BGRA frames for this example
-                color_format = colorFormat,
-                
-                // we want full quality - for small previews or limited bandwidth, choose lowest
-                bandwidth = bandwidth,
+                // make a description of the receiver we want
+                NDIlib.recv_create_v3_t recvDescription = new NDIlib.recv_create_v3_t()
+                {
+                    // the source we selected
+                    source_to_connect_to = source_t,
 
-                // let NDIlib deinterlace for us if needed
-                allow_video_fields = allowVideoFields,
+                    // we want BGRA frames for this example
+                    color_format = colorFormat,
 
-                // The name of the NDI receiver to create. This is a NULL terminated UTF8 string and should be
-                // the name of receive channel that you have. This is in many ways symettric with the name of
-                // senders, so this might be "Channel 1" on your system.
-                p_ndi_recv_name = UTF.StringToUtf8(ReceiverName)
-            };
+                    // we want full quality - for small previews or limited bandwidth, choose lowest
+                    bandwidth = bandwidth,
 
-            // create a new instance connected to this source
-            _recvInstanceProvider = ResourceProvider.Return(NDIlib.recv_create_v3(ref recvDescription), NDIlib.recv_destroy)
-                .ShareInParallel();
-            _recvInstanceHandle = _recvInstanceProvider.GetHandle();
+                    // let NDIlib deinterlace for us if needed
+                    allow_video_fields = allowVideoFields,
 
-            // free the memory we allocated with StringToUtf8
-            Marshal.FreeHGlobal(source_t.p_ndi_name);
-            Marshal.FreeHGlobal(recvDescription.p_ndi_recv_name);
+                    // The name of the NDI receiver to create. This is a NULL terminated UTF8 string and should be
+                    // the name of receive channel that you have. This is in many ways symettric with the name of
+                    // senders, so this might be "Channel 1" on your system.
+                    p_ndi_recv_name = new IntPtr(receiverNamePtr)
+                };
+
+                // create a new instance connected to this source
+                _recvInstanceProvider = ResourceProvider.Return(NDIlib.recv_create_v3(ref recvDescription), NDIlib.recv_destroy)
+                    .ShareInParallel();
+                _recvInstanceHandle = _recvInstanceProvider.GetHandle();
+            }
 
             // did it work?
             System.Diagnostics.Debug.Assert(_recvInstancePtr != IntPtr.Zero, "Failed to create NDI receive instance.");

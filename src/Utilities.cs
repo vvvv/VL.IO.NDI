@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Runtime.InteropServices;
 using System.Security;
 using System.Text;
 
@@ -12,46 +11,27 @@ namespace VL.IO.NDI
     public static partial class UTF
     {
         // This REQUIRES you to use Marshal.FreeHGlobal() on the returned pointer!
-        public static IntPtr StringToUtf8(String managedString)
+        public static ReadOnlySpan<byte> StringToUtf8(string managedString)
         {
+            if (managedString is null)
+                return default;
+
             int len = Encoding.UTF8.GetByteCount(managedString);
 
             byte[] buffer = new byte[len + 1];
 
-            Encoding.UTF8.GetBytes(managedString, 0, managedString.Length, buffer, 0);
-
-            IntPtr nativeUtf8 = Marshal.AllocHGlobal(buffer.Length);
-
-            Marshal.Copy(buffer, 0, nativeUtf8, buffer.Length);
-
-            return nativeUtf8;
-        }
-
-        // this version will also return the length of the utf8 string
-        // This REQUIRES you to use Marshal.FreeHGlobal() on the returned pointer!
-        public static IntPtr StringToUtf8(String managedString, out int utf8Length )
-        {
-            utf8Length = Encoding.UTF8.GetByteCount(managedString);
-
-            byte[] buffer = new byte[utf8Length + 1];
-
-            Encoding.UTF8.GetBytes(managedString, 0, managedString.Length, buffer, 0);
-
-            IntPtr nativeUtf8 = Marshal.AllocHGlobal(buffer.Length);
-
-            Marshal.Copy(buffer, 0, nativeUtf8, buffer.Length);
-
-            return nativeUtf8;
+            var count = Encoding.UTF8.GetBytes(managedString, 0, managedString.Length, buffer, 0);
+            return buffer.AsSpan(0, count);
         }
 
         // Length is optional, but recommended
         // This is all potentially dangerous
-        public static string Utf8ToString(IntPtr nativeUtf8, uint? length = null)
+        public static unsafe string Utf8ToString(IntPtr nativeUtf8, int? length = null)
         {
             if (nativeUtf8 == IntPtr.Zero)
-                return String.Empty;
+                return string.Empty;
 
-            uint len = 0;
+            int len = 0;
 
             if (length.HasValue)
             {
@@ -60,17 +40,14 @@ namespace VL.IO.NDI
             else
             {
                 // try to find the terminator
-                while (Marshal.ReadByte(nativeUtf8, (int)len) != 0)
+                byte* ptr = (byte*)nativeUtf8.ToPointer();
+                while (*(ptr++) != 0)
                 {
                     ++len;
                 }
             }
 
-            byte[] buffer = new byte[len];
-
-            Marshal.Copy(nativeUtf8, buffer, 0, buffer.Length);
-
-            return Encoding.UTF8.GetString(buffer);
+            return Encoding.UTF8.GetString((byte*)nativeUtf8.ToPointer(), len);
         }
 
     } // class NDILib

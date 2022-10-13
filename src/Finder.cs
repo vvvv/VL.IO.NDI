@@ -1,53 +1,54 @@
 ﻿using System;
-using System.Collections.ObjectModel;
 using System.Linq;
-using System.Runtime.InteropServices;
-using System.Text;
 using System.Threading;
-//using System.Windows.Data;
-using System.Collections.Concurrent;
 
 using NewTek;
+using VL.Lib.Collections;
+using System.Threading.Tasks;
+using System.Reactive.Subjects;
+using VL.Lib.Basics.Resources;
+using System.Reactive.Linq;
+using System.Reactive.Concurrency;
 
 namespace VL.IO.NDI
 {
-    public class Finder : IDisposable
+    public static class Finder
     {
-        //public ObservableCollection<Source> Sources
-        public ConcurrentQueue<Source> Sources
+        public static IObservable<Spread<Source>> GetSources(bool showLocalSources = false, string[] groups = null, string[] extraIps = null)
         {
-            get { return _sourceList; }
-        }
-        
-        public Finder(bool showLocalSources = false, String[] groups = null, String[] extraIps = null)
-        {
-            if (!NDIlib.initialize())
+            return Observable.Create<Spread<Source>>(async (observer, ct) =>
             {
-                if (!NDIlib.is_supported_CPU())
-                    throw new InvalidOperationException("CPU incompatible with NDI.");
-                else
-                    throw new InvalidOperationException("Unable to initialize NDI.");
+                using var handle = CreateNativeInstanceProvider(showLocalSources, groups, extraIps).GetHandle();
+                while (!ct.IsCancellationRequested)
+                {
+                    // Wait up to 50ms for sources to change
+                    if (NDIlib.find_wait_for_sources(handle.Resource, 50))
+                    {
+                        uint numSources = 0;
+                        var sourcesPtr = NDIlib.find_get_current_sources(handle.Resource, ref numSources);
+                        var sources = GetSources(sourcesPtr, (int)numSources);
+                        observer.OnNext(sources);
+                    }
+
+                    await Task.Delay(500);
+                }
+            }).SubscribeOn(Scheduler.Default);
+
+            static unsafe Spread<Source> GetSources(IntPtr sourcesPtr, int numSources)
+            {
+                var sources = new ReadOnlySpan<NDIlib.source_t>(sourcesPtr.ToPointer(), numSources);
+                var builder = Spread.CreateBuilder<Source>(sources.Length);
+                foreach (var s in sources)
+                    builder.Add(new Source(s));
+                return builder.ToSpread();
             }
 
-            //BindingOperations.EnableCollectionSynchronization(_sourceList, _sourceLock);
+        }
 
-            IntPtr groupsNamePtr = IntPtr.Zero;
-
+        private static unsafe IResourceProvider<IntPtr> CreateNativeInstanceProvider(bool showLocalSources = false, string[] groups = null, string[] extraIps = null)
+        {
             // make a flat list of groups if needed
-            if (groups != null)
-            {
-                StringBuilder flatGroups = new StringBuilder();
-                foreach (String group in groups)
-                {
-                    flatGroups.Append(group);
-                    if (group != groups.Last())
-                    {
-                        flatGroups.Append(',');
-                    }
-                }
-
-                groupsNamePtr = UTF.StringToUtf8(flatGroups.ToString());
-            }  
+            var flatGroups = groups != null ? string.Join(",", groups) : null;
 
             // This is also optional.
             // The list of additional IP addresses that exist that we should query for 
@@ -59,141 +60,27 @@ namespace VL.IO.NDI
             // Create a UTF-8 buffer from our string
             // Must use Marshal.FreeHGlobal() after use!
             // IntPtr extraIpsPtr = NDI.Common.StringToUtf8("12.0.0.8,13.0.12.8")
-            IntPtr extraIpsPtr = IntPtr.Zero;
-
             // make a flat list of ip addresses as comma separated strings
-            if (extraIps != null)
+            var flatIps = extraIps != null ? string.Join(",", extraIps) : null;
+
+            fixed (byte* groupsNamePtr = UTF.StringToUtf8(flatGroups))
+            fixed (byte* extraIpsPtr = UTF.StringToUtf8(flatIps))
             {
-                StringBuilder flatIps = new StringBuilder();
-                foreach (String ipStr in extraIps)
+                // how we want our find to operate
+                NDIlib.find_create_t findDesc = new NDIlib.find_create_t()
                 {
-                    flatIps.Append(ipStr);
-                    if (ipStr != groups.Last())
-                    {
-                        flatIps.Append(',');
-                    }
-                }
+                    p_groups = new IntPtr(groupsNamePtr),
+                    show_local_sources = showLocalSources,
+                    p_extra_ips = new IntPtr(extraIpsPtr)
 
-                extraIpsPtr = UTF.StringToUtf8(flatIps.ToString());
-            }  
+                };
 
-            // how we want our find to operate
-            NDIlib.find_create_t findDesc = new NDIlib.find_create_t()
-            {
-                p_groups = groupsNamePtr,
-                show_local_sources = showLocalSources,
-                p_extra_ips = extraIpsPtr
-
-            };
-
-            // create our find instance
-            _findInstancePtr = NDIlib.find_create_v2(ref findDesc);
-
-            // free our UTF-8 buffer if we created one
-            if (groupsNamePtr != IntPtr.Zero)
-            {
-                Marshal.FreeHGlobal(groupsNamePtr);
-            }
-
-            if (extraIpsPtr != IntPtr.Zero)
-            {
-                Marshal.FreeHGlobal(extraIpsPtr);
-            }
-
-            // start up a thread to update on
-            _findThread = new Thread(FindThreadProc) { IsBackground = true, Name = "NdiFindThread" };
-            _findThread.Start();
-        }
-        
-        public void Dispose()
-        {
-            Dispose(true);
-            GC.SuppressFinalize(this);
-        }
-
-        ~Finder() 
-        {
-            Dispose(false);
-        }
-
-        protected virtual void Dispose(bool disposing)
-        {
-            if (!_disposed)
-            {
-                if (disposing)
-                {
-                    // tell the thread to exit
-                    _exitThread = true;
-
-                    // wait for it to exit
-                    if (_findThread != null)
-                    {
-                        _findThread.Join();
-
-                        _findThread = null;
-                    }
-                }
-
-                if (_findInstancePtr != IntPtr.Zero)
-                {
-                    NDIlib.find_destroy(_findInstancePtr);
-                    _findInstancePtr = IntPtr.Zero;
-                }
-
-                NDIlib.destroy();
-
-                _disposed = true;
+                // create our find instance
+                var instance = NDIlib.find_create_v2(ref findDesc);
+                if (instance == IntPtr.Zero)
+                    throw new InvalidOperationException("Failed to create NDI-find");
+                return ResourceProvider.Return(instance, i => NDIlib.find_destroy(i));
             }
         }
-
-        private bool _disposed = false;
-
-        private void FindThreadProc()
-        {
-            // the size of an NDIlib.source_t, for pointer offsets
-            int SourceSizeInBytes = Marshal.SizeOf(typeof(NDIlib.source_t));
-
-            while (!_exitThread)
-            {
-                // Wait up to 500ms sources to change
-                if(NDIlib.find_wait_for_sources(_findInstancePtr, 500))
-                {
-                    uint NumSources = 0;
-                    IntPtr SourcesPtr = NDIlib.find_get_current_sources(_findInstancePtr, ref NumSources);
-
-                    // convert each unmanaged ptr into a managed NDIlib.source_t
-                    for (int i = 0; i < NumSources; i++)
-                    {
-                        // source ptr + (index * size of a source)
-                        IntPtr p = IntPtr.Add(SourcesPtr, (i * SourceSizeInBytes));
-
-                        // marshal it to a managed source and assign to our list
-                        NDIlib.source_t src = (NDIlib.source_t)Marshal.PtrToStructure(p, typeof(NDIlib.source_t));
-
-                        // .Net doesn't handle marshaling UTF-8 strings properly
-                        String name = UTF.Utf8ToString(src.p_ndi_name);
-
-                        // Add it to the list if not already in the list.
-                        // We don't have to remove because NDI applications remember any sources seen during each run.
-                        // They might be selected and come back when the connection is restored.
-                        if (!_sourceList.Any(item => item.Name == name))
-                        {
-                            _sourceList.Enqueue(new Source(src));
-                        }
-                    }
-                }
-            }
-        }
-
-        private IntPtr _findInstancePtr = IntPtr.Zero;
-
-        private ConcurrentQueue<Source> _sourceList = new ConcurrentQueue<Source>();
-        //private object _sourceLock = new object();        
-
-        // a thread to find on so that the UI isn't dragged down
-        Thread _findThread = null;
-        
-        // a way to exit the thread safely
-        bool _exitThread = false;
     }
 }

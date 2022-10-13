@@ -1,70 +1,53 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Reactive.Linq;
 using System.Text.RegularExpressions;
 using NewTek;
+using VL.Core.CompilerServices;
+using VL.Lib.Collections;
 
 namespace VL.IO.NDI
 {
-    public class Source
+    public sealed class Source : DynamicEnumBase<Source, SourceDefinition>, IEquatable<Source>
     {
-        // Really only useful for disconnects or for default values
-        public Source()
-        {
-        }
+        private string _computerName;
+        private string _sourceName;
+        private Lazy<Uri> _uri;
 
         // Construct from NDIlib.source_t
-        public Source(NDIlib.source_t source_t)
+        internal Source(NDIlib.source_t source_t)
+            : this(UTF.Utf8ToString(source_t.p_ndi_name))
         {
-            Name = UTF.Utf8ToString(source_t.p_ndi_name);
+
         }
 
         // Construct from strings
-        public Source(String name)
+        public Source(string name) 
+            : base(name)
         {
-            Name = name;
         }
 
-        // Copy constructor.
-        public Source(Source previousSource)
-        {
-            Name = previousSource.Name;
-            _uri = previousSource._uri;
-        }
+        public string Name => Value;
 
-        // These are purposely 'public get' only because
-        // they should not change during the life of a source.
-        public String Name
-        {
-            get { return _name; }
-            private set
-            {
-                _name = value;
-                
-                int parenIdx = _name.IndexOf(" (");
-                _computerName = _name.Substring(0, parenIdx);
-                
-                _sourceName = Regex.Match(_name, @"(?<=\().+?(?=\))").Value;
+        public string ComputerName => _computerName ??= Name.Substring(0, Name.IndexOf(" ("));
 
-                String uriString = String.Format("ndi://{0}/{1}", _computerName, System.Net.WebUtility.UrlEncode(_sourceName));
+        public string SourceName => _sourceName ??= Regex.Match(Name, @"(?<=\().+?(?=\))").Value;
 
-                if (!Uri.TryCreate(uriString, UriKind.Absolute, out _uri))
-                    _uri = null;
-                
-            }
-        }
-
-        public String ComputerName
-        {
-            get { return _computerName; }
-        }
-
-        public String SourceName
-        {
-            get { return _sourceName; }
-        }
-        
         public Uri Uri
         {
-            get { return _uri; }
+            get 
+            {
+                return (_uri ??= new Lazy<Uri>(Compute)).Value;
+
+                Uri Compute()
+                {
+                    var uriString = string.Format("ndi://{0}/{1}", ComputerName, System.Net.WebUtility.UrlEncode(SourceName));
+                    if (Uri.TryCreate(uriString, UriKind.Absolute, out var uri))
+                        return uri;
+                    return null;
+                }
+            }
         }
 
         public override string ToString()
@@ -72,9 +55,53 @@ namespace VL.IO.NDI
             return Name;
         }
 
-        private String _name = String.Empty;
-        private String _computerName = String.Empty;
-        private String _sourceName = String.Empty;
-        private Uri _uri = null;
+        public override bool Equals(object obj)
+        {
+            if (obj is Source source)
+                return Equals(source);
+            return false;
+        }
+
+        public bool Equals(Source other)
+        {
+            if (other is null)
+                return false;
+
+            return Name == other.Name;
+        }
+
+        public override int GetHashCode()
+        {
+            return Name.GetHashCode();
+        }
+    }
+
+    public sealed class SourceDefinition : DynamicEnumDefinitionBase<SourceDefinition>
+    {
+        private readonly IObservable<Spread<Source>> observable;
+        private readonly IDisposable subscription;
+
+        private Spread<Source> mostRecentSources = Spread<Source>.Empty;
+
+        public SourceDefinition()
+        {
+            observable = Finder.GetSources(showLocalSources: true).Publish().RefCount();
+            subscription = observable.Subscribe(s => mostRecentSources = s);
+        }
+
+        ~SourceDefinition()
+        {
+            subscription.Dispose();
+        }
+
+        protected override IReadOnlyDictionary<string, object> GetEntries()
+        {
+            return mostRecentSources.ToDictionary(s => s.Name, s => default(object));
+        }
+
+        protected override IObservable<object> GetEntriesChangedObservable()
+        {
+            return observable;
+        }
     }
 }

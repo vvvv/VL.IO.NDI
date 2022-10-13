@@ -11,6 +11,11 @@ namespace VL.IO.NDI
 {
     public class Router : IDisposable, INotifyPropertyChanged
     {
+        private string[] _groups;
+        private IntPtr _routingInstancePtr;
+        private Source _selectedSource;
+        private string _routingName = "Routing";
+
         [Category("NewTek NDI"),
         Description("The NDI source to route elsewhere. An empty new Source() or a Source with no Name will disconnect.")]
         public Source SelectedSource
@@ -74,7 +79,7 @@ namespace VL.IO.NDI
 
         // This will reenable routing if previous cleared.
         // Should not be needed otherwise since FromSource changes will automatically update.
-        public void UpdateRouting()
+        public unsafe void UpdateRouting()
         {
             // never started before?
             if (_routingInstancePtr == IntPtr.Zero)
@@ -91,21 +96,16 @@ namespace VL.IO.NDI
             }
 
             // a source_t to describe the source to connect to.
-            NDIlib.source_t source_t = new NDIlib.source_t()
+            fixed (byte* selectedSourceNamePtr = UTF.StringToUtf8(_selectedSource.Name))
             {
-                p_ndi_name = UTF.StringToUtf8(_selectedSource.Name)
-            };
+                NDIlib.source_t source_t = new NDIlib.source_t()
+                {
+                    p_ndi_name = new IntPtr(selectedSourceNamePtr)
+                };
 
-            if (!NDIlib.routing_change(_routingInstancePtr, ref source_t))
-            {
-                // free the memory we allocated with StringToUtf8
-                Marshal.FreeHGlobal(source_t.p_ndi_name);
-
-                throw new InvalidOperationException("Failed to change routing.");
+                if (!NDIlib.routing_change(_routingInstancePtr, ref source_t))
+                    throw new InvalidOperationException("Failed to change routing.");
             }
-
-            // free the memory we allocated with StringToUtf8
-            Marshal.FreeHGlobal(source_t.p_ndi_name);
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -152,7 +152,7 @@ namespace VL.IO.NDI
 
         private bool _disposed = false;
 
-        private void CreateRouting()
+        private unsafe void CreateRouting()
         {
             if (_routingInstancePtr != IntPtr.Zero)
             {
@@ -164,55 +164,29 @@ namespace VL.IO.NDI
             if (_selectedSource == null || String.IsNullOrEmpty(_selectedSource.Name))
                 return;
 
+            var flatGroups = _groups != null ? string.Join(",", _groups) : null;
+
             // .Net interop doesn't handle UTF-8 strings, so do it manually
-            // These must be freed later
-            IntPtr sourceNamePtr = UTF.StringToUtf8(_routingName);
-
-            IntPtr groupsNamePtr = IntPtr.Zero;
-
-            // make a flat list of groups if needed
-            if (_groups != null)
+            fixed (byte* sourceNamePtr = UTF.StringToUtf8(_routingName))
+            fixed (byte* groupsNamePtr = UTF.StringToUtf8(flatGroups))
             {
-                StringBuilder flatGroups = new StringBuilder();
-                foreach (String group in _groups)
+                // Create an NDI routing description
+                NDIlib.routing_create_t createDesc = new NDIlib.routing_create_t()
                 {
-                    flatGroups.Append(group);
-                    if (group != _groups.Last())
-                    {
-                        flatGroups.Append(',');
-                    }
-                }
+                    p_ndi_name = new IntPtr(sourceNamePtr),
+                    p_groups = new IntPtr(groupsNamePtr)
+                };
 
-                groupsNamePtr = UTF.StringToUtf8(flatGroups.ToString());
-            }
+                // create the NDI routing instance
+                _routingInstancePtr = NDIlib.routing_create(ref createDesc);
 
-            // Create an NDI routing description
-            NDIlib.routing_create_t createDesc = new NDIlib.routing_create_t()
-            {
-                p_ndi_name = sourceNamePtr,
-                p_groups = groupsNamePtr
-            };
-
-            // create the NDI routing instance
-            _routingInstancePtr = NDIlib.routing_create(ref createDesc);
-
-            // free the strings we allocated
-            Marshal.FreeHGlobal(sourceNamePtr);
-            Marshal.FreeHGlobal(groupsNamePtr);
-
-            // did it succeed?
-            if (_routingInstancePtr == IntPtr.Zero)
-            {
-                throw new InvalidOperationException("Failed to create routing instance.");
+                // did it succeed?
+                if (_routingInstancePtr == IntPtr.Zero)
+                    throw new InvalidOperationException("Failed to create routing instance.");
             }
 
             // update in case we have enough info to start routing
             UpdateRouting();
         }        
-
-        private String[] _groups = null;
-        private IntPtr _routingInstancePtr = IntPtr.Zero;
-        private Source _selectedSource = new Source();
-        private String _routingName = "Routing";
     }
 }

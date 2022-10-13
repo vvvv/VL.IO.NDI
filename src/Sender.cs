@@ -42,64 +42,43 @@ namespace VL.IO.NDI
 
             // .Net interop doesn't handle UTF-8 strings, so do it manually
             // These must be freed later
-            IntPtr sourceNamePtr = UTF.StringToUtf8(sourceName);
-
-            IntPtr groupsNamePtr = IntPtr.Zero;
-
-            // make a flat list of groups if needed
-            if(groups != null)
+            var flatGroups = groups != null ? string.Join(",", groups) : null;
+            fixed (byte* sourceNamePtr = UTF.StringToUtf8(sourceName))
+            fixed (byte* groupsNamePtr = UTF.StringToUtf8(flatGroups))
             {
-                StringBuilder flatGroups = new StringBuilder();
-                foreach (String group in groups)
+                // Create an NDI source description
+                NDIlib.send_create_t createDesc = new NDIlib.send_create_t()
                 {
-                    flatGroups.Append(group);
-                    if (group != groups.Last())
-                    {
-                        flatGroups.Append(',');
-                    }
+                    p_ndi_name = new IntPtr(sourceNamePtr),
+                    p_groups = new IntPtr(groupsNamePtr),
+                    clock_video = clockVideo,
+                    clock_audio = clockAudio
+                };
+
+                // create the NDI send instance
+                _sendInstancePtr = NDIlib.send_create(ref createDesc);
+
+                // did it succeed?
+                if (_sendInstancePtr == IntPtr.Zero)
+                {
+                    throw new InvalidOperationException("Failed to create send instance.");
                 }
-
-                groupsNamePtr = UTF.StringToUtf8(flatGroups.ToString());
-            }            
-
-            // Create an NDI source description
-            NDIlib.send_create_t createDesc = new NDIlib.send_create_t()
-            {
-                p_ndi_name = sourceNamePtr,
-                p_groups = groupsNamePtr,
-                clock_video = clockVideo,
-                clock_audio = clockAudio
-            };
-
-            // create the NDI send instance
-            _sendInstancePtr = NDIlib.send_create(ref createDesc);
-
-            // free the strings we allocated
-            Marshal.FreeHGlobal(sourceNamePtr);
-            Marshal.FreeHGlobal(groupsNamePtr);
-
-            // did it succeed?
-            if (_sendInstancePtr == IntPtr.Zero)
-            {
-                throw new InvalidOperationException("Failed to create send instance.");
             }
 
             if (!String.IsNullOrEmpty(failoverName))
             {
                 // .Net interop doesn't handle UTF-8 strings, so do it manually
                 // These must be freed later
-                IntPtr failoverNamePtr = UTF.StringToUtf8(failoverName);
-
-                NDIlib.source_t failoverDesc = new NDIlib.source_t()
+                fixed (byte* failoverNamePtr = UTF.StringToUtf8(failoverName))
                 {
-                    p_ndi_name = failoverNamePtr,
-                    p_url_address = IntPtr.Zero
-                };
+                    NDIlib.source_t failoverDesc = new NDIlib.source_t()
+                    {
+                        p_ndi_name = new IntPtr(failoverNamePtr),
+                        p_url_address = IntPtr.Zero
+                    };
 
-                NDIlib.send_set_failover(_sendInstancePtr, ref failoverDesc);
-
-                // free the strings we allocated
-                Marshal.FreeHGlobal(failoverNamePtr);
+                    NDIlib.send_set_failover(_sendInstancePtr, ref failoverDesc);
+                }
             }
 
             _sendTask = Task.Run(() =>
