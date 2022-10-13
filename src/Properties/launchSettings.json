@@ -2,7 +2,7 @@
   "profiles": {
     "VL.IO.NDI": {
       "commandName": "Executable",
-      "executablePath": "$(ProgramFiles)\\vvvv\\vvvv_gamma_2021.4.10\\vvvv.exe",
+      "executablePath": "$(ProgramFiles)\\vvvv\\vvvv_gamma_$(VLVersion)\\vvvv.exe",
       "commandLineArgs": "--package-repositories $(PackageRepositories)"
     },
     "Profile 1": {

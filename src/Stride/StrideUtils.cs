@@ -20,7 +20,7 @@ namespace VL.IO.NDI
                 using var imageData = image.GetData();
                 using var memoryHandle = imageData.Bytes.Pin();
                 var description = TextureDescription.New2D(info.Width, info.Height, ToPixelFormat(info.Format), usage: GraphicsResourceUsage.Immutable);
-                return Texture.New(graphicsDevice, description, new DataBox(new IntPtr(memoryHandle.Pointer), imageData.ScanSize, imageData.ScanSize * info.Height));
+                return Texture.New(graphicsDevice, description, new DataBox(new IntPtr(memoryHandle.Pointer), info.ScanSize, info.ImageSize));
             });
         }
 

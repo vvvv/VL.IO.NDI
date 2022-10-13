@@ -128,7 +128,8 @@ namespace VL.IO.NDI
                     textureDownloads.Dequeue();
 
                     // Setup the new image resource
-                    var image = new IntPtrImage(data.DataPointer, data.SlicePitch, new ImageInfo(description.Width, description.Height, PixelFormat.B8G8R8A8, isPremultipliedAlpha: true, description.Format.ToString()));
+                    var imageInfo = new ImageInfo(description.Width, description.Height, PixelFormat.B8G8R8A8, isPremultipliedAlpha: true, data.RowPitch, description.Format.ToString());
+                    var image = new IntPtrImage(data.DataPointer, data.SlicePitch, imageInfo);
                     var imageProvider = ResourceProvider.Return(image, ReleaseImage).ShareInParallel();
 
                     // Subscribe to our own provider to ensure the image is returned if no one else is using it

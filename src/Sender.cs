@@ -115,7 +115,7 @@ namespace VL.IO.NDI
 
                         var info = image.Info;
                         var imageData = image.GetData();
-                        var memoryHanlde = imageData.Bytes.Pin();
+                        var memoryHandle = imageData.Bytes.Pin();
                         var ndiVideoFrame = new NDIlib.video_frame_v2_t()
                         {
                             xres = info.Width,
@@ -126,7 +126,7 @@ namespace VL.IO.NDI
                             picture_aspect_ratio = (float)info.Width / info.Height,
                             frame_format_type = NDIlib.frame_format_type_e.frame_format_type_progressive,
                             timecode = NDIlib.send_timecode_synthesize,
-                            p_data = new IntPtr(memoryHanlde.Pointer),
+                            p_data = new IntPtr(memoryHandle.Pointer),
                             line_stride_in_bytes = imageData.ScanSize,
                             p_metadata = IntPtr.Zero,
                             timestamp = 0
@@ -137,7 +137,7 @@ namespace VL.IO.NDI
                         // Release the previous frame and hold on to this one
                         videoFrameSubscription.Disposable = Disposable.Create(() =>
                         {
-                            memoryHanlde.Dispose();
+                            memoryHandle.Dispose();
                             imageData.Dispose();
                             handle.Dispose();
                         });

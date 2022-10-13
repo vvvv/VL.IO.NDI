@@ -669,7 +669,8 @@ namespace VL.IO.NDI
                                 break;
                         }
 
-                        var image = videoFrame.p_data.ToImage(bufferSize, xres, yres, pixFmt, videoFrame.FourCC.ToString());
+                        var imageInfo = new ImageInfo(xres, yres, pixFmt, isPremultipliedAlpha: false, scanSize: stride, videoFrame.FourCC.ToString());
+                        var image = new IntPtrImage(videoFrame.p_data, bufferSize, imageInfo);
                         var receiverHandle = _recvInstanceProvider.GetHandle();
                         var imageProvider = ResourceProvider.Return(image, i =>
                         {
