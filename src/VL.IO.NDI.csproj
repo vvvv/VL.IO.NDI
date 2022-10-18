@@ -14,21 +14,21 @@
     <!-- Startup properties -->
     <PackageRepositories>$(MsBuildThisFileDirectory)..\..</PackageRepositories>
     
-    <VLVersion>2021.4.11-1191-gaee3e726cd</VLVersion>
+    <VLVersion>2021.4.11-1198-054567e8e5</VLVersion>
     
     <Version>0.3.0</Version>
     <Authors>NewTek, Motzi, sebl, vvvv group</Authors>
     <Company />
     <Product />
     <Description>NewTek NDI Plugins for VVVV Gamma</Description>
-    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <GeneratePackageOnBuild>False</GeneratePackageOnBuild>
     <PackageLicenseExpression>LGPL-3.0-only</PackageLicenseExpression>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="NAudio" Version="2.0.1" />
+    <PackageReference Include="NAudio" Version="2.1.0" />
     <PackageReference Include="Stride.Rendering" Version="4.0.1.1428" />
-    <PackageReference Include="VL.Audio" Version="1.0.11" />
+    <PackageReference Include="VL.Audio" Version="1.0.14" />
     <PackageReference Include="VL.Core" Version="$(VLVersion)" />
     <PackageReference Include="VL.Skia" Version="$(VLVersion)" />
   </ItemGroup>

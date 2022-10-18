@@ -9,6 +9,7 @@ using VL.Lib.Collections;
 
 namespace VL.IO.NDI
 {
+    [Serializable]
     public sealed class Source : DynamicEnumBase<Source, SourceDefinition>, IEquatable<Source>
     {
         private string _computerName;
