@@ -253,7 +253,7 @@
             <ControlPoint Id="BIerE2SS1hiMw4A7Py2IbH" Bounds="392,244" />
             <ControlPoint Id="VoDXbC6zKliPZbO3Yw7OmE" Bounds="484,244" />
             <ControlPoint Id="HDen2WcX6VIPsZRmWFWDv8" Bounds="564,244" />
-            <Node Bounds="249,294,212,383" Id="D0PXZBzf3GmNTl0RoqNULe">
+            <Node Bounds="249,294,212,384" Id="D0PXZBzf3GmNTl0RoqNULe">
               <p:NodeReference LastCategoryFullName="Primitive" LastSymbolSource="VL.CoreLib.dll">
                 <Choice Kind="StatefulRegion" Name="Region (Stateful)" Fixed="true" />
                 <Choice Kind="ProcessStatefulRegion" Name="Cache" />
@@ -342,11 +342,11 @@
                   <Pin Id="NA0Qz0AM4OdO2m11KwvcNq" Name="Output" Kind="StateOutputPin" />
                 </Node>
               </Patch>
-              <ControlPoint Id="R5vyCoyxF2BPtb48e9rGad" Bounds="359,300" Alignment="Top" />
-              <ControlPoint Id="AAGTd7hbauqMF6Fkk2QNor" Bounds="380,300" Alignment="Top" />
-              <ControlPoint Id="Lwr74vBI8L8O38XkiUAboM" Bounds="403,300" Alignment="Top" />
+              <ControlPoint Id="R5vyCoyxF2BPtb48e9rGad" Bounds="385,300" Alignment="Top" />
+              <ControlPoint Id="AAGTd7hbauqMF6Fkk2QNor" Bounds="406,300" Alignment="Top" />
+              <ControlPoint Id="Lwr74vBI8L8O38XkiUAboM" Bounds="429,300" Alignment="Top" />
               <ControlPoint Id="LGmeVDOi0kNNWDdN5VDGwd" Bounds="309,300" Alignment="Top" />
-              <ControlPoint Id="KhMYTpiv5x8PPqWj8ZlkLB" Bounds="327,300" Alignment="Top" />
+              <ControlPoint Id="KhMYTpiv5x8PPqWj8ZlkLB" Bounds="353,300" Alignment="Top" />
               <ControlPoint Id="MINvOOdVC1FPWkU98eienC" Bounds="286,671" Alignment="Bottom" />
               <ControlPoint Id="Jiv9ggXu7stQOAiyBV6ZMy" Bounds="273,300" Alignment="Top" />
             </Node>
@@ -395,7 +395,7 @@
             <Pin Id="VMbfKKjnGrHNbgRwqYCAYk" Name="Output" Kind="OutputPin" Bounds="576,691" />
             <Pin Id="QXYbbz6zjDWOt2P0GIXSPU" Name="Connected Source" Kind="OutputPin" Bounds="750,739" />
             <Pin Id="CvhlTPxDEs0LV3baoXlkjL" Name="Color Format" Kind="InputPin" Bounds="501,362" Visibility="Optional" />
-            <Pin Id="QTndWdn9pDAQMaV5ok1kbP" Name="Bandwidth" Kind="InputPin" Bounds="592,360" Visibility="Optional" />
+            <Pin Id="QTndWdn9pDAQMaV5ok1kbP" Name="Bandwidth" Kind="InputPin" Bounds="592,360" DefaultValue="recv_bandwidth_highest" Visibility="Optional" />
             <Pin Id="Rj5iHp8KRIGMTw4oIUbyFz" Name="Allow Video Fields" Kind="InputPin" Bounds="672,364" Visibility="Optional" />
           </Patch>
           <Patch Id="MRqu9inKlvqNwM6B8Ey1Wb" Name="Dispose" ParticipatingElements="BQO3vuVXmbQPvRgP7uHxGg" />
@@ -1427,6 +1427,42 @@
           <ProcessDefinition Id="L129ErrIzMJPtSwhdxaWtL" IsHidden="true">
             <Fragment Id="QtM6RsxFOFtORtAy6lsOdN" Patch="Q67voYlknISLK8TyhESLI4" />
           </ProcessDefinition>
+        </Patch>
+      </Node>
+      <!--
+
+    ************************ Bandwidth ************************
+
+-->
+      <Node Name="Bandwidth" Bounds="651,257" Id="Gt1IZN35zh5O3v9vyk6VH8">
+        <p:NodeReference>
+          <Choice Kind="ForwardRecordDefinition" Name="Immutable Forward" />
+          <FullNameCategoryReference ID="Primitive" />
+        </p:NodeReference>
+        <p:TypeAnnotation LastCategoryFullName="NewTek.NDIlib" LastSymbolSource="VL.IO.NDI.dll">
+          <Choice Kind="TypeFlag" Name="recv_bandwidth_e" />
+        </p:TypeAnnotation>
+        <Patch Id="Mu8Otrp94szNGfr11l97vd">
+          <Canvas Id="IDTqVV9bXy9P0aazVmbteS" BordersChecked="false" CanvasType="Group" />
+          <ProcessDefinition Id="RCaqDtzQK22L7bOd2VTQ3p" IsHidden="true" />
+        </Patch>
+      </Node>
+      <!--
+
+    ************************ ColorFormat ************************
+
+-->
+      <Node Name="ColorFormat" Bounds="652,299" Id="UtOzQ2dqFD7PUkeI80oNiH">
+        <p:NodeReference>
+          <Choice Kind="ForwardRecordDefinition" Name="Immutable Forward" />
+          <FullNameCategoryReference ID="Primitive" />
+        </p:NodeReference>
+        <p:TypeAnnotation LastCategoryFullName="NewTek.NDIlib" LastSymbolSource="VL.IO.NDI.dll">
+          <Choice Kind="TypeFlag" Name="recv_color_format_e" />
+        </p:TypeAnnotation>
+        <Patch Id="LJJJObKKLdjOTLyOSgdJWm">
+          <Canvas Id="OhdRQ5AXYuiObhaCHjd3Ve" BordersChecked="false" CanvasType="Group" />
+          <ProcessDefinition Id="MWC2NAd7gW9MZuyhfyfGNB" IsHidden="true" />
         </Patch>
       </Node>
     </Canvas>

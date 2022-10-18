@@ -34,17 +34,17 @@
               <p:stringtype p:Assembly="VL.Core" p:Type="VL.Core.StringType">Comment</p:stringtype>
             </p:ValueBoxSettings>
           </Pad>
-          <Pad Id="IFzRQtSJucQOhvqCMfLNbL" Comment="On Program" Bounds="458,293,35,35" ShowValueBox="true" isIOBox="true" Value="False">
+          <Pad Id="IFzRQtSJucQOhvqCMfLNbL" Comment="On Program" Bounds="448,254,35,35" ShowValueBox="true" isIOBox="true" Value="False">
             <p:TypeAnnotation LastCategoryFullName="Primitive" LastSymbolSource="CoreLibBasics.vl">
               <Choice Kind="TypeFlag" Name="Boolean" />
             </p:TypeAnnotation>
           </Pad>
-          <Pad Id="GKmXFN4l7xDONxcvR7EP9o" Comment="On Preview" Bounds="573,293,35,35" ShowValueBox="true" isIOBox="true" Value="False">
+          <Pad Id="GKmXFN4l7xDONxcvR7EP9o" Comment="On Preview" Bounds="563,254,35,35" ShowValueBox="true" isIOBox="true" Value="False">
             <p:TypeAnnotation LastCategoryFullName="Primitive" LastSymbolSource="CoreLibBasics.vl">
               <Choice Kind="TypeFlag" Name="Boolean" />
             </p:TypeAnnotation>
           </Pad>
-          <Pad Id="TOm9Y5yr2eIOSGOVFAqRQr" Bounds="458,265,189,19" ShowValueBox="true" isIOBox="true" Value="Signal tally state to the sender">
+          <Pad Id="TOm9Y5yr2eIOSGOVFAqRQr" Bounds="448,226,189,19" ShowValueBox="true" isIOBox="true" Value="Signal tally state to the sender">
             <p:TypeAnnotation>
               <Choice Kind="TypeFlag" Name="String" />
             </p:TypeAnnotation>
@@ -71,7 +71,7 @@
             <Pin Id="FOeNnB68xK2N9aFpR2hXb1" Name="Input" Kind="InputPin" />
             <Pin Id="RARPNCZ2zMvM2aCncfOStT" Name="Resource" Kind="OutputPin" />
           </Node>
-          <Pad Id="QJklW1YGnhEMWNCvO51fWV" Comment="Source" Bounds="428,178,295,15" ShowValueBox="true" isIOBox="true" Value="JOREX (Remote Connection 1)">
+          <Pad Id="QJklW1YGnhEMWNCvO51fWV" Comment="Source" Bounds="428,178,295,15" ShowValueBox="true" isIOBox="true" Value="JOREX (NVIDIA GeForce GTX 1050 Ti with Max-Q Design 1)">
             <p:TypeAnnotation LastCategoryFullName="IO.NDI" LastSymbolSource="VL.IO.NDI.vl">
               <Choice Kind="TypeFlag" Name="Source" />
             </p:TypeAnnotation>
@@ -87,6 +87,7 @@
             <Pin Id="QrdKHDnEWyrMtDVBRDrFj7" Name="Enabled" Kind="InputPin" DefaultValue="True" />
             <Pin Id="Suvub77hUQIQS2FBP7Om1f" Name="Output" Kind="OutputPin" />
             <Pin Id="I47TPPgAa3zPORepR8Pijg" Name="Connected Source" Kind="OutputPin" />
+            <Pin Id="TxJPXyyxemDLBr1eP76Z1U" Name="Bandwidth" Kind="InputPin" />
           </Node>
           <Node Bounds="426,458,83,19" Id="UpAOToD1pNyMTxhJs0s5Vx">
             <p:NodeReference LastCategoryFullName="IO.NDI" LastSymbolSource="VL.IO.NDI.vl">
@@ -101,7 +102,7 @@
               <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
               <Choice Kind="ProcessAppFlag" Name="TextureWindow" />
             </p:NodeReference>
-            <Pin Id="EHkNKoqvBliLqnIO174ELf" Name="Bounds" Kind="InputPin" DefaultValue="1032, 88, 609, 415" />
+            <Pin Id="EHkNKoqvBliLqnIO174ELf" Name="Bounds" Kind="InputPin" DefaultValue="1026, 87, 850, 539" />
             <Pin Id="NJMQ0cD75KlPwd3fCyEwhJ" Name="Input" Kind="InputPin" />
             <Pin Id="NcGySafeX0RQSjxzBj1UcA" Name="Title" Kind="InputPin" />
             <Pin Id="DoYU8jhgpD1QMnmBDlBTPt" Name="Clear Color" Kind="InputPin" />
@@ -132,7 +133,7 @@
             <Pin Id="Oio8MNNuL3GPrcGZTGJGPI" Name="Exists" Kind="OutputPin" />
           </Node>
           <Pad Id="Svi7IDj1tQNLV6EZBhJ7j4" Comment="View Size" Bounds="488,596,35,28" ShowValueBox="true" isIOBox="true" />
-          <Pad Id="Cq0VZjG8KVoM8ncGCfBWbs" Comment="Enabled" Bounds="691,295,35,35" ShowValueBox="true" isIOBox="true" Value="True">
+          <Pad Id="Cq0VZjG8KVoM8ncGCfBWbs" Comment="Enabled" Bounds="681,256,35,35" ShowValueBox="true" isIOBox="true" Value="True">
             <p:TypeAnnotation>
               <Choice Kind="ImmutableTypeFlag" Name="Boolean" />
               <FullNameCategoryReference ID="Primitive" />
@@ -140,6 +141,11 @@
             <p:ValueBoxSettings>
               <p:buttonmode p:Assembly="VL.UI.Forms" p:Type="VL.HDE.PatchEditor.Editors.ButtonModeEnum">Toggle</p:buttonmode>
             </p:ValueBoxSettings>
+          </Pad>
+          <Pad Id="V1zpD1cnMxVPCwc1IlGiVI" Comment="Bandwidth" Bounds="605,330,170,15" ShowValueBox="true" isIOBox="true" Value="recv_bandwidth_highest">
+            <p:TypeAnnotation LastCategoryFullName="IO.NDI" LastSymbolSource="VL.IO.NDI.vl">
+              <Choice Kind="TypeFlag" Name="Bandwidth" />
+            </p:TypeAnnotation>
           </Pad>
         </Canvas>
         <Patch Id="RXbXPrEDZ5UN9J32SGvmAW" Name="Create" />
@@ -159,6 +165,7 @@
         <Link Id="K1GTBOI99b2OchLQ2HPn8P" Ids="RARPNCZ2zMvM2aCncfOStT,SyiOa8OULkcMhkc9cLrRvr" />
         <Link Id="LS8tPWq6vZzMosPh3zA8E4" Ids="VPufFU13y4ZODqUtKp9rJ4,Svi7IDj1tQNLV6EZBhJ7j4" />
         <Link Id="Uq0UZAh7quKQHuVT4DISKR" Ids="Cq0VZjG8KVoM8ncGCfBWbs,QrdKHDnEWyrMtDVBRDrFj7" />
+        <Link Id="RA2iiUHMMhJM7e5LFLU8PE" Ids="V1zpD1cnMxVPCwc1IlGiVI,TxJPXyyxemDLBr1eP76Z1U" />
       </Patch>
     </Node>
   </Patch>
