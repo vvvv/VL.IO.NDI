@@ -28,6 +28,7 @@ namespace VL.IO.NDI
     {
         #region private properties
         private readonly Subject<IResourceProvider<IImage>> _videoFrames = new Subject<IResourceProvider<IImage>>();
+        private readonly Subject<string> _metadataFrames = new Subject<string>();
 
         VL.Audio.BufferWiseResampler bufferwiseResampler = new BufferWiseResampler();
 
@@ -160,6 +161,10 @@ namespace VL.IO.NDI
         /// Received Images
         /// </summary>
         public IObservable<IResourceProvider<IImage>> Frames => _videoFrames;
+        /// <summary>
+        /// Received Metadata
+        /// </summary>
+        public IObservable<string> Metadata => _metadataFrames;
         #endregion  
 
         /// <summary>
@@ -755,9 +760,8 @@ namespace VL.IO.NDI
                     case NDIlib.frame_type_e.frame_type_metadata:
 
                         // UTF-8 strings must be converted for use - length includes the terminating zero
-                        //String metadata = Utf8ToString(metadataFrame.p_data, metadataFrame.length-1);
-
-                        //System.Diagnostics.Debug.Print(metadata);
+                        var metadata = UTF.Utf8ToString(metadataFrame.p_data, metadataFrame.length-1);
+                        _metadataFrames.OnNext(metadata);
 
                         // free frames that were received
                         NDIlib.recv_free_metadata(_recvInstancePtr, ref metadataFrame);

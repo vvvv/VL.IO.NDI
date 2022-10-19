@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Document xmlns:p="property" Id="Cj0Zq5GjQw4Qay7PkQAX1S" Summary="Receive and send video content over network via the NewTek NDI protocol" Authors="Motzi" Credits="NewTek" LanguageVersion="2021.4.11.1215" Version="0.128">
+<Document xmlns:p="property" Id="Cj0Zq5GjQw4Qay7PkQAX1S" Summary="Receive and send video content over network via the NewTek NDI protocol" Authors="Motzi" Credits="NewTek" LanguageVersion="2021.4.11.1216" Version="0.128">
   <NugetDependency Id="Jq3wdcDI0TrOhpQpUk16ie" Location="VL.Core" Version="2021.4.11-1215-ga840232e2e" />
   <NugetDependency Id="GNWGzTmrnVzNQptZEu7DrG" Location="VL.CoreLib" Version="2021.4.11-1215-ga840232e2e" />
   <Patch Id="C6h2Mz3rqxPNUeN6Nz2YoP">
@@ -350,6 +350,17 @@
               <ControlPoint Id="MINvOOdVC1FPWkU98eienC" Bounds="286,671" Alignment="Bottom" />
               <ControlPoint Id="Jiv9ggXu7stQOAiyBV6ZMy" Bounds="273,300" Alignment="Top" />
             </Node>
+            <Node Bounds="284,1161,58,26" Id="JjSVs4Y27xqLbuOSJOL9Am">
+              <p:NodeReference LastCategoryFullName="IO.NDI.Receiver" LastSymbolSource="VL.IO.NDI.vl">
+                <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
+                <Choice Kind="OperationCallFlag" Name="Metadata" />
+                <CategoryReference Kind="ClassType" Name="Receiver" NeedsToBeDirectParent="true" />
+              </p:NodeReference>
+              <Pin Id="JwxAsBPcNNCQEJGMWQRmkJ" Name="Input" Kind="StateInputPin" />
+              <Pin Id="PVjBr2XqKrOPfCueTySamx" Name="Output" Kind="StateOutputPin" />
+              <Pin Id="LMPXmczXt8YMDdpOz7OsGl" Name="Metadata" Kind="OutputPin" />
+            </Node>
+            <ControlPoint Id="JHN1WeG1u0HL9sJuoes7zW" Bounds="339,1211" />
           </Canvas>
           <Slot Id="EuX7xAai0ErL4AuPycoEc7" Name="Receiver" />
           <Link Id="PGJwaPg30S1OEvniyoIA4t" Ids="Ck07oxgNIRROGo2cH0SN5c,VMbfKKjnGrHNbgRwqYCAYk" IsHidden="true" />
@@ -397,6 +408,7 @@
             <Pin Id="CvhlTPxDEs0LV3baoXlkjL" Name="Color Format" Kind="InputPin" Bounds="501,362" Visibility="Optional" />
             <Pin Id="QTndWdn9pDAQMaV5ok1kbP" Name="Bandwidth" Kind="InputPin" Bounds="592,360" DefaultValue="recv_bandwidth_highest" Visibility="Optional" />
             <Pin Id="Rj5iHp8KRIGMTw4oIUbyFz" Name="Allow Video Fields" Kind="InputPin" Bounds="672,364" Visibility="Optional" />
+            <Pin Id="NwUs4mCejZ5OFptfL33ikh" Name="Metadata" Kind="OutputPin" Bounds="340,1211" />
           </Patch>
           <Patch Id="MRqu9inKlvqNwM6B8Ey1Wb" Name="Dispose" ParticipatingElements="BQO3vuVXmbQPvRgP7uHxGg" />
           <Link Id="J05pakB49SuQGwyfYb0WsD" Ids="UqdsV0Jso4tN3wQkWKmns9,B0tNCbUvADkLWwShbFrzZL" />
@@ -429,6 +441,9 @@
           <Link Id="Q9A5QxmDQBpN0cKksA26qS" Ids="Jiv9ggXu7stQOAiyBV6ZMy,QEXyVKcIbinPcVlg8HKa3p" />
           <Link Id="UIGeTuDBsKELSENDIigIwz" Ids="KTWRP1V1oBhNDw5RGsjm9g,MINvOOdVC1FPWkU98eienC" />
           <Link Id="DdbIU3gU6xDQE43vPW7ehK" Ids="MINvOOdVC1FPWkU98eienC,PQlWA5I5ROPPh4D87UIvrf" />
+          <Link Id="CrBZR9mUiDgP9UOLFAYHS0" Ids="KIyMkYMJgmcOQqmxOLKLwn,JwxAsBPcNNCQEJGMWQRmkJ" />
+          <Link Id="MZEZNyxH0t4OHVSqiRbPsy" Ids="LMPXmczXt8YMDdpOz7OsGl,JHN1WeG1u0HL9sJuoes7zW" />
+          <Link Id="FZ932pE6R0dNi2dThYi3mA" Ids="JHN1WeG1u0HL9sJuoes7zW,NwUs4mCejZ5OFptfL33ikh" IsHidden="true" />
         </Patch>
       </Node>
       <Canvas Id="VjQKOMNKG8oPrcHEg4Xz6Z" Name="Internal" Position="478,389">
@@ -1491,5 +1506,5 @@
   <PlatformDependency Id="PbBDxB1VqidPbC5834fuSg" Location="./lib/net472/VL.IO.NDI.dll" />
   <NugetDependency Id="ME1qVyIaycMPxPRpbfPJie" Location="VL.Audio" Version="0.2.23-alpha" />
   <NugetDependency Id="MXkgfRvHR8mLi2Lo4UP3Uz" Location="VL.Skia" Version="2021.4.11-1215-ga840232e2e" />
-  <NugetDependency Id="Nxw58NhCoslNV6E9s0Gelh" Location="VL.Stride.Runtime" Version="2021.4.11-1215-ga840232e2e" />
+  <NugetDependency Id="Nxw58NhCoslNV6E9s0Gelh" Location="VL.Stride.Runtime" Version="2021.4.11-1216-g86c09753f8" />
 </Document>
