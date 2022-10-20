@@ -2,31 +2,25 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2011/10/nuspec.xsd">
   <metadata>
     <id>VL.IO.NDI</id>
-    <version>0.3.0-alpha</version>
+    <version>0.4.0-alpha</version>
     <title>VL.IO.NDI</title>
     <authors>vvvv, Matthias Husinsky, sebl, NewTek</authors>
     <owners>vvvv, Matthias Husinsky, sebl, NewTek</owners>
-    <projectUrl>https://github.com/mhusinsky/VL.IO.NDI</projectUrl>
-    <repository type="git" url="https://github.com/mhusinsky/VL.IO.NDI" branch="master"/>
+    <projectUrl>https://github.com/vvvv/VL.IO.NDI</projectUrl>
+    <repository type="git" url="https://github.com/vvvv/VL.IO.NDI" branch="master"/>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <summary>Set of nodes to use NDI Video in VVVV Gamma</summary>
-    <description>NewTek NDI Plugins for VVVV Gamma</description>
-    <copyright>NDI is copyright by VizRT/NewTek. see /licenses/ VL wrapper by Matthias Husinsky, sebl, vvvv</copyright>
-    <tags>VL, NDI, network, video</tags>
-	  <license type="expression">LGPL-3.0-only</license>
+    <summary>Provides support for NDI® in VL.</summary>
+    <description>Provides support for NDI® in VL.</description>
+    <tags>VL, NDI, network, video, audio, stream, broadcast</tags>
+	<license type="expression">LGPL-3.0-only</license>
     <dependencies>
-		<group targetFramework="netstandard2.0">
-			<dependency id="SharpDX.Direct3D11" version="4.2.0" />
-			<dependency id="VL.Audio" version="1.0.11" />
-      <dependency id="NAudio" version="2.0.1" />
-		</group>
+		<dependency id="VL.Audio" version="1.0.14" />
     </dependencies>
     <icon>icon\nugeticon.png</icon>
   </metadata>
   <files>
-	<file src="..\lib\netstandard2.0\VL.IO.NDI.dll" target="lib\" exclude="" /> 
-    <file src="..\lib\netstandard2.0\VL.IO.NDI.xml" target="lib\" exclude="" />
-    <file src="..\lib\netstandard2.0\VL.IO.NDI.pdb" target="lib\" exclude="" />
+	<file src="..\lib\net472\VL.IO.NDI.dll" target="lib\" exclude="" /> 
+    <file src="..\lib\net472\VL.IO.NDI.xml" target="lib\" exclude="" />
     <file src="..\lib-native\x64\Processing.NDI.Lib.x64.dll" target="runtimes\win-x64\native\" exclude="" />
     <file src="..\*.vl" target="" exclude="" />
     <file src="..\vl\*.vl" target="vl\" exclude="" />
