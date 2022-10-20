@@ -14,6 +14,10 @@ Once the VL.IO.NDI nuget is installed and referenced in your VL document you'll 
 ## Recommended
 Download the [NDI® Tools](https://www.ndi.tv/tools/). They contain several applications (like *Test Patterns* and *Screen Capture*) to create NDI Sources on your computer.
 
-### License
-By using this you agree to the NDINDI® EULA which can be found in *licenses/NDI License Agreement.pdf* .
+## Credits
+Initial development by @mhusinsky and @sebllll
+
+## License
+By using this you agree to the NDI® EULA which can be found in *licenses/NDI License Agreement.pdf* .
 NDI® is a registered trademark of Vizrt Group. See [NDI.tv](https://ndi.tv) for details.
+
