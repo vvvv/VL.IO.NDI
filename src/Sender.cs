@@ -215,28 +215,6 @@ namespace VL.IO.NDI
             }
         }
 
-        public void Send(VideoFrame videoFrame)
-        {
-            Send(ref videoFrame._ndiVideoFrame);
-        }
-
-        public void Send(ref NDIlib.video_frame_v2_t videoFrame)
-        {
-            if (_sendInstancePtr == IntPtr.Zero)
-                return;
-
-            NDIlib.send_send_video_v2(_sendInstancePtr, ref videoFrame);
-        }
-
-        public unsafe void SendAsync(IResourceProvider<IImage> videoFrame)
-        {
-            if (_sendInstancePtr == IntPtr.Zero || videoFrame is null)
-                return;
-
-            var handle = videoFrame.GetHandle();
-            _videoFrames.Add(handle);
-        }
-
         public void Send(AudioFrame audioFrame)
         {
             Send(ref audioFrame._ndiAudioFrame);

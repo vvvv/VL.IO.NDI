@@ -27,7 +27,7 @@ namespace VL.IO.NDI
     public unsafe class Receiver : IDisposable
     {
         #region private properties
-        private readonly Subject<IResourceProvider<IImage>> _videoFrames = new Subject<IResourceProvider<IImage>>();
+        private readonly Subject<IResourceProvider<VideoFrame>> _videoFrames = new Subject<IResourceProvider<VideoFrame>>();
         private readonly Subject<string> _metadataFrames = new Subject<string>();
 
         VL.Audio.BufferWiseResampler bufferwiseResampler = new BufferWiseResampler();
@@ -649,31 +649,7 @@ namespace VL.IO.NDI
                             break;
                         }
 
-                        // get all our info so that we can free the frame
-                        int yres = videoFrame.yres;
-                        int xres = videoFrame.xres;
-
-                        int stride = videoFrame.line_stride_in_bytes;
-                        int bufferSize = yres * stride;
-
-                        ImagingPixelFormat pixFmt;
-                        switch (videoFrame.FourCC)
-                        {
-                            case NDIlib.FourCC_type_e.FourCC_type_BGRA:
-                                pixFmt = PixelFormat.B8G8R8A8; break;
-                            case NDIlib.FourCC_type_e.FourCC_type_BGRX:
-                                pixFmt = PixelFormat.B8G8R8; break;
-                            case NDIlib.FourCC_type_e.FourCC_type_RGBA:
-                                pixFmt = PixelFormat.R8G8B8A8; break;
-                            case NDIlib.FourCC_type_e.FourCC_type_RGBX:
-                                pixFmt = PixelFormat.R8G8B8; break;
-                            default:
-                                pixFmt = PixelFormat.Unknown;    // TODO: need to handle other video formats which are currently unsupported by IImage
-                                break;
-                        }
-
-                        var imageInfo = new ImageInfo(xres, yres, pixFmt, isPremultipliedAlpha: false, scanSize: stride, videoFrame.FourCC.ToString());
-                        var image = new IntPtrImage(videoFrame.p_data, bufferSize, imageInfo);
+                        var image = new VideoFrame(videoFrame);
                         var receiverHandle = _recvInstanceProvider.GetHandle();
                         var imageProvider = ResourceProvider.Return(image, i =>
                         {
@@ -691,7 +667,7 @@ namespace VL.IO.NDI
 
                         // Tell consumers about it
                         _videoFrames.OnNext(imageProvider);
-                       
+
                         break;
 
                     // audio is beyond the scope of this example

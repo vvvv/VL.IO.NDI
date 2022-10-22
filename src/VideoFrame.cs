@@ -1,87 +1,49 @@
 ﻿using System;
-using System.Runtime.InteropServices;
-using System.Xml.Linq;
 
 using NewTek;
+using VL.Lib.Basics.Imaging;
 
 namespace VL.IO.NDI
 {
     /// <summary>
     /// 
     /// </summary>
-    public class VideoFrame : IDisposable
+    public class VideoFrame : IImage, IDisposable
     {
-        private readonly bool _memoryOwned = false;
-        private readonly IDisposable _deallocator;
+        private readonly IntPtrImage _image;
 
         internal NDIlib.video_frame_v2_t _ndiVideoFrame;
 
-        /// <summary>
-        /// the simple constructor only deals with BGRA.For other color formats you'll need to handle it manually.
-        /// Defaults to progressive but can be changed.
-        /// </summary>
-        /// <param name="width"></param>
-        /// <param name="height"></param>
-        /// <param name="aspectRatio"></param>
-        /// <param name="frameRateNumerator"></param>
-        /// <param name="frameRateDenominator"></param>
-        /// <param name="format"></param>
-        public VideoFrame( int width, int height, float aspectRatio, int frameRateNumerator, int frameRateDenominator,
-                            NDIlib.frame_format_type_e format = NDIlib.frame_format_type_e.frame_format_type_progressive)
+        internal VideoFrame(NDIlib.video_frame_v2_t videoFrame)
         {
-            // we have to know to free it later
-            _memoryOwned = true;
+            _ndiVideoFrame = videoFrame;
+            _image = new IntPtrImage(
+                pointer: videoFrame.p_data,
+                size: videoFrame.line_stride_in_bytes * videoFrame.yres, 
+                info: new ImageInfo(
+                    videoFrame.xres, 
+                    videoFrame.yres, 
+                    ToPixelFormat(videoFrame.FourCC), 
+                    isPremultipliedAlpha: false, 
+                    scanSize: videoFrame.line_stride_in_bytes, 
+                    originalFormat: videoFrame.FourCC.ToString()));
 
-            int stride = (width * 32 /*BGRA bpp*/ + 7) / 8;
-            int bufferSize = height * stride;
-
-            // allocate some memory for a video buffer
-            IntPtr videoBufferPtr = Marshal.AllocHGlobal(bufferSize);
-
-            _ndiVideoFrame = new NDIlib.video_frame_v2_t()
+            static PixelFormat ToPixelFormat(NDIlib.FourCC_type_e fourCC)
             {
-                xres = width,
-                yres = height,
-                FourCC = NDIlib.FourCC_type_e.FourCC_type_BGRA,
-                frame_rate_N = frameRateNumerator,
-                frame_rate_D = frameRateDenominator,
-                picture_aspect_ratio = aspectRatio,
-                frame_format_type = format,
-                timecode = NDIlib.send_timecode_synthesize,
-                p_data = videoBufferPtr,
-                line_stride_in_bytes = stride,
-                p_metadata = IntPtr.Zero,
-                timestamp = 0
-            };
-        }
-
-        public VideoFrame(IntPtr bufferPtr,
-                          int width,
-                          int height,
-                          int stride,
-                          NDIlib.FourCC_type_e fourCC = NDIlib.FourCC_type_e.FourCC_type_BGRA,
-                          float aspectRatio = 1f,
-                          int frameRateNumerator = 1,
-                          int frameRateDenominator = 1,
-                          NDIlib.frame_format_type_e format = NDIlib.frame_format_type_e.frame_format_type_progressive,
-                          IDisposable deallocator = null)
-        {
-            _ndiVideoFrame = new NDIlib.video_frame_v2_t()
-            {
-                xres = width,
-                yres = height,
-                FourCC = fourCC,
-                frame_rate_N = frameRateNumerator,
-                frame_rate_D = frameRateDenominator,
-                picture_aspect_ratio = aspectRatio,
-                frame_format_type = format,
-                timecode = NDIlib.send_timecode_synthesize,
-                p_data = bufferPtr,
-                line_stride_in_bytes = stride,
-                p_metadata = IntPtr.Zero,
-                timestamp = 0
-            };
-            _deallocator = deallocator;
+                switch (fourCC)
+                {
+                    case NDIlib.FourCC_type_e.FourCC_type_BGRA:
+                        return PixelFormat.B8G8R8A8;
+                    case NDIlib.FourCC_type_e.FourCC_type_BGRX:
+                        return PixelFormat.B8G8R8;
+                    case NDIlib.FourCC_type_e.FourCC_type_RGBA:
+                        return PixelFormat.R8G8B8A8;
+                    case NDIlib.FourCC_type_e.FourCC_type_RGBX:
+                        return PixelFormat.R8G8B8;
+                    default:
+                        return PixelFormat.Unknown;    // TODO: need to handle other video formats which are currently unsupported by IImage
+                }
+            }
         }
 
         public int Width
@@ -128,18 +90,14 @@ namespace VL.IO.NDI
             }
         }
 
-        public XElement MetaData
+        public string MetaData
         {
             get
             {
                 if (_ndiVideoFrame.p_metadata == IntPtr.Zero)
                     return null;
 
-                String mdString = UTF.Utf8ToString(_ndiVideoFrame.p_metadata);
-                if (String.IsNullOrEmpty(mdString))
-                    return null;
-
-                return XElement.Parse(mdString);
+                return UTF.Utf8ToString(_ndiVideoFrame.p_metadata);
             }
         }
 
@@ -158,14 +116,14 @@ namespace VL.IO.NDI
         {
             if (disposing) 
             {
-                if (_memoryOwned)
-                {
-                    Marshal.FreeHGlobal(_ndiVideoFrame.p_data);
-                    _ndiVideoFrame.p_data = IntPtr.Zero;
-                }
-
-                _deallocator?.Dispose();
+                _image.Dispose();
             }
         }
+
+        ImageInfo IImage.Info => _image.Info;
+
+        bool IImage.IsVolatile => _image.IsVolatile;
+
+        IImageData IImage.GetData() => _image.GetData();
     }
 }
