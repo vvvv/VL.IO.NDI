@@ -23,7 +23,6 @@ namespace VL.IO.NDI
         private readonly ServiceRegistry serviceRegistry;
         private readonly CompositeDisposable subscriptions;
         private readonly SerialDisposable texturePoolSubscription;
-        private readonly SerialDisposable imagePoolSubscription;
         private readonly SerialDisposable imageSubscription;
 
         public TextureDownload()
@@ -32,7 +31,6 @@ namespace VL.IO.NDI
             subscriptions = new CompositeDisposable()
             {
                 (texturePoolSubscription = new SerialDisposable()),
-                (imagePoolSubscription = new SerialDisposable()),
                 (imageSubscription = new SerialDisposable())
             };
         }
@@ -52,7 +50,6 @@ namespace VL.IO.NDI
             if (texture is null)
             {
                 texturePoolSubscription.Disposable = null;
-                imagePoolSubscription.Disposable = null;
                 imageSubscription.Disposable = null;
                 return;
             }
@@ -67,7 +64,7 @@ namespace VL.IO.NDI
             {
                 // Request copy
                 var stagingTexture = texturePool.Rent();
-                context.CommandList.Copy(Texture, stagingTexture);
+                context.CommandList.Copy(texture, stagingTexture);
                 textureDownloads.Enqueue(stagingTexture);
             }
 
@@ -82,7 +79,8 @@ namespace VL.IO.NDI
                 // Download recently staged
                 var stagedTexture = textureDownloads.Peek();
                 var doNotWait = DownloadAsync && textureDownloads.Count < 4;
-                var mappedResource = context.CommandList.MapSubresource(stagedTexture, 0, Stride.Graphics.MapMode.Read, doNotWait);
+                var commandList = context.CommandList;
+                var mappedResource = commandList.MapSubresource(stagedTexture, 0, Stride.Graphics.MapMode.Read, doNotWait);
                 var data = mappedResource.DataBox;
                 if (!data.IsEmpty)
                 {
@@ -90,7 +88,7 @@ namespace VL.IO.NDI
                     textureDownloads.Dequeue();
 
                     // Setup the new image resource
-                    var imageInfo = new ImageInfo(texture.Width, texture.Height, ToPixelFormat(texture.Format), isPremultipliedAlpha: true, data.RowPitch, texture.Format.ToString());
+                    var imageInfo = new ImageInfo(stagedTexture.Width, stagedTexture.Height, ToPixelFormat(stagedTexture.Format), isPremultipliedAlpha: true, data.RowPitch, stagedTexture.Format.ToString());
                     var image = new IntPtrImage(data.DataPointer, data.SlicePitch, imageInfo);
                     var imageProvider = ResourceProvider.Return(image, ReleaseImage).ShareInParallel();
 
@@ -109,7 +107,8 @@ namespace VL.IO.NDI
                         else
                         {
                             i.Dispose();
-                            context.CommandList.UnmapSubresource(mappedResource);
+                            if (!IsDisposed)
+                                commandList.UnmapSubresource(mappedResource);
                             texturePool.Return(stagedTexture);
                         }
                     }

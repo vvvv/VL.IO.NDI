@@ -20,8 +20,8 @@ namespace VL.IO.NDI
         private readonly Task _sendTask;
         private readonly BlockingCollection<IResourceHandle<IImage>> _videoFrames = new BlockingCollection<IResourceHandle<IImage>>(boundedCapacity: 1);
         private readonly SerialDisposable _imageStreamSubscription = new SerialDisposable();
+        private readonly IntPtr _sendInstancePtr;
 
-        private IntPtr _sendInstancePtr = IntPtr.Zero;
         private NDIlib.tally_t _ndiTally = new NDIlib.tally_t();
         private IObservable<IResourceProvider<IImage>> _imageStream;
 
@@ -83,7 +83,7 @@ namespace VL.IO.NDI
 
             _sendTask = Task.Run(() =>
             {
-                var videoFrameSubscription = new SerialDisposable();
+                using var videoFrameSubscription = new SerialDisposable();
                 try
                 {
                     foreach (var handle in _videoFrames.GetConsumingEnumerable())
@@ -95,6 +95,7 @@ namespace VL.IO.NDI
                         var info = image.Info;
                         var imageData = image.GetData();
                         var memoryHandle = imageData.Bytes.Pin();
+                        var size = imageData.ScanSize * info.Height;
                         var ndiVideoFrame = new NDIlib.video_frame_v2_t()
                         {
                             xres = info.Width,
@@ -124,8 +125,10 @@ namespace VL.IO.NDI
                 }
                 finally
                 {
+                    // Ensures that in case of a crash no more frames will be added
+                    _videoFrames.CompleteAdding();
+
                     NDIlib.send_send_video_async_v2(_sendInstancePtr, ref Unsafe.AsRef<NDIlib.video_frame_v2_t>(IntPtr.Zero.ToPointer()));
-                    videoFrameSubscription.Dispose();
                 }
 
                 static NDIlib.FourCC_type_e ToFourCC(PixelFormat format)
@@ -262,18 +265,17 @@ namespace VL.IO.NDI
         {
             if (disposing) 
             {
-                if (_sendInstancePtr != IntPtr.Zero)
+                try
                 {
                     _imageStreamSubscription.Dispose();
                     _videoFrames.CompleteAdding();
-                    if (_sendTask != null)
-                        _sendTask.Wait();
-
-                    NDIlib.send_destroy(_sendInstancePtr);
-                    _sendInstancePtr = IntPtr.Zero;
+                    _sendTask.Wait();
                 }
-
-                NDIlib.destroy();
+                finally
+                {
+                    NDIlib.send_destroy(_sendInstancePtr);
+                    NDIlib.destroy();
+                }
             }
         }
     }

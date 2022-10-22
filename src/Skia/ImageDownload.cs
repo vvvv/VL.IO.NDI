@@ -32,7 +32,7 @@ namespace VL.IO.NDI
         private readonly RenderContext renderContext;
 
         // Nullable
-        private readonly Device device;
+        private Device device;
         private Texture2D renderTarget;
         private EglSurface eglSurface;
         private SKSurface surface;
@@ -45,21 +45,20 @@ namespace VL.IO.NDI
                 device = new Device(devicePtr);
         }
 
-        public IObservable<IResourceProvider<IImage>> Update(SKImage image)
+        public IObservable<IResourceProvider<IImage>> Update(SKImage image, bool downloadAsync = true)
         {
             if (image is null)
                 return emptyObservable;
 
-            // Not working :( Output is black
             if (isFastDownloadSupported && device != null)
-                DownloadWithStagingTexture(image);
+                DownloadWithStagingTexture(image, downloadAsync);
             else
                 DownloadWithRasterImage(image);
 
             return imageStream;
         }
 
-        private void DownloadWithStagingTexture(SKImage skImage)
+        private void DownloadWithStagingTexture(SKImage skImage, bool downloadAsync)
         {
             // Fast path
             // - Create render texture
@@ -117,20 +116,29 @@ namespace VL.IO.NDI
                 textureDownloads.Enqueue(stagingTexture);
             }
 
+            if (!downloadAsync)
+            {
+                // Drain the queue
+                while (textureDownloads.Count > 1)
+                    textureDownloads.Dequeue().Dispose();
+            }
+
             // Download recently staged
             {
                 var stagedTexture = textureDownloads.Peek();
-                var waitOnGPU = textureDownloads.Count >= 4;
-                var data = device.ImmediateContext.MapSubresource(stagedTexture, 0, MapMode.Read, waitOnGPU ? MapFlags.None : MapFlags.DoNotWait);
+                var doNotWait = downloadAsync && textureDownloads.Count < 4;
+                var data = device.ImmediateContext.MapSubresource(stagedTexture, 0, MapMode.Read, doNotWait ? MapFlags.DoNotWait : MapFlags.None);
                 if (!data.IsEmpty)
                 {
                     // Dequeue
                     textureDownloads.Dequeue();
 
                     // Setup the new image resource
-                    var imageInfo = new ImageInfo(description.Width, description.Height, PixelFormat.B8G8R8A8, isPremultipliedAlpha: true, data.RowPitch, description.Format.ToString());
+                    var stagedDescription = stagedTexture.Description;
+                    var imageInfo = new ImageInfo(stagedDescription.Width, stagedDescription.Height, PixelFormat.B8G8R8A8, isPremultipliedAlpha: true, data.RowPitch, stagedDescription.Format.ToString());
                     var image = new IntPtrImage(data.DataPointer, data.SlicePitch, imageInfo);
-                    var imageProvider = ResourceProvider.Return(image, ReleaseImage).ShareInParallel();
+                    var imageProvider = ResourceProvider.Return(image, ReleaseImage)
+                        .ShareInParallel();
 
                     // Subscribe to our own provider to ensure the image is returned if no one else is using it
                     imageSubscription.Disposable = imageProvider.GetHandle();
@@ -145,7 +153,7 @@ namespace VL.IO.NDI
                         else
                         {
                             i.Dispose();
-                            device.ImmediateContext.UnmapSubresource(stagedTexture, 0);
+                            device?.ImmediateContext.UnmapSubresource(stagedTexture, 0);
                             texturePool.Return(stagedTexture);
                         }
                     }
@@ -225,10 +233,11 @@ namespace VL.IO.NDI
             while (textureDownloads.Count > 0)
                 textureDownloads.Dequeue().Dispose();
 
-            renderTarget?.Dispose();
             surface?.Dispose();
             eglSurface?.Dispose();
+            renderTarget?.Dispose();
             device?.Dispose();
+            device = null;
 
             renderContext.Dispose();
         }

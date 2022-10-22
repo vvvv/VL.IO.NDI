@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Document xmlns:p="property" Id="Cj0Zq5GjQw4Qay7PkQAX1S" Summary="Receive and send video content over network via the NewTek NDI protocol" Authors="Motzi" Credits="NewTek" LanguageVersion="2021.4.11.1216" Version="0.128">
-  <NugetDependency Id="Jq3wdcDI0TrOhpQpUk16ie" Location="VL.Core" Version="2021.4.11-1215-ga840232e2e" />
-  <NugetDependency Id="GNWGzTmrnVzNQptZEu7DrG" Location="VL.CoreLib" Version="2021.4.11-1215-ga840232e2e" />
+<Document xmlns:p="property" Id="Cj0Zq5GjQw4Qay7PkQAX1S" Summary="Receive and send video content over network via the NewTek NDI protocol" Authors="Motzi" Credits="NewTek" LanguageVersion="2021.4.11.1215" Version="0.128">
+  <NugetDependency Id="Jq3wdcDI0TrOhpQpUk16ie" Location="VL.Core" Version="2021.4.11-1214-g70ce132975" />
+  <NugetDependency Id="GNWGzTmrnVzNQptZEu7DrG" Location="VL.CoreLib" Version="2021.4.11-1214-g70ce132975" />
   <Patch Id="C6h2Mz3rqxPNUeN6Nz2YoP">
     <Canvas Id="UCJJ4ngvXb5MPzaX1CGF2Y" DefaultCategory="IO.NDI" CanvasType="FullCategory">
       <!--
@@ -924,7 +924,7 @@
                   <Pin Id="GXLGB1HbpWXM8zovWt5ly1" Name="On Program" Kind="OutputPin" />
                   <Pin Id="VlCD1tmnim9MBBRR4yRYOb" Name="On Preview" Kind="OutputPin" />
                 </Node>
-                <Node Bounds="259,684,186,26" AutoConnect="true" Id="JeGJa9nGGfINE4J3LjIA63">
+                <Node Bounds="259,684,186,26" Id="JeGJa9nGGfINE4J3LjIA63">
                   <p:NodeReference LastCategoryFullName="VL.IO.NDI.Sender" LastSymbolSource="VL.IO.NDI.dll">
                     <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
                     <CategoryReference Kind="AssemblyCategory" Name="Sender" NeedsToBeDirectParent="true" />
@@ -1340,9 +1340,11 @@
               </p:NodeReference>
               <Pin Id="JmrhBKBo1hrNkzaiUPRkad" Name="Input" Kind="StateInputPin" />
               <Pin Id="GdnuaksXARiOK5SMpMMgvD" Name="Image" Kind="InputPin" />
+              <Pin Id="OJy3kXf0zrhN0WDs6N5Uti" Name="Download Async" Kind="InputPin" />
               <Pin Id="Gj4rQLXOyirLXbrCuQIlyu" Name="Output" Kind="StateOutputPin" />
               <Pin Id="OZQAyQdrAqkQMFz2eBXagq" Name="Result" Kind="OutputPin" />
             </Node>
+            <ControlPoint Id="Q4iPA1L4P6uPANUcQLzoKD" Bounds="608,396" />
           </Canvas>
           <ProcessDefinition Id="NHkL0NvsoNNMdywgQi6V7z">
             <Fragment Id="J5EGccTLGHhMOgCNLSuwAw" Patch="LCnwLPWSHB2MrQn8p4ZK1W" Enabled="true" />
@@ -1355,12 +1357,15 @@
           <Patch Id="NkeoJ3xNEAxMbMsguqaogA" Name="Update">
             <Pin Id="SjdHPWY2A5vNcpMvo4HtHN" Name="Input" Kind="InputPin" Bounds="635,245" />
             <Pin Id="Hzu2p48eIQ3P51Yt3G2Iiq" Name="Output" Kind="OutputPin" Bounds="595,573" />
+            <Pin Id="O0xHf3Z3Y4nMvOj50mtFIN" Name="Download Async" Kind="InputPin" Bounds="608,396" />
           </Patch>
           <Link Id="VeHCcWWCj2QMxdBlSlFJrI" Ids="UQO73IXtfSvOHccdZAd7T7,HdjrVxai1ZyPCDOTP8rBtN" />
           <Patch Id="JmpJhmrTuanN7TUsEVeYF8" Name="Dispose" ParticipatingElements="UmLyLHQ4Oo7NebtP2Pnns7" />
           <Link Id="DLWbPD4cqdZP49JvEogm2c" Ids="UQO73IXtfSvOHccdZAd7T7,JmrhBKBo1hrNkzaiUPRkad" />
           <Link Id="VzyjaKt6M7SPpS20zvi99w" Ids="QpAlsQhCPOmPAy2UaPaWFY,GdnuaksXARiOK5SMpMMgvD" />
           <Link Id="Bbp6AiEFOdqPGbUqrpCyli" Ids="OZQAyQdrAqkQMFz2eBXagq,FLRDkKnuLw7QJqEq80lWOC" />
+          <Link Id="No5vJKYWSLGMyc0aTI8Fth" Ids="Q4iPA1L4P6uPANUcQLzoKD,OJy3kXf0zrhN0WDs6N5Uti" />
+          <Link Id="DDJP5ePuXvENn5P9JqRyeu" Ids="O0xHf3Z3Y4nMvOj50mtFIN,Q4iPA1L4P6uPANUcQLzoKD" IsHidden="true" />
         </Patch>
       </Node>
       <!--
@@ -1505,6 +1510,6 @@
   <PlatformDependency Id="LkvwleFmgyILglvCd3xlo8" Location="System.Collections.Concurrent" />
   <PlatformDependency Id="PbBDxB1VqidPbC5834fuSg" Location="./lib/net472/VL.IO.NDI.dll" />
   <NugetDependency Id="ME1qVyIaycMPxPRpbfPJie" Location="VL.Audio" Version="0.2.23-alpha" />
-  <NugetDependency Id="MXkgfRvHR8mLi2Lo4UP3Uz" Location="VL.Skia" Version="2021.4.11-1215-ga840232e2e" />
-  <NugetDependency Id="Nxw58NhCoslNV6E9s0Gelh" Location="VL.Stride.Runtime" Version="2021.4.11-1216-g86c09753f8" />
+  <NugetDependency Id="MXkgfRvHR8mLi2Lo4UP3Uz" Location="VL.Skia" Version="2021.4.11-1214-g70ce132975" />
+  <NugetDependency Id="Nxw58NhCoslNV6E9s0Gelh" Location="VL.Stride.Runtime" Version="2021.4.11-1215-ga840232e2e" />
 </Document>
