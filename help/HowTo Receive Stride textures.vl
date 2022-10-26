@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Document xmlns:p="property" Id="QHpr0fv5ZhbPHgd1D9pUc5" LanguageVersion="2021.4.11.1215" Version="0.128">
+<Document xmlns:p="property" Id="QHpr0fv5ZhbPHgd1D9pUc5" LanguageVersion="2021.4.11.1232" Version="0.128">
   <NugetDependency Id="QDKWB4liQfJMDPWein5ERc" Location="VL.Core" Version="2021.4.11-1215-ga840232e2e" />
   <NugetDependency Id="JngbdjrQttWP3C056ivUGZ" Location="VL.CoreLib" Version="2021.4.11-1215-ga840232e2e" />
   <Patch Id="IiCA7zHpiE6LeILS7YZGKy">
@@ -16,7 +16,7 @@
       </p:NodeReference>
       <Patch Id="VX8x6j7wJ3GQSwpxICFXQ7">
         <Canvas Id="FntGeiaET6xNjAVP7uNJ4R" CanvasType="Group">
-          <Pad Id="BfLDmsMxtouMcjJf8v4Wm2" Bounds="36,315,364,124" ShowValueBox="true" isIOBox="true" Value="Connect the receiver to the source and wait a few seconds. &#xD;&#xA;&#xD;&#xA;Check for hidden pins to configure receiving properties.&#xD;&#xA;- ColorFormat: the format NDI will convert the source to&#xD;&#xA;- Bandwith: allows you to lower bandwith at reduced quality&#xD;&#xA;- AllowVideoFields: let NDI deinterlace the source">
+          <Pad Id="BfLDmsMxtouMcjJf8v4Wm2" Bounds="38,342,366,85" ShowValueBox="true" isIOBox="true" Value="Check for hidden pins to configure receiving properties.&#xD;&#xA;- ColorFormat: the format NDI will convert the source to&#xD;&#xA;- Bandwith: allows you to lower bandwith at reduced quality&#xD;&#xA;- AllowVideoFields: let NDI deinterlace the source">
             <p:TypeAnnotation LastCategoryFullName="Primitive" LastSymbolSource="CoreLibBasics.vl">
               <Choice Kind="TypeFlag" Name="String" />
             </p:TypeAnnotation>
@@ -71,7 +71,7 @@
             <Pin Id="FOeNnB68xK2N9aFpR2hXb1" Name="Input" Kind="InputPin" />
             <Pin Id="RARPNCZ2zMvM2aCncfOStT" Name="Resource" Kind="OutputPin" />
           </Node>
-          <Pad Id="QJklW1YGnhEMWNCvO51fWV" Comment="Source" Bounds="428,178,295,15" ShowValueBox="true" isIOBox="true" Value="JOREX (NVIDIA GeForce GTX 1050 Ti with Max-Q Design 1)">
+          <Pad Id="QJklW1YGnhEMWNCvO51fWV" Comment="Source" Bounds="428,178,295,15" ShowValueBox="true" isIOBox="true" Value="JOREX (Test Pattern)">
             <p:TypeAnnotation LastCategoryFullName="IO.NDI" LastSymbolSource="VL.IO.NDI.vl">
               <Choice Kind="TypeFlag" Name="Source" />
             </p:TypeAnnotation>
@@ -81,13 +81,15 @@
               <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
               <Choice Kind="ProcessAppFlag" Name="NDIReceiver" />
             </p:NodeReference>
+            <p:HelpFocus p:Assembly="VL.Lang" p:Type="VL.Model.HelpPriority">High</p:HelpFocus>
             <Pin Id="S9nqkRCcJMXMKPUpeUQgWC" Name="Source" Kind="InputPin" />
             <Pin Id="JDSLkC1jiZ6NDsIblbTZmJ" Name="On Program" Kind="InputPin" />
             <Pin Id="ERtm2A09LVoMmaRhg7V2Z7" Name="On Preview" Kind="InputPin" />
             <Pin Id="QrdKHDnEWyrMtDVBRDrFj7" Name="Enabled" Kind="InputPin" DefaultValue="True" />
+            <Pin Id="TxJPXyyxemDLBr1eP76Z1U" Name="Bandwidth" Kind="InputPin" />
             <Pin Id="Suvub77hUQIQS2FBP7Om1f" Name="Output" Kind="OutputPin" />
             <Pin Id="I47TPPgAa3zPORepR8Pijg" Name="Connected Source" Kind="OutputPin" />
-            <Pin Id="TxJPXyyxemDLBr1eP76Z1U" Name="Bandwidth" Kind="InputPin" />
+            <Pin Id="MB2DhRk3IYtP6DwFzvAP3s" Name="Metadata" Kind="OutputPin" />
           </Node>
           <Node Bounds="426,458,83,19" Id="UpAOToD1pNyMTxhJs0s5Vx">
             <p:NodeReference LastCategoryFullName="IO.NDI" LastSymbolSource="VL.IO.NDI.vl">
@@ -132,7 +134,7 @@
             <Pin Id="JTvf1GJ8041Pq5ExmgzsPo" Name="Resource Format" Kind="OutputPin" />
             <Pin Id="Oio8MNNuL3GPrcGZTGJGPI" Name="Exists" Kind="OutputPin" />
           </Node>
-          <Pad Id="Svi7IDj1tQNLV6EZBhJ7j4" Comment="View Size" Bounds="488,596,35,28" ShowValueBox="true" isIOBox="true" />
+          <Pad Id="Svi7IDj1tQNLV6EZBhJ7j4" Comment="View Size" Bounds="490,585,35,28" ShowValueBox="true" isIOBox="true" />
           <Pad Id="Cq0VZjG8KVoM8ncGCfBWbs" Comment="Enabled" Bounds="681,256,35,35" ShowValueBox="true" isIOBox="true" Value="True">
             <p:TypeAnnotation>
               <Choice Kind="ImmutableTypeFlag" Name="Boolean" />
@@ -169,6 +171,6 @@
       </Patch>
     </Node>
   </Patch>
-  <NugetDependency Id="RZKOzWqotVjQVRGarARfLh" Location="VL.Stride" Version="2021.4.11-1215-ga840232e2e" />
+  <NugetDependency Id="RZKOzWqotVjQVRGarARfLh" Location="VL.Stride" Version="2021.4.11-1232-gb3c6282bbb" />
   <NugetDependency Id="SoARYR0FAkdOO0nZ0bPMDR" Location="VL.IO.NDI" Version="0.0.0.0" />
 </Document>

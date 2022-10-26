@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Document xmlns:p="property" Id="EDpXcQUiaNFMZEqe06FgkO" LanguageVersion="2021.4.11.1215" Version="0.128">
+<Document xmlns:p="property" Id="EDpXcQUiaNFMZEqe06FgkO" LanguageVersion="2021.4.11.1232" Version="0.128">
   <NugetDependency Id="QDKWB4liQfJMDPWein5ERc" Location="VL.Core" Version="2021.4.11-1215-ga840232e2e" />
   <NugetDependency Id="JngbdjrQttWP3C056ivUGZ" Location="VL.CoreLib" Version="2021.4.11-1215-ga840232e2e" />
   <Patch Id="IiCA7zHpiE6LeILS7YZGKy">
@@ -54,8 +54,10 @@
               <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
               <Choice Kind="ProcessAppFlag" Name="NDISender" />
             </p:NodeReference>
+            <p:HelpFocus p:Assembly="VL.Lang" p:Type="VL.Model.HelpPriority">High</p:HelpFocus>
             <Pin Id="GaDRfHpqBCsPQKO4sdeCPY" Name="Input" Kind="InputPin" />
             <Pin Id="Dir43xQDKKtOgZCQa2HrGX" Name="Source Name" Kind="InputPin" />
+            <Pin Id="QthpwIcQXdtOXyxQxj6y0q" Name="Groups" Kind="InputPin" />
             <Pin Id="C47D48tcPAZMaxwJmYKD19" Name="Enabled" Kind="InputPin" />
             <Pin Id="VzZpBHaI0qSOD6WAluKrO5" Name="On Program" Kind="OutputPin" />
             <Pin Id="E7pKOB2xru8MCU7WQ3oHDQ" Name="On Preview" Kind="OutputPin" />
@@ -120,6 +122,6 @@
       </Patch>
     </Node>
   </Patch>
-  <NugetDependency Id="KZigFv0HjRzMkckft6Q8KE" Location="VL.Stride" Version="2021.4.11-1215-ga840232e2e" />
+  <NugetDependency Id="KZigFv0HjRzMkckft6Q8KE" Location="VL.Stride" Version="2021.4.11-1232-gb3c6282bbb" />
   <NugetDependency Id="KfsBNNv51VXMN0OcFa4M2u" Location="VL.IO.NDI" Version="0.0.0.0" />
 </Document>
