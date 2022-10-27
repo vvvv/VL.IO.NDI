@@ -493,41 +493,10 @@ namespace VL.IO.NDI
             if (source == null || String.IsNullOrEmpty(source.Name))
                 return;
 
-            fixed (byte* sourceNamePtr = UTF.StringToUtf8(source.Name))
-            fixed (byte* receiverNamePtr = UTF.StringToUtf8(ReceiverName))
-            {
-                // a source_t to describe the source to connect to.
-                NDIlib.source_t source_t = new NDIlib.source_t()
-                {
-                    p_ndi_name = new IntPtr(sourceNamePtr)
-                };
-
-                // make a description of the receiver we want
-                NDIlib.recv_create_v3_t recvDescription = new NDIlib.recv_create_v3_t()
-                {
-                    // the source we selected
-                    source_to_connect_to = source_t,
-
-                    // we want BGRA frames for this example
-                    color_format = colorFormat,
-
-                    // we want full quality - for small previews or limited bandwidth, choose lowest
-                    bandwidth = bandwidth,
-
-                    // let NDIlib deinterlace for us if needed
-                    allow_video_fields = allowVideoFields,
-
-                    // The name of the NDI receiver to create. This is a NULL terminated UTF8 string and should be
-                    // the name of receive channel that you have. This is in many ways symettric with the name of
-                    // senders, so this might be "Channel 1" on your system.
-                    p_ndi_recv_name = new IntPtr(receiverNamePtr)
-                };
-
-                // create a new instance connected to this source
-                _recvInstanceProvider = ResourceProvider.Return(NDIlib.recv_create_v3(ref recvDescription), NDIlib.recv_destroy)
-                    .ShareInParallel();
-                _recvInstanceHandle = _recvInstanceProvider.GetHandle();
-            }
+            // create a new instance connected to this source
+            _recvInstanceProvider = NativeFactory.CreateReceiver(source.Name, ReceiverName, colorFormat, bandwidth, allowVideoFields)
+                .ShareInParallel();
+            _recvInstanceHandle = _recvInstanceProvider.GetHandle();
 
             // did it work?
             System.Diagnostics.Debug.Assert(_recvInstancePtr != IntPtr.Zero, "Failed to create NDI receive instance.");
