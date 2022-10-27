@@ -166,16 +166,16 @@
           <Node Bounds="413,284,85,19" Id="T3HSkSflO36M32IkkxMbw7">
             <p:NodeReference LastCategoryFullName="IO.NDI" LastSymbolSource="VL.IO.NDI.vl">
               <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
-              <Choice Kind="ProcessAppFlag" Name="NDIReceiver (Synchronized)" />
+              <Choice Kind="ProcessAppFlag" Name="NDIReceiver" />
             </p:NodeReference>
             <Pin Id="S9nqkRCcJMXMKPUpeUQgWC" Name="Source" Kind="InputPin" />
-            <Pin Id="NsQBc31khxQP146m2fU1eN" Name="Bandwidth" Kind="InputPin" />
-            <Pin Id="Suvub77hUQIQS2FBP7Om1f" Name="Output" Kind="OutputPin" />
-            <Pin Id="I47TPPgAa3zPORepR8Pijg" Name="Connected Source" Kind="OutputPin" />
             <Pin Id="JDSLkC1jiZ6NDsIblbTZmJ" Name="On Program" Kind="InputPin" />
             <Pin Id="ERtm2A09LVoMmaRhg7V2Z7" Name="On Preview" Kind="InputPin" />
             <Pin Id="QrdKHDnEWyrMtDVBRDrFj7" Name="Enabled" Kind="InputPin" />
-            <Pin Id="B9QC8ECosJIOAfOi2KW9s0" Name="Synchronization Enabled" Kind="InputPin" DefaultValue="True" />
+            <Pin Id="NsQBc31khxQP146m2fU1eN" Name="Bandwidth" Kind="InputPin" />
+            <Pin Id="Suvub77hUQIQS2FBP7Om1f" Name="Output" Kind="OutputPin" />
+            <Pin Id="I47TPPgAa3zPORepR8Pijg" Name="Connected Source" Kind="OutputPin" />
+            <Pin Id="M00kv7wyfxcMv3axlWe11k" Name="Metadata" Kind="OutputPin" />
           </Node>
           <Pad Id="BN1ElESlcRCOL1jr0KPBmG" Comment="Enabled" Bounds="668,192,35,35" ShowValueBox="true" isIOBox="true" Value="True">
             <p:TypeAnnotation>
@@ -211,6 +211,15 @@
             <Pin Id="M8uke4Ph6tKNMA6ES8ITIl" Name="Discard Higher Bits" Kind="InputPin" />
             <Pin Id="A0kb0pdGtS4MVQAK87UaaW" Name="Result" Kind="OutputPin" />
           </Node>
+          <Node Bounds="413,321,98,19" Id="IPMQKFEHhcMMTvkJhUMjJV">
+            <p:NodeReference LastCategoryFullName="IO.NDI" LastSymbolSource="VL.IO.NDI.vl">
+              <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
+              <Choice Kind="ProcessAppFlag" Name="ReceiveImageSync" />
+            </p:NodeReference>
+            <Pin Id="TE6R9efPluTONbWLzIHJVs" Name="Input" Kind="InputPin" />
+            <Pin Id="VqPzgpB7ucsOCzy0EoHoHV" Name="Output" Kind="OutputPin" />
+            <Pin Id="Ep9JofoqC7tOIXReEWBMcP" Name="On Data" Kind="OutputPin" />
+          </Node>
         </Canvas>
         <Patch Id="RXbXPrEDZ5UN9J32SGvmAW" Name="Create" />
         <Patch Id="QpxSgEoztp6NSBKwkBB7d3" Name="Update" />
@@ -231,9 +240,10 @@
         <Link Id="CqGX43zF48zLe6oRDy5Ajd" Ids="QJklW1YGnhEMWNCvO51fWV,S9nqkRCcJMXMKPUpeUQgWC" />
         <Link Id="E6nXw6W5URDOgaa58AmA4I" Ids="BN1ElESlcRCOL1jr0KPBmG,QrdKHDnEWyrMtDVBRDrFj7" />
         <Link Id="VSQlNbZDoHYPQm14J1GYWC" Ids="CQOZHyMkBClPi3uhuxnMaF,NsQBc31khxQP146m2fU1eN" />
-        <Link Id="JodJ4iSyHaWOuBqCDCPIAp" Ids="Suvub77hUQIQS2FBP7Om1f,C43wQTdK4iELkU0VNK4Bn6" />
         <Link Id="TTrh5ZrAyJHMiOQ8nBFhTI" Ids="C2npSZOCRR2PB4jl2UWdpc,DpyUZk9NZgDNTRZxTH928z" />
         <Link Id="BKWpUDXJeGQM0FvmArJp9L" Ids="A0kb0pdGtS4MVQAK87UaaW,CV8kRMgBESgLnNA4qtv4M3" />
+        <Link Id="HeTdgNaqyBUPWTYiVX4nFF" Ids="Suvub77hUQIQS2FBP7Om1f,TE6R9efPluTONbWLzIHJVs" />
+        <Link Id="VjuCTv8ZfYpLee3DEwZTLA" Ids="VqPzgpB7ucsOCzy0EoHoHV,C43wQTdK4iELkU0VNK4Bn6" />
       </Patch>
     </Node>
   </Patch>

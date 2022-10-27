@@ -174,7 +174,7 @@
             <Pin Id="FOeNnB68xK2N9aFpR2hXb1" Name="Input" Kind="InputPin" />
             <Pin Id="RARPNCZ2zMvM2aCncfOStT" Name="Resource" Kind="OutputPin" />
           </Node>
-          <Pad Id="QJklW1YGnhEMWNCvO51fWV" Comment="Source" Bounds="416,108,295,15" ShowValueBox="true" isIOBox="true" Value="JOREX (NVIDIA GeForce GTX 1050 Ti with Max-Q Design 1)">
+          <Pad Id="QJklW1YGnhEMWNCvO51fWV" Comment="Source" Bounds="416,108,295,15" ShowValueBox="true" isIOBox="true" Value="HOPE-05 (vvvv)">
             <p:TypeAnnotation LastCategoryFullName="IO.NDI" LastSymbolSource="VL.IO.NDI.vl">
               <Choice Kind="TypeFlag" Name="Source" />
             </p:TypeAnnotation>
@@ -207,6 +207,14 @@
               <Choice Kind="TypeFlag" Name="Bandwidth" />
             </p:TypeAnnotation>
           </Pad>
+          <Node Bounds="413,337,78,19" Id="LELnmlzivxpP9qxwExAk9J">
+            <p:NodeReference LastCategoryFullName="IO.NDI" LastSymbolSource="VL.IO.NDI.vl">
+              <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
+              <Choice Kind="ProcessAppFlag" Name="ReceiveImage" />
+            </p:NodeReference>
+            <Pin Id="CMQYfWV0Sy6O9R4UCjMzea" Name="Input" Kind="InputPin" />
+            <Pin Id="KNLztLIHpYuQQaFMg0ugrb" Name="Output" Kind="OutputPin" />
+          </Node>
         </Canvas>
         <Patch Id="RXbXPrEDZ5UN9J32SGvmAW" Name="Create" />
         <Patch Id="QpxSgEoztp6NSBKwkBB7d3" Name="Update" />
@@ -223,13 +231,14 @@
         <Link Id="AZeMqMtbgkeOQfKbNzxIPA" Ids="QdejmNuTjMmMvf8cHosqzt,HWzDmXlaygjOy1TrwhLiRQ" />
         <Link Id="B6B6ougBha6ML7umMYGRf5" Ids="DGoxAY5x4cULvcSDEXLRqG,FOeNnB68xK2N9aFpR2hXb1" />
         <Link Id="NIMYaV9UA6wOagMhcQ5QGA" Ids="RARPNCZ2zMvM2aCncfOStT,CV8kRMgBESgLnNA4qtv4M3" />
-        <Link Id="R9Jp8he3yYsQMbSMhXI5r3" Ids="Suvub77hUQIQS2FBP7Om1f,C35oVvC3u42PmPmAYuh3Oo" />
+        <Link Id="R9Jp8he3yYsQMbSMhXI5r3" Ids="Suvub77hUQIQS2FBP7Om1f,CMQYfWV0Sy6O9R4UCjMzea" />
         <Link Id="NHTyCLe7cXcLFFngbcbG47" Ids="I47TPPgAa3zPORepR8Pijg,KzqHaMcuV2XPJkeiFG5SKZ" />
         <Link Id="OJj2wtSSPddOJISlK98tvd" Ids="IFzRQtSJucQOhvqCMfLNbL,JDSLkC1jiZ6NDsIblbTZmJ" />
         <Link Id="H6LM6oO8qM0PsAB6fwvmJp" Ids="GKmXFN4l7xDONxcvR7EP9o,ERtm2A09LVoMmaRhg7V2Z7" />
         <Link Id="CqGX43zF48zLe6oRDy5Ajd" Ids="QJklW1YGnhEMWNCvO51fWV,S9nqkRCcJMXMKPUpeUQgWC" />
         <Link Id="E6nXw6W5URDOgaa58AmA4I" Ids="BN1ElESlcRCOL1jr0KPBmG,QrdKHDnEWyrMtDVBRDrFj7" />
         <Link Id="VSQlNbZDoHYPQm14J1GYWC" Ids="CQOZHyMkBClPi3uhuxnMaF,NsQBc31khxQP146m2fU1eN" />
+        <Link Id="BkctL38dQ9QML4hYYleqqy" Ids="KNLztLIHpYuQQaFMg0ugrb,C35oVvC3u42PmPmAYuh3Oo" />
       </Patch>
     </Node>
   </Patch>

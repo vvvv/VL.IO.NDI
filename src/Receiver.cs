@@ -14,6 +14,11 @@ using VL.Lib.Basics.Resources;
 using System.Reactive.Disposables;
 using System.Runtime.CompilerServices;
 using System.Buffers;
+using System.Reactive.Linq;
+using System.Threading.Tasks;
+using System.Collections.Generic;
+using System.Linq;
+using System.Reactive;
 
 namespace VL.IO.NDI
 {
@@ -24,11 +29,14 @@ namespace VL.IO.NDI
     /// and use it for video only, but don't forget that you will still need
     /// to free any audio frames received.
     /// </summary>
-    public unsafe class Receiver : IDisposable
+    public class Receiver : IDisposable
     {
         #region private properties
         private readonly Subject<IResourceProvider<VideoFrame>> _videoFrames = new Subject<IResourceProvider<VideoFrame>>();
         private readonly Subject<string> _metadataFrames = new Subject<string>();
+
+        private IObservable<IResourceProvider<VideoFrame>> _imageStream;
+        private IEnumerable<IResourceProvider<VideoFrame>> _synchronizedImageStream;
 
         VL.Audio.BufferWiseResampler bufferwiseResampler = new BufferWiseResampler();
 
@@ -160,7 +168,10 @@ namespace VL.IO.NDI
         /// <summary>
         /// Received Images
         /// </summary>
-        public IObservable<IResourceProvider<IImage>> Frames => _videoFrames;
+        public IObservable<IResourceProvider<IImage>> ImageStream => _imageStream ?? Observable.Empty<IResourceProvider<IImage>>();
+
+        public IEnumerable<IResourceProvider<IImage>> SynchronizedImageStream => _synchronizedImageStream ?? Enumerable.Empty<IResourceProvider<IImage>>();
+
         /// <summary>
         /// Received Metadata
         /// </summary>
@@ -174,6 +185,7 @@ namespace VL.IO.NDI
 
         public Receiver()
         {
+
         }
 
         #region PTZ Methods
@@ -299,109 +311,6 @@ namespace VL.IO.NDI
 
         #endregion PTZ Methods
 
-        #region Recording Methods
-        // This will start recording.If the recorder was already recording then the message is ignored.A filename is passed in as a ‘hint’.Since the recorder might 
-        // already be recording(or might not allow complete flexibility over its filename), the filename might or might not be used.If the filename is empty, or 
-        // not present, a name will be chosen automatically. 
-        public bool RecordingStart(String filenameHint = "")
-        {
-            if (!_canRecord || _recvInstancePtr == IntPtr.Zero)
-                return false;
-
-            bool retVal = false;
-
-            if (String.IsNullOrEmpty(filenameHint))
-            {
-                retVal = NDIlib.recv_recording_start(_recvInstancePtr, IntPtr.Zero);
-            }
-            else
-            {
-                // convert to an unmanaged UTF8 IntPtr
-                fixed (byte* fileNamePtr = UTF.StringToUtf8(filenameHint))
-                    retVal = NDIlib.recv_recording_start(_recvInstancePtr, new IntPtr(fileNamePtr));
-            }
-
-            return retVal;
-        }
-
-        // Stop recording.
-        public bool RecordingStop()
-        {
-            if (!_canRecord || _recvInstancePtr == IntPtr.Zero)
-                return false;
-
-            return NDIlib.recv_recording_stop(_recvInstancePtr);
-        }
-
-
-        public bool RecordingSetAudioLevel(double level)
-        {
-            if (!_canRecord || _recvInstancePtr == IntPtr.Zero)
-                return false;
-
-            return NDIlib.recv_recording_set_audio_level(_recvInstancePtr, (float)level);
-        }
-
-        public bool IsRecording()
-        {
-            if (!_canRecord || _recvInstancePtr == IntPtr.Zero)
-                return false;
-
-            return NDIlib.recv_recording_is_recording(_recvInstancePtr);
-        }
-
-        public String GetRecordingFilename()
-        {
-            if (!_canRecord || _recvInstancePtr == IntPtr.Zero)
-                return String.Empty;
-
-            IntPtr filenamePtr = NDIlib.recv_recording_get_filename(_recvInstancePtr);
-            if (filenamePtr == IntPtr.Zero)
-            {
-                return String.Empty;
-            }
-            else
-            {
-                String filename = UTF.Utf8ToString(filenamePtr);
-
-                // free it
-                NDIlib.recv_free_string(_recvInstancePtr, filenamePtr);
-
-                return filename;
-            }
-        }
-
-        public String GetRecordingError()
-        {
-            if (!_canRecord || _recvInstancePtr == IntPtr.Zero)
-                return String.Empty;
-
-            IntPtr errorPtr = NDIlib.recv_recording_get_error(_recvInstancePtr);
-            if (errorPtr == IntPtr.Zero)
-            {
-                return String.Empty;
-            }
-            else
-            {
-                String error = UTF.Utf8ToString(errorPtr);
-
-                // free it
-                NDIlib.recv_free_string(_recvInstancePtr, errorPtr);
-
-                return error;
-            }
-        }
-
-        public bool GetRecordingTimes(ref NDIlib.recv_recording_time_t recordingTimes)
-        {
-            if (!_canRecord || _recvInstancePtr == IntPtr.Zero)
-                return false;
-
-            return NDIlib.recv_recording_get_times(_recvInstancePtr, ref recordingTimes);
-        }
-
-        #endregion Recording Methods
-
         #region dispose and finalize
         public void Dispose()
         {
@@ -506,9 +415,97 @@ namespace VL.IO.NDI
                 // We are now going to mark this source as being on program output for tally purposes (but not on preview)
                 SetTallyIndicators(true, false);
 
-                // start up a thread to receive on
-                _receiveThread = new Thread(ReceiveThreadProc) { IsBackground = true, Name = "NdiExampleReceiveThread" };
-                _receiveThread.Start();
+                //// start up a thread to receive on
+                //_receiveThread = new Thread(ReceiveThreadProc) { IsBackground = true, Name = "NdiExampleReceiveThread" };
+                //_receiveThread.Start();
+
+                _imageStream = Observable.Create<IResourceProvider<VideoFrame>>(PushFrames);
+
+                var _syncInstanceProvider = _recvInstanceProvider.CreateSync().ShareInParallel();
+                _synchronizedImageStream = EnumerableEx.Create(PullFrames);
+
+                async Task PushFrames(IObserver<IResourceProvider<VideoFrame>> observer, CancellationToken token)
+                {
+                    using var videoFrameSubscription = new SerialDisposable();
+                    var recvInstanceProvider = _recvInstanceProvider;
+                    using var nativeReceiverHandle = recvInstanceProvider.GetHandle();
+                    var recvInstancePtr = nativeReceiverHandle.Resource;
+
+                    await Task.Run(async () =>
+                    {
+                        while (!token.IsCancellationRequested)
+                        {
+                            NDIlib.video_frame_v2_t videoFrame = new NDIlib.video_frame_v2_t();
+
+                            switch (NDIlib.recv_capture_v2(recvInstancePtr, ref videoFrame, ref NativeUtils.NULL<NDIlib.audio_frame_v2_t>(), ref NativeUtils.NULL<NDIlib.metadata_frame_t>(), 30))
+                            {
+                                // Video data
+                                case NDIlib.frame_type_e.frame_type_video:
+
+                                    // if not enabled, just discard
+                                    // this can also occasionally happen when changing sources
+                                    if (videoFrame.p_data == IntPtr.Zero)
+                                    {
+                                        // alreays free received frames
+                                        NDIlib.recv_free_video_v2(recvInstancePtr, ref videoFrame);
+
+                                        break;
+                                    }
+
+                                    var image = new VideoFrame(videoFrame);
+                                    var imageProvider = recvInstanceProvider.Bind(r => ResourceProvider.Return(image, i =>
+                                    {
+                                        image.Dispose();
+                                        NDIlib.recv_free_video_v2(r, ref videoFrame);
+                                    })).ShareInParallel();
+
+                                    // Release the previous frame and hold on to this one
+                                    videoFrameSubscription.Disposable = imageProvider.GetHandle();
+
+                                    // Tell consumers about it
+                                    observer.OnNext(imageProvider);
+
+                                    break;
+
+                                default:
+                                    await Task.Yield();
+                                    break;
+                            }
+                        }
+                    }, token);
+                }
+
+                IEnumerator<IResourceProvider<VideoFrame>> PullFrames()
+                {
+                    using var imageSubscription = new SerialDisposable();
+                    using var syncInstanceHandle = _syncInstanceProvider.GetHandle();
+                    var syncInstance = syncInstanceHandle.Resource;
+
+                    while (true)
+                    {
+                        var videoFrame = new NDIlib.video_frame_v2_t();
+                        NDIlib.framesync_capture_video(syncInstance, ref videoFrame, NDIlib.frame_format_type_e.frame_format_type_interleaved);
+                        if (videoFrame.p_data != default)
+                        {
+                            var image = new VideoFrame(videoFrame);
+                            var imageProvider = _syncInstanceProvider.Bind(s => ResourceProvider.Return(image, i =>
+                            {
+                                image.Dispose();
+
+                                // Free video frame
+                                NDIlib.framesync_free_video(s, ref videoFrame);
+                            })).ShareInParallel();
+
+                            imageSubscription.Disposable = imageProvider.GetHandle();
+
+                            yield return imageProvider;
+                        }
+                        else
+                        {
+                            break;
+                        }
+                    }
+                }
             }
         }
 
@@ -537,6 +534,7 @@ namespace VL.IO.NDI
 
             // set it to a safe value
             _recvInstanceProvider = null;
+            _imageStream = null;
 
             // set function status to defaults
             IsPtz = false;

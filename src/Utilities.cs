@@ -1,4 +1,6 @@
-﻿using System;
+﻿using NewTek;
+using System;
+using System.Runtime.CompilerServices;
 using System.Security;
 using System.Text;
 
@@ -51,4 +53,13 @@ namespace VL.IO.NDI
         }
 
     } // class NDILib
+
+    internal static class NativeUtils
+    {
+        public static unsafe ref T NULL<T>()
+            where T : struct
+        {
+            return ref Unsafe.AsRef<T>(IntPtr.Zero.ToPointer());
+        }
+    }
 } // namespace NewTek.NDI
