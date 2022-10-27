@@ -14,7 +14,7 @@ using VLPixelFormat = VL.Lib.Basics.Imaging.PixelFormat;
 
 namespace VL.IO.NDI
 {
-    public sealed class TextureDownload : RendererBase
+    public sealed class TextureToImageStream : RendererBase
     {
         private readonly SynchronizationContext synchronizationContext = SynchronizationContext.Current;
         private readonly Queue<Texture> textureDownloads = new Queue<Texture>();
@@ -25,7 +25,7 @@ namespace VL.IO.NDI
         private readonly SerialDisposable texturePoolSubscription;
         private readonly SerialDisposable imageSubscription;
 
-        public TextureDownload()
+        public TextureToImageStream()
         {
             serviceRegistry = ServiceRegistry.Current;
             subscriptions = new CompositeDisposable()

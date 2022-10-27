@@ -1,4 +1,4 @@
-﻿using Stride.Graphics;
+﻿using SkiaSharp;
 using System;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
@@ -8,21 +8,14 @@ using VL.Lib.Basics.Resources;
 
 namespace VL.IO.NDI
 {
-    public sealed class TextureUpload : IDisposable
+    public sealed class ImageStreamToSKImage : IDisposable
     {
         private readonly SerialDisposable imageStreamSubscription = new SerialDisposable();
         private readonly SerialDisposable latestSubscription = new SerialDisposable();
         private readonly SerialDisposable currentSubscription = new SerialDisposable();
 
         private IObservable<IResourceProvider<IImage>> imageStream;
-        private IResourceProvider<Texture> current, latest;
-
-        private IResourceHandle<GraphicsDevice> graphicsDevice;
-
-        public TextureUpload()
-        {
-            graphicsDevice = ServiceRegistry.Current.GetService<IResourceProvider<GraphicsDevice>>().GetHandle();
-        }
+        private IResourceProvider<SKImage> current, latest;
 
         public unsafe IObservable<IResourceProvider<IImage>> ImageStream 
         {
@@ -35,13 +28,13 @@ namespace VL.IO.NDI
 
                     imageStreamSubscription.Disposable = value?.Subscribe(provider =>
                     {
-                        var textureProvider = StrideUtils.ToTexture(provider, graphicsDevice.Resource).ShareInParallel();
-                        var handle = textureProvider.GetHandle(); // Upload the texture
+                        var skImageProvider = SkiaUtils.ToSKImage(provider).ShareInParallel();
+                        var handle = skImageProvider.GetHandle(); // Upload the texture
 
                         // Exchange provider
                         lock (this)
                         {
-                            latest = textureProvider;
+                            latest = skImageProvider;
                             latestSubscription.Disposable = handle;
                         }
                     });
@@ -49,7 +42,7 @@ namespace VL.IO.NDI
             }
         }
 
-        public IResourceProvider<Texture> TextureProvider
+        public IResourceProvider<SKImage> Provider
         {
             get
             {
@@ -61,7 +54,7 @@ namespace VL.IO.NDI
                         current = latest;
                         currentSubscription.Disposable = current.GetHandle();
                     }
-                    return current ?? ResourceProvider.Default<Texture>.GetInstance(default);
+                    return current ?? ResourceProvider.Default<SKImage>.GetInstance(default);
                 }
             }
         }
@@ -71,7 +64,6 @@ namespace VL.IO.NDI
             imageStreamSubscription.Dispose();
             latestSubscription.Dispose();
             currentSubscription.Dispose();
-            graphicsDevice.Dispose();
         }
     }
 }

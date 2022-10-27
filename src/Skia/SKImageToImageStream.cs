@@ -16,7 +16,7 @@ using VL.Skia.Egl;
 
 namespace VL.IO.NDI
 {
-    public sealed class ImageDownload : IDisposable
+    public sealed class SKImageToImageStream : IDisposable
     {
         private static readonly IRefCounter<SKImage> refCounter = RefCounting.GetRefCounter<SKImage>();
         private static readonly IObservable<IResourceProvider<IImage>> emptyObservable = Observable.Empty<IResourceProvider<IImage>>();
@@ -37,7 +37,7 @@ namespace VL.IO.NDI
         private EglSurface eglSurface;
         private SKSurface surface;
 
-        public ImageDownload()
+        public SKImageToImageStream()
         {
             renderContext = RenderContext.ForCurrentThread();
             var eglContext = renderContext.EglContext;

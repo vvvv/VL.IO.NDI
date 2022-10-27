@@ -1,8 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Document xmlns:p="property" Id="EDpXcQUiaNFMZEqe06FgkO" LanguageVersion="2021.4.11.1215" Version="0.128">
-  <NugetDependency Id="QDKWB4liQfJMDPWein5ERc" Location="VL.Core" Version="2021.4.11-1215-ga840232e2e" />
-  <NugetDependency Id="JngbdjrQttWP3C056ivUGZ" Location="VL.CoreLib" Version="2021.4.11-1215-ga840232e2e" />
-  <NugetDependency Id="FDjgov6DOmvM906MD3ltdI" Location="VL.Skia" Version="2021.4.11-1215-ga840232e2e" />
+<Document xmlns:p="property" Id="EDpXcQUiaNFMZEqe06FgkO" LanguageVersion="2021.4.11.1237" Version="0.128">
+  <NugetDependency Id="QDKWB4liQfJMDPWein5ERc" Location="VL.Core" Version="2021.4.11-1237-gbe7b40ca9c" />
+  <NugetDependency Id="JngbdjrQttWP3C056ivUGZ" Location="VL.CoreLib" Version="2021.4.11-1237-gbe7b40ca9c" />
+  <NugetDependency Id="FDjgov6DOmvM906MD3ltdI" Location="VL.Skia" Version="2021.4.11-1237-gbe7b40ca9c" />
   <Patch Id="IiCA7zHpiE6LeILS7YZGKy">
     <Canvas Id="PmobLB0HSYAL6JU48f5ahA" DefaultCategory="Main" CanvasType="FullCategory">
       <!--
@@ -745,9 +745,10 @@
           <Node Bounds="353,392,100,19" Id="A8MAt2Rsz7IMBOaViSVl0U">
             <p:NodeReference LastCategoryFullName="IO.NDI" LastSymbolSource="VL.IO.NDI.vl">
               <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
-              <Choice Kind="ProcessAppFlag" Name="SKImageDownload" />
+              <Choice Kind="ProcessAppFlag" Name="SKImageToImageStream" />
             </p:NodeReference>
             <Pin Id="J94zKlNgdsCPBhKBfhpc5P" Name="Input" Kind="InputPin" />
+            <Pin Id="CreLnl2R49lMWCYwgrzNJg" Name="Download Async" Kind="InputPin" />
             <Pin Id="QYtXtfhl30LQB2pbHbZegj" Name="Output" Kind="OutputPin" />
           </Node>
           <Node Bounds="353,541,64,19" Id="HWqoI9kKIspNwirj3RU1d4">
@@ -757,6 +758,7 @@
             </p:NodeReference>
             <Pin Id="GaDRfHpqBCsPQKO4sdeCPY" Name="Input" Kind="InputPin" />
             <Pin Id="Dir43xQDKKtOgZCQa2HrGX" Name="Source Name" Kind="InputPin" />
+            <Pin Id="KlWjB0Et6d8LwREhbhr5zD" Name="Groups" Kind="InputPin" />
             <Pin Id="C47D48tcPAZMaxwJmYKD19" Name="Enabled" Kind="InputPin" />
             <Pin Id="VzZpBHaI0qSOD6WAluKrO5" Name="On Program" Kind="OutputPin" />
             <Pin Id="E7pKOB2xru8MCU7WQ3oHDQ" Name="On Preview" Kind="OutputPin" />

@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Document xmlns:p="property" Id="Cj0Zq5GjQw4Qay7PkQAX1S" Summary="Receive and send video content over network via the NewTek NDI protocol" Authors="Motzi" Credits="NewTek" LanguageVersion="2021.4.11.1232" Version="0.128">
-  <NugetDependency Id="Jq3wdcDI0TrOhpQpUk16ie" Location="VL.Core" Version="2021.4.11-1215-ga840232e2e" />
-  <NugetDependency Id="GNWGzTmrnVzNQptZEu7DrG" Location="VL.CoreLib" Version="2021.4.11-1215-ga840232e2e" />
+<Document xmlns:p="property" Id="Cj0Zq5GjQw4Qay7PkQAX1S" Summary="Receive and send video content over network via the NewTek NDI protocol" Authors="Motzi" Credits="NewTek" LanguageVersion="2021.4.11.1237" Version="0.128">
+  <NugetDependency Id="Jq3wdcDI0TrOhpQpUk16ie" Location="VL.Core" Version="2021.4.11-1237-gbe7b40ca9c" />
+  <NugetDependency Id="GNWGzTmrnVzNQptZEu7DrG" Location="VL.CoreLib" Version="2021.4.11-1237-gbe7b40ca9c" />
   <Patch Id="C6h2Mz3rqxPNUeN6Nz2YoP">
     <Canvas Id="UCJJ4ngvXb5MPzaX1CGF2Y" DefaultCategory="IO.NDI" CanvasType="FullCategory">
       <!--
@@ -1032,10 +1032,10 @@
       </Node>
       <!--
 
-    ************************ TextureDownload ************************
+    ************************ TextureToImageStream ************************
 
 -->
-      <Node Name="TextureDownload" Bounds="490,490" Id="L8I0lZbOXWxOafwYkVRA6q">
+      <Node Name="TextureToImageStream" Bounds="490,490" Id="L8I0lZbOXWxOafwYkVRA6q">
         <p:NodeReference LastCategoryFullName="Primitive" LastSymbolSource="builtin">
           <Choice Kind="ContainerDefinition" Name="Process" />
         </p:NodeReference>
@@ -1050,7 +1050,7 @@
               <Pin Id="DY1pEoicXhqMzb6Y3InLMx" Name="Output" Kind="OutputPin" />
             </Node>
             <Node Bounds="442,359,81,26" Id="IGrRzuLspHdN3bXlsb0NNI">
-              <p:NodeReference LastCategoryFullName="VL.IO.NDI.TextureDownload" LastSymbolSource="VL.IO.NDI.dll">
+              <p:NodeReference LastCategoryFullName="VL.IO.NDI.TextureToImageStream" LastSymbolSource="VL.IO.NDI.dll">
                 <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
                 <Choice Kind="OperationCallFlag" Name="SetTexture" />
               </p:NodeReference>
@@ -1059,7 +1059,7 @@
               <Pin Id="TgRMwTwGupvN8oUxF61V1J" Name="Output" Kind="StateOutputPin" />
             </Node>
             <Node Bounds="442,430,102,26" Id="OgYpS91StSfMEtI8k1My3b">
-              <p:NodeReference LastCategoryFullName="VL.IO.NDI.TextureDownload" LastSymbolSource="VL.IO.NDI.dll">
+              <p:NodeReference LastCategoryFullName="VL.IO.NDI.TextureToImageStream" LastSymbolSource="VL.IO.NDI.dll">
                 <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
                 <Choice Kind="OperationCallFlag" Name="SetDownloadAsync" />
               </p:NodeReference>
@@ -1068,10 +1068,10 @@
               <Pin Id="Mbmmf4kVJspNJr1PfMy0Lh" Name="Output" Kind="StateOutputPin" />
             </Node>
             <Node Bounds="442,498,81,26" Id="RYd5K3H3w4iLLloqJcdsHm">
-              <p:NodeReference LastCategoryFullName="VL.IO.NDI.TextureDownload" LastSymbolSource="VL.IO.NDI.dll">
+              <p:NodeReference LastCategoryFullName="VL.IO.NDI.TextureToImageStream" LastSymbolSource="VL.IO.NDI.dll">
                 <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
                 <Choice Kind="OperationCallFlag" Name="ImageStream" />
-                <CategoryReference Kind="AssemblyCategory" Name="TextureDownload" NeedsToBeDirectParent="true" />
+                <CategoryReference Kind="AssemblyCategory" Name="TextureToImageStream" NeedsToBeDirectParent="true" />
               </p:NodeReference>
               <Pin Id="TQQYnwNJHggPiEUG3jyQp9" Name="Input" Kind="StateInputPin" />
               <Pin Id="P07krOLOFcyPn8YuPAOeHt" Name="Output" Kind="StateOutputPin" />
@@ -1081,10 +1081,10 @@
             <ControlPoint Id="DOsHjzrBphgLSfQx7kvIo7" Bounds="726,321" />
             <ControlPoint Id="UStcy8txrBZMhGAZgb4YF9" Bounds="635,246" />
             <Node Bounds="332,229,81,26" Id="RmBEJESVUsZMJvttNlICZv">
-              <p:NodeReference LastCategoryFullName="VL.IO.NDI.TextureDownload" LastSymbolSource="VL.IO.NDI.dll">
+              <p:NodeReference LastCategoryFullName="VL.IO.NDI.TextureToImageStream" LastSymbolSource="VL.IO.NDI.dll">
                 <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
                 <Choice Kind="OperationCallFlag" Name="Create" />
-                <CategoryReference Kind="AssemblyCategory" Name="TextureDownload" NeedsToBeDirectParent="true" />
+                <CategoryReference Kind="AssemblyCategory" Name="TextureToImageStream" NeedsToBeDirectParent="true" />
               </p:NodeReference>
               <Pin Id="HZFYdraPAFFPBoLHmeF4uM" Name="Output" Kind="StateOutputPin" />
             </Node>
@@ -1099,7 +1099,7 @@
               <Pin Id="MGzLI5qUZvkM5NttZ4Fa2F" Name="Output" Kind="StateOutputPin" />
             </Node>
             <Node Bounds="444,607" Id="GCxKIuAJRttOEFcPKe8BgY">
-              <p:NodeReference LastCategoryFullName="VL.IO.NDI.TextureDownload" LastSymbolSource="VL.IO.NDI.dll">
+              <p:NodeReference LastCategoryFullName="VL.IO.NDI.TextureToImageStream" LastSymbolSource="VL.IO.NDI.dll">
                 <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
                 <Choice Kind="OperationCallFlag" Name="ElapsedTime" />
               </p:NodeReference>
@@ -1182,29 +1182,28 @@
       </Pad>
       <!--
 
-    ************************ TextureUpload ************************
+    ************************ ImageStreamToTexture ************************
 
 -->
-      <Node Name="TextureUpload" Bounds="494,547" Id="BV8vTvuinvTM15XwgF5ynE">
+      <Node Name="ImageStreamToTexture" Bounds="494,547" Id="BV8vTvuinvTM15XwgF5ynE">
         <p:NodeReference LastCategoryFullName="Primitive" LastSymbolSource="builtin">
           <Choice Kind="ContainerDefinition" Name="Process" />
         </p:NodeReference>
         <Patch Id="VPbcRErihFrOnMeTPmNe0M">
           <Canvas Id="UmLRZn8rTbwP2mfiqySv8l" CanvasType="Group">
             <Node Bounds="442,359,81,26" Id="AJvg3pT3FlfNnaWMZYPyDD">
-              <p:NodeReference LastCategoryFullName="VL.IO.NDI.TextureUpload" LastSymbolSource="VL.IO.NDI.dll">
+              <p:NodeReference LastCategoryFullName="VL.IO.NDI.ImageStreamToTexture" LastSymbolSource="VL.IO.NDI.dll">
                 <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
-                <CategoryReference Kind="AssemblyCategory" Name="TextureUpload" />
                 <Choice Kind="OperationCallFlag" Name="SetImageStream" />
+                <CategoryReference Kind="AssemblyCategory" Name="ImageStreamToTexture" NeedsToBeDirectParent="true" />
               </p:NodeReference>
               <Pin Id="CjB8r7wqDdnOArUnSWVCq1" Name="Input" Kind="StateInputPin" />
               <Pin Id="IpEJ6Wvqd9mNRXzY9jxDZ3" Name="Value" Kind="InputPin" />
               <Pin Id="IvTy9trkYoLL66vgkG1mhw" Name="Output" Kind="StateOutputPin" />
             </Node>
             <Node Bounds="442,498,81,26" Id="CczAdMb5jEXNzNDSm56QxI">
-              <p:NodeReference LastCategoryFullName="VL.IO.NDI.TextureUpload" LastSymbolSource="VL.IO.NDI.dll">
+              <p:NodeReference LastCategoryFullName="VL.IO.NDI.ImageStreamToTexture" LastSymbolSource="VL.IO.NDI.dll">
                 <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
-                <CategoryReference Kind="AssemblyCategory" Name="TextureUpload" />
                 <Choice Kind="OperationCallFlag" Name="TextureProvider" />
               </p:NodeReference>
               <Pin Id="QKuZch3OE5ONUy1yuSQEx4" Name="Input" Kind="StateInputPin" />
@@ -1214,10 +1213,10 @@
             <ControlPoint Id="Otzrr3aLG31NovQY1t7DJd" Bounds="625,601" />
             <ControlPoint Id="J6O2zAOSyKIPFN2rrDdSmv" Bounds="635,246" />
             <Node Bounds="332,229,81,26" Id="SBMZyQr6HJgMV2LBCbRO41">
-              <p:NodeReference LastCategoryFullName="VL.IO.NDI.TextureUpload" LastSymbolSource="VL.IO.NDI.dll">
+              <p:NodeReference LastCategoryFullName="VL.IO.NDI.ImageStreamToTexture" LastSymbolSource="VL.IO.NDI.dll">
                 <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
                 <Choice Kind="OperationCallFlag" Name="Create" />
-                <CategoryReference Kind="AssemblyCategory" Name="TextureUpload" NeedsToBeDirectParent="true" />
+                <CategoryReference Kind="AssemblyCategory" Name="ImageStreamToTexture" NeedsToBeDirectParent="true" />
               </p:NodeReference>
               <Pin Id="HCmaBZbCTFGPh7v81bk9Tu" Name="Output" Kind="StateOutputPin" />
             </Node>
@@ -1254,29 +1253,28 @@
       </Node>
       <!--
 
-    ************************ SKImageUpload ************************
+    ************************ ImageStreamToSKImage ************************
 
 -->
-      <Node Name="SKImageUpload" Bounds="689,547" Id="VduvXVYcG9uP2Kp3XPuaLq">
+      <Node Name="ImageStreamToSKImage" Bounds="689,547" Id="VduvXVYcG9uP2Kp3XPuaLq">
         <p:NodeReference LastCategoryFullName="Primitive" LastSymbolSource="builtin">
           <Choice Kind="ContainerDefinition" Name="Process" />
         </p:NodeReference>
         <Patch Id="UmggzEWbipELEXQFeqV3rq">
           <Canvas Id="TAWC7VyILEqLKrgNB2LeZp" CanvasType="Group">
             <Node Bounds="442,359,81,26" Id="LCf9HTxzPPMNJiBXE6fc2V">
-              <p:NodeReference LastCategoryFullName="VL.IO.NDI.ImageUpload" LastSymbolSource="VL.IO.NDI.dll">
+              <p:NodeReference LastCategoryFullName="VL.IO.NDI.ImageStreamToSKImage" LastSymbolSource="VL.IO.NDI.dll">
                 <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
                 <Choice Kind="OperationCallFlag" Name="SetImageStream" />
-                <CategoryReference Kind="AssemblyCategory" Name="ImageUpload" NeedsToBeDirectParent="true" />
+                <CategoryReference Kind="AssemblyCategory" Name="ImageStreamToSKImage" NeedsToBeDirectParent="true" />
               </p:NodeReference>
               <Pin Id="UQWSrwr6YVyLTahYKKLpTH" Name="Input" Kind="StateInputPin" />
               <Pin Id="K3uUDPzXzt7MqsokZgq1td" Name="Value" Kind="InputPin" />
               <Pin Id="P4w5g2BijxaMYEqypSf0lz" Name="Output" Kind="StateOutputPin" />
             </Node>
             <Node Bounds="442,498,81,26" Id="JIBG5esINxvPu2cYYHRmRK">
-              <p:NodeReference LastCategoryFullName="VL.IO.NDI.ImageUpload" LastSymbolSource="VL.IO.NDI.dll">
+              <p:NodeReference LastCategoryFullName="VL.IO.NDI.ImageStreamToSKImage" LastSymbolSource="VL.IO.NDI.dll">
                 <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
-                <CategoryReference Kind="AssemblyCategory" Name="ImageUpload" />
                 <Choice Kind="OperationCallFlag" Name="Provider" />
               </p:NodeReference>
               <Pin Id="ERbLFALD9c3PszyIoCeU54" Name="Input" Kind="StateInputPin" />
@@ -1286,10 +1284,10 @@
             <ControlPoint Id="RWuFT4rxpymMaRTyvZNdzp" Bounds="625,601" />
             <ControlPoint Id="HDvUKJ1znfVO3w6x8uP6H3" Bounds="635,246" />
             <Node Bounds="332,229,81,26" Id="QFTS1g50kWzPht6XKGG0ga">
-              <p:NodeReference LastCategoryFullName="VL.IO.NDI.ImageUpload" LastSymbolSource="VL.IO.NDI.dll">
+              <p:NodeReference LastCategoryFullName="VL.IO.NDI.ImageStreamToSKImage" LastSymbolSource="VL.IO.NDI.dll">
                 <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
                 <Choice Kind="OperationCallFlag" Name="Create" />
-                <CategoryReference Kind="AssemblyCategory" Name="ImageUpload" NeedsToBeDirectParent="true" />
+                <CategoryReference Kind="AssemblyCategory" Name="ImageStreamToSKImage" NeedsToBeDirectParent="true" />
               </p:NodeReference>
               <Pin Id="A5Gl7mhoZ8NPGwrmgFf8Z4" Name="Output" Kind="StateOutputPin" />
             </Node>
@@ -1326,10 +1324,10 @@
       </Node>
       <!--
 
-    ************************ SKImageDownload ************************
+    ************************ SKImageToImageStream ************************
 
 -->
-      <Node Name="SKImageDownload" Bounds="694,496" Id="KtXJ2Y7JarHMAxjt9DZBOU">
+      <Node Name="SKImageToImageStream" Bounds="694,496" Id="KtXJ2Y7JarHMAxjt9DZBOU">
         <p:NodeReference LastCategoryFullName="Primitive" LastSymbolSource="builtin">
           <Choice Kind="ContainerDefinition" Name="Process" />
         </p:NodeReference>
@@ -1338,10 +1336,10 @@
             <ControlPoint Id="FLRDkKnuLw7QJqEq80lWOC" Bounds="525,517" />
             <ControlPoint Id="QpAlsQhCPOmPAy2UaPaWFY" Bounds="526,406" />
             <Node Bounds="332,229,81,26" Id="SYbheBTtp1mPMK7wFdjDX5">
-              <p:NodeReference LastCategoryFullName="VL.IO.NDI.ImageDownload" LastSymbolSource="VL.IO.NDI.dll">
+              <p:NodeReference LastCategoryFullName="VL.IO.NDI.SKImageToImageStream" LastSymbolSource="VL.IO.NDI.dll">
                 <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
                 <Choice Kind="OperationCallFlag" Name="Create" />
-                <CategoryReference Kind="AssemblyCategory" Name="ImageDownload" NeedsToBeDirectParent="true" />
+                <CategoryReference Kind="AssemblyCategory" Name="SKImageToImageStream" NeedsToBeDirectParent="true" />
               </p:NodeReference>
               <Pin Id="TUFKIYQ53d0MkFkiqlkFZ8" Name="Output" Kind="StateOutputPin" />
             </Node>
@@ -1356,10 +1354,10 @@
               <Pin Id="QFpLDiznI2bNG975ElMtFK" Name="Output" Kind="StateOutputPin" />
             </Node>
             <Node Bounds="454,449,74,26" Id="LSy7KHcDlD5OGOlBYiIPOC">
-              <p:NodeReference LastCategoryFullName="VL.IO.NDI.ImageDownload" LastSymbolSource="VL.IO.NDI.dll">
+              <p:NodeReference LastCategoryFullName="VL.IO.NDI.SKImageToImageStream" LastSymbolSource="VL.IO.NDI.dll">
                 <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
-                <CategoryReference Kind="AssemblyCategory" Name="ImageDownload" />
                 <Choice Kind="OperationCallFlag" Name="Update" />
+                <CategoryReference Kind="AssemblyCategory" Name="SKImageToImageStream" NeedsToBeDirectParent="true" />
               </p:NodeReference>
               <Pin Id="JmrhBKBo1hrNkzaiUPRkad" Name="Input" Kind="StateInputPin" />
               <Pin Id="GdnuaksXARiOK5SMpMMgvD" Name="Image" Kind="InputPin" />
@@ -1535,6 +1533,6 @@
   <PlatformDependency Id="LkvwleFmgyILglvCd3xlo8" Location="System.Collections.Concurrent" />
   <PlatformDependency Id="PbBDxB1VqidPbC5834fuSg" Location="./lib/net472/VL.IO.NDI.dll" />
   <NugetDependency Id="ME1qVyIaycMPxPRpbfPJie" Location="VL.Audio" Version="0.2.23-alpha" />
-  <NugetDependency Id="MXkgfRvHR8mLi2Lo4UP3Uz" Location="VL.Skia" Version="2021.4.11-1215-ga840232e2e" />
-  <NugetDependency Id="Nxw58NhCoslNV6E9s0Gelh" Location="VL.Stride.Runtime" Version="2021.4.11-1232-gb3c6282bbb" />
+  <NugetDependency Id="MXkgfRvHR8mLi2Lo4UP3Uz" Location="VL.Skia" Version="2021.4.11-1237-gbe7b40ca9c" />
+  <NugetDependency Id="Nxw58NhCoslNV6E9s0Gelh" Location="VL.Stride.Runtime" Version="2021.4.11-1237-gbe7b40ca9c" />
 </Document>
