@@ -9,6 +9,7 @@ using System.Reactive.Subjects;
 using VL.Lib.Basics.Resources;
 using System.Reactive.Linq;
 using System.Reactive.Concurrency;
+using VL.Core;
 
 namespace VL.IO.NDI
 {
@@ -18,16 +19,19 @@ namespace VL.IO.NDI
         {
             return Observable.Create<Spread<Source>>(async (observer, ct) =>
             {
-                using var handle = CreateNativeInstanceProvider(showLocalSources, groups, extraIps).GetHandle();
                 while (!ct.IsCancellationRequested)
                 {
-                    // Wait up to 50ms for sources to change
-                    if (NDIlib.find_wait_for_sources(handle.Resource, 50))
+                    // Create and destroy new finder on each iteration - prevents vvvv.exe from lingering around
+                    using (var handle = CreateNativeInstanceProvider(showLocalSources, groups, extraIps).GetHandle())
                     {
-                        uint numSources = 0;
-                        var sourcesPtr = NDIlib.find_get_current_sources(handle.Resource, ref numSources);
-                        var sources = GetSources(sourcesPtr, (int)numSources);
-                        observer.OnNext(sources);
+                        // Wait up to 500ms for sources to change
+                        if (NDIlib.find_wait_for_sources(handle.Resource, 500))
+                        {
+                            uint numSources = 0;
+                            var sourcesPtr = NDIlib.find_get_current_sources(handle.Resource, ref numSources);
+                            var sources = GetSources(sourcesPtr, (int)numSources);
+                            observer.OnNext(sources);
+                        }
                     }
 
                     await Task.Delay(500);
