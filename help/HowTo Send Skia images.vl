@@ -756,29 +756,49 @@
               <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
               <Choice Kind="ProcessAppFlag" Name="NDISender" />
             </p:NodeReference>
-            <Pin Id="GaDRfHpqBCsPQKO4sdeCPY" Name="Input" Kind="InputPin" />
             <Pin Id="Dir43xQDKKtOgZCQa2HrGX" Name="Source Name" Kind="InputPin" />
             <Pin Id="KlWjB0Et6d8LwREhbhr5zD" Name="Groups" Kind="InputPin" />
-            <Pin Id="C47D48tcPAZMaxwJmYKD19" Name="Enabled" Kind="InputPin" />
+            <Pin Id="FYXiFGBpX0KOtyTJ7eTKVp" Name="Output" Kind="OutputPin" />
             <Pin Id="VzZpBHaI0qSOD6WAluKrO5" Name="On Program" Kind="OutputPin" />
             <Pin Id="E7pKOB2xru8MCU7WQ3oHDQ" Name="On Preview" Kind="OutputPin" />
             <Pin Id="QXPQnKnshydNO6KdasE6Fu" Name="Connection Count" Kind="OutputPin" />
           </Node>
-          <Pad Id="EJMgAWGG9xFMVcxNNZBFFe" Comment="Source Name" Bounds="384,468,35,15" ShowValueBox="true" isIOBox="true" Value="vvvv">
+          <Pad Id="EJMgAWGG9xFMVcxNNZBFFe" Comment="Source Name" Bounds="354,506,35,15" ShowValueBox="true" isIOBox="true" Value="vvvv">
             <p:TypeAnnotation LastCategoryFullName="Primitive" LastSymbolSource="CoreLibBasics.vl">
               <Choice Kind="TypeFlag" Name="String" />
             </p:TypeAnnotation>
           </Pad>
-          <Pad Id="KVLpC3yOpYIQbBtmkAuK8k" Comment="Enabled" Bounds="414,498,35,35" ShowValueBox="true" isIOBox="true" Value="True">
-            <p:TypeAnnotation>
-              <Choice Kind="ImmutableTypeFlag" Name="Boolean" />
-              <FullNameCategoryReference ID="Primitive" />
-            </p:TypeAnnotation>
-            <p:ValueBoxSettings>
-              <p:buttonmode p:Assembly="VL.UI.Forms" p:Type="VL.HDE.PatchEditor.Editors.ButtonModeEnum">Toggle</p:buttonmode>
-            </p:ValueBoxSettings>
-          </Pad>
           <Pad Id="RYLfsMZaSZ4M9AdnycTZEe" Comment="Connection Count" Bounds="414,586,35,15" ShowValueBox="true" isIOBox="true" />
+          <Node Bounds="607,548,89,95" Id="P9LejOWWpYmLOCEhlxXZGD">
+            <p:NodeReference LastCategoryFullName="Reactive" LastSymbolSource="VL.Reactive.vl">
+              <Choice Kind="ProcessAppFlag" Name="ForEach" />
+              <CategoryReference Kind="Category" Name="Reactive" NeedsToBeDirectParent="true" />
+              <Choice Kind="StatefulRegion" Name="Region (Stateful)" Fixed="true" />
+            </p:NodeReference>
+            <Pin Id="NQvZgd472ggPiuifL4D1VW" Name="Messages" Kind="InputPin" />
+            <Pin Id="FIZ7wMkZHG4N0TSqRQhkJJ" Name="Reset" Kind="InputPin" />
+            <Pin Id="SOYpeRXbWCCPSwbhlGUNrv" Name="Result" Kind="OutputPin" />
+            <Patch Id="IdqwfXItgDYPyARV7XASvn" ManuallySortedPins="true">
+              <Patch Id="FEIlpO06UW6MqFKARIzjNI" Name="Create" ManuallySortedPins="true" />
+              <Patch Id="AIGk3Ap2LSlOHDJ56d0dCD" Name="Update" ManuallySortedPins="true">
+                <Pin Id="Qd75FYXMnDmMVeOBqsdkE9" Name="Input 1" Kind="InputPin" />
+                <Pin Id="OH5aAaQWTgzLEmnZBQMZQH" Name="Output" Kind="OutputPin" />
+              </Patch>
+              <ControlPoint Id="Et8BCPPWhBrOmnW4vBdkKn" Bounds="621,556" />
+              <ControlPoint Id="DCaz6GdbP9JPxwPm2Z33nx" Bounds="621,636" />
+              <Node Bounds="619,580,65,26" Id="P34541J6j2CN240JvG8inn">
+                <p:NodeReference LastCategoryFullName="IO.NDI.NDISender" LastSymbolSource="VL.IO.NDI.vl">
+                  <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
+                  <CategoryReference Kind="ClassType" Name="NDISender" />
+                  <Choice Kind="OperationCallFlag" Name="SendAsync" />
+                </p:NodeReference>
+                <Pin Id="KcyWFJslcdTNtftf2Pi1qp" Name="Input" Kind="StateInputPin" />
+                <Pin Id="Nkf8YsIHtTxQKeUInncI0Z" Name="Image" Kind="InputPin" />
+                <Pin Id="Kq8FoN60etLLMEArSgq8pu" Name="Metadata" Kind="InputPin" />
+                <Pin Id="VGPtatKoNFYNUnx6oxZYr8" Name="Output" Kind="StateOutputPin" />
+              </Node>
+            </Patch>
+          </Node>
         </Canvas>
         <Patch Id="RXbXPrEDZ5UN9J32SGvmAW" Name="Create" />
         <Patch Id="QpxSgEoztp6NSBKwkBB7d3" Name="Update" />
@@ -796,12 +816,16 @@
         <Link Id="Jukj6qYwK3VLCbIlfSFxEX" Ids="Ff4tOFmfSdyLZJY3U24EwM,QrinhTurhs7OHZEUywp7gt" />
         <Link Id="KLBi5UV4hrMMXJcJRA2CUn" Ids="FsCUiK6dCd6PBOYvroLyQY,Jq8B9MKPRTCOZaGA7ztfrl" />
         <Link Id="LGpQNrmTVqdO0RZ8v5BYqj" Ids="PaS9hJEMHwMP2nvqlt4fNK,J94zKlNgdsCPBhKBfhpc5P" />
-        <Link Id="VPBVdiLh7uJPjeYQrbdAXF" Ids="QYtXtfhl30LQB2pbHbZegj,GaDRfHpqBCsPQKO4sdeCPY" />
         <Link Id="DMf3bI17kxpP9iWLnvVjMv" Ids="EJMgAWGG9xFMVcxNNZBFFe,Dir43xQDKKtOgZCQa2HrGX" />
-        <Link Id="NbYEIywzifVPYbVj26KtiZ" Ids="KVLpC3yOpYIQbBtmkAuK8k,C47D48tcPAZMaxwJmYKD19" />
         <Link Id="Ebd3FfNM9UxPRGO5m7FFqt" Ids="VzZpBHaI0qSOD6WAluKrO5,CquWAkrj8yrLQOtVzgpbB3" />
         <Link Id="Oumon1obH7aM6mxlkSV2Hy" Ids="E7pKOB2xru8MCU7WQ3oHDQ,MOBO4dMWdFsPn8QPdfVJTu" />
         <Link Id="CAfLCSkexORNXrMBM7HUSk" Ids="QXPQnKnshydNO6KdasE6Fu,RYLfsMZaSZ4M9AdnycTZEe" />
+        <Link Id="U1vWacODCORQTVZqV4j49G" Ids="Qd75FYXMnDmMVeOBqsdkE9,Et8BCPPWhBrOmnW4vBdkKn" IsHidden="true" />
+        <Link Id="Tfg89raMTHuLSzLZcV5HJ9" Ids="DCaz6GdbP9JPxwPm2Z33nx,OH5aAaQWTgzLEmnZBQMZQH" IsHidden="true" />
+        <Link Id="P3znG9DVSZGOjrZf97KOu4" Ids="QYtXtfhl30LQB2pbHbZegj,NQvZgd472ggPiuifL4D1VW" />
+        <Link Id="C7a1FOtgnw2LNC7XQSirIh" Ids="Et8BCPPWhBrOmnW4vBdkKn,Nkf8YsIHtTxQKeUInncI0Z" />
+        <Link Id="LahO4qRsgBgPZ8XDmir4r0" Ids="VGPtatKoNFYNUnx6oxZYr8,DCaz6GdbP9JPxwPm2Z33nx" />
+        <Link Id="QG4MRC9UmOiMOFA3PaR0nm" Ids="FYXiFGBpX0KOtyTJ7eTKVp,KcyWFJslcdTNtftf2Pi1qp" />
       </Patch>
     </Node>
   </Patch>

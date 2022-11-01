@@ -1,24 +1,15 @@
-﻿//using NAudio.Wave;
-using NewTek;
+﻿using NewTek;
 using System;
 using System.Runtime.InteropServices;
 using System.Threading;
 using System.Reactive.Subjects;
 
-using VL.Lib.Basics.Imaging;
-using ImagingPixelFormat = VL.Lib.Basics.Imaging.PixelFormat;
-
 using VL.Audio;
-using NAudio.Wave;
 using VL.Lib.Basics.Resources;
 using System.Reactive.Disposables;
-using System.Runtime.CompilerServices;
-using System.Buffers;
 using System.Reactive.Linq;
 using System.Threading.Tasks;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reactive;
+using VL.Lib.Reactive;
 
 namespace VL.IO.NDI
 {
@@ -29,16 +20,11 @@ namespace VL.IO.NDI
     /// and use it for video only, but don't forget that you will still need
     /// to free any audio frames received.
     /// </summary>
-    public class Receiver : IDisposable
+    public class Receiver : NativeObject
     {
         #region private properties
-        private readonly Subject<IResourceProvider<VideoFrame>> _videoFrames = new Subject<IResourceProvider<VideoFrame>>();
-        private readonly Subject<string> _metadataFrames = new Subject<string>();
-
         private IObservable<IResourceProvider<VideoFrame>> _imageStream;
-        private IEnumerable<IResourceProvider<VideoFrame>> _synchronizedImageStream;
-
-        VL.Audio.BufferWiseResampler bufferwiseResampler = new BufferWiseResampler();
+        private IObservable<string> _metadataStream;
 
         private AudioOut audioOutSignal = new AudioOut();
 
@@ -46,29 +32,15 @@ namespace VL.IO.NDI
         // our unmanaged NDI receiver instance
         private IResourceProvider<IntPtr> _recvInstanceProvider;
         private IResourceHandle<IntPtr> _recvInstanceHandle;
+        private IResourceProvider<IntPtr> _syncInstanceProvider;
 
         private IntPtr _recvInstancePtr => _recvInstanceHandle != null ? _recvInstanceHandle.Resource : default;
-
-        // a thread to receive frames on so that the UI is still functional
-        private Thread _receiveThread = null;
-
-        // a way to exit the thread safely
-        private bool _exitThread = false;
 
         // should we send audio to Windows or not?
         private bool _audioEnabled = false;
 
         // should we send video to Windows or not?
         private bool _videoEnabled = true;
-
-        //// the NAudio related
-        //private WasapiOut _wasapiOut = null;
-        private MultiplexingWaveProvider _multiplexProvider = null;
-        private BufferedWaveProvider _bufferedProvider = null;
-
-        // The last WaveFormat we used.
-        // This may change over time, so remember how we are configured currently.
-        private WaveFormat _waveFormat = null;
 
         //// the current audio volume
         //private float _volume = 1.0f;
@@ -168,14 +140,14 @@ namespace VL.IO.NDI
         /// <summary>
         /// Received Images
         /// </summary>
-        public IObservable<IResourceProvider<IImage>> ImageStream => _imageStream ?? Observable.Empty<IResourceProvider<IImage>>();
+        public IObservable<IResourceProvider<VideoFrame>> ImageStream => _imageStream ?? Observable.Empty<IResourceProvider<VideoFrame>>();
 
-        public IEnumerable<IResourceProvider<IImage>> SynchronizedImageStream => _synchronizedImageStream ?? Enumerable.Empty<IResourceProvider<IImage>>();
+        internal IResourceProvider<IntPtr> SyncInstanceProvider => _syncInstanceProvider;
 
         /// <summary>
         /// Received Metadata
         /// </summary>
-        public IObservable<string> Metadata => _metadataFrames;
+        public IObservable<string> Metadata => _metadataStream ?? Observable.Empty<string>();
         #endregion  
 
         /// <summary>
@@ -311,58 +283,6 @@ namespace VL.IO.NDI
 
         #endregion PTZ Methods
 
-        #region dispose and finalize
-        public void Dispose()
-        {
-            Dispose(true);
-            GC.SuppressFinalize(this);
-        }
-
-        ~Receiver()
-        {
-            Dispose(false);
-        }
-
-        protected virtual void Dispose(bool disposing)
-        {
-            if (!_disposed)
-            {
-                if (disposing)
-                {
-                    // tell the thread to exit
-                    _exitThread = true;
-
-                    // wait for it to exit
-                    if (_receiveThread != null)
-                    {
-                        _receiveThread.Join();
-
-                        _receiveThread = null;
-                    }
-
-                    //// Stop the audio device if needed
-                    //if (_wasapiOut != null)
-                    //{
-                    //    _wasapiOut.Stop();
-                    //    _wasapiOut.Dispose();
-                    //    _wasapiOut = null;
-                    //}
-                }
-
-                // Destroy the receiver
-                _recvInstanceHandle?.Dispose();
-                _recvInstanceHandle = null;
-
-                // Not required, but "correct". (see the SDK documentation)
-                NDIlib.destroy();
-
-                _disposed = true;
-            }
-        }
-
-        private bool _disposed = false;
-        #endregion
-
         /// <summary>
         /// when the ConnectedSource changes, connect to it.
         /// </summary>
@@ -419,12 +339,12 @@ namespace VL.IO.NDI
                 //_receiveThread = new Thread(ReceiveThreadProc) { IsBackground = true, Name = "NdiExampleReceiveThread" };
                 //_receiveThread.Start();
 
-                _imageStream = Observable.Create<IResourceProvider<VideoFrame>>(PushFrames);
+                _imageStream = Observable.Create<IResourceProvider<VideoFrame>>(PushVideoFrames).PubRefCount();
+                _metadataStream = Observable.Create<string>(PushMetadataFrames).PubRefCount();
 
-                var _syncInstanceProvider = _recvInstanceProvider.CreateSync().ShareInParallel();
-                _synchronizedImageStream = EnumerableEx.Create(PullFrames);
+                _syncInstanceProvider = _recvInstanceProvider.CreateSync().ShareInParallel();
 
-                async Task PushFrames(IObserver<IResourceProvider<VideoFrame>> observer, CancellationToken token)
+                async Task PushVideoFrames(IObserver<IResourceProvider<VideoFrame>> observer, CancellationToken token)
                 {
                     using var videoFrameSubscription = new SerialDisposable();
                     var recvInstanceProvider = _recvInstanceProvider;
@@ -435,28 +355,29 @@ namespace VL.IO.NDI
                     {
                         while (!token.IsCancellationRequested)
                         {
-                            NDIlib.video_frame_v2_t videoFrame = new NDIlib.video_frame_v2_t();
+                            NDIlib.video_frame_v2_t nativeVideoFrame = new NDIlib.video_frame_v2_t();
 
-                            switch (NDIlib.recv_capture_v2(recvInstancePtr, ref videoFrame, ref NativeUtils.NULL<NDIlib.audio_frame_v2_t>(), ref NativeUtils.NULL<NDIlib.metadata_frame_t>(), 30))
+                            switch (NDIlib.recv_capture_v2(recvInstancePtr, ref nativeVideoFrame, ref NativeUtils.NULL<NDIlib.audio_frame_v2_t>(), ref NativeUtils.NULL<NDIlib.metadata_frame_t>(), 30))
                             {
                                 // Video data
                                 case NDIlib.frame_type_e.frame_type_video:
 
                                     // if not enabled, just discard
                                     // this can also occasionally happen when changing sources
-                                    if (videoFrame.p_data == IntPtr.Zero)
+                                    if (nativeVideoFrame.p_data == IntPtr.Zero)
                                     {
                                         // alreays free received frames
-                                        NDIlib.recv_free_video_v2(recvInstancePtr, ref videoFrame);
+                                        NDIlib.recv_free_video_v2(recvInstancePtr, ref nativeVideoFrame);
 
                                         break;
                                     }
 
-                                    var image = new VideoFrame(videoFrame);
-                                    var imageProvider = recvInstanceProvider.Bind(r => ResourceProvider.Return(image, i =>
+                                    var image = nativeVideoFrame.ToImage();
+                                    var videoFrame = new VideoFrame(image, UTF.Utf8ToString(nativeVideoFrame.p_metadata));
+                                    var imageProvider = recvInstanceProvider.Bind(r => ResourceProvider.Return(videoFrame, i =>
                                     {
                                         image.Dispose();
-                                        NDIlib.recv_free_video_v2(r, ref videoFrame);
+                                        NDIlib.recv_free_video_v2(r, ref nativeVideoFrame);
                                     })).ShareInParallel();
 
                                     // Release the previous frame and hold on to this one
@@ -475,36 +396,40 @@ namespace VL.IO.NDI
                     }, token);
                 }
 
-                IEnumerator<IResourceProvider<VideoFrame>> PullFrames()
+                async Task PushMetadataFrames(IObserver<string> observer, CancellationToken token)
                 {
-                    using var imageSubscription = new SerialDisposable();
-                    using var syncInstanceHandle = _syncInstanceProvider.GetHandle();
-                    var syncInstance = syncInstanceHandle.Resource;
+                    var recvInstanceProvider = _recvInstanceProvider;
+                    using var nativeReceiverHandle = recvInstanceProvider.GetHandle();
+                    var recvInstancePtr = nativeReceiverHandle.Resource;
 
-                    while (true)
+                    await Task.Run(async () =>
                     {
-                        var videoFrame = new NDIlib.video_frame_v2_t();
-                        NDIlib.framesync_capture_video(syncInstance, ref videoFrame, NDIlib.frame_format_type_e.frame_format_type_interleaved);
-                        if (videoFrame.p_data != default)
+                        while (!token.IsCancellationRequested)
                         {
-                            var image = new VideoFrame(videoFrame);
-                            var imageProvider = _syncInstanceProvider.Bind(s => ResourceProvider.Return(image, i =>
+                            NDIlib.metadata_frame_t nativeMetadataFrame = new NDIlib.metadata_frame_t();
+
+                            switch (NDIlib.recv_capture_v2(recvInstancePtr, ref NativeUtils.NULL<NDIlib.video_frame_v2_t>(), ref NativeUtils.NULL<NDIlib.audio_frame_v2_t>(), ref nativeMetadataFrame, 30))
                             {
-                                image.Dispose();
+                                // Video data
+                                case NDIlib.frame_type_e.frame_type_metadata:
 
-                                // Free video frame
-                                NDIlib.framesync_free_video(s, ref videoFrame);
-                            })).ShareInParallel();
+                                    // UTF-8 strings must be converted for use - length includes the terminating zero
+                                    var metadata = UTF.Utf8ToString(nativeMetadataFrame.p_data, nativeMetadataFrame.length - 1);
 
-                            imageSubscription.Disposable = imageProvider.GetHandle();
+                                    // free frames that were received
+                                    NDIlib.recv_free_metadata(_recvInstancePtr, ref nativeMetadataFrame);
 
-                            yield return imageProvider;
+                                    // Tell consumers about it
+                                    observer.OnNext(metadata);
+
+                                    break;
+
+                                default:
+                                    await Task.Yield();
+                                    break;
+                            }
                         }
-                        else
-                        {
-                            break;
-                        }
-                    }
+                    }, token);
                 }
             }
         }
@@ -514,27 +439,16 @@ namespace VL.IO.NDI
             // in case we're connected, reset the tally indicators
             SetTallyIndicators(false, false);
 
-            // check for a running thread
-            if (_receiveThread != null)
-            {
-                // tell it to exit
-                _exitThread = true;
-
-                // wait for it to end
-                _receiveThread.Join();
-            }
-
-            // reset thread defaults
-            _receiveThread = null;
-            _exitThread = false;
-
             // Destroy the receiver
             _recvInstanceHandle?.Dispose();
             _recvInstanceHandle = null;
 
+            _syncInstanceProvider = null;
+
             // set it to a safe value
             _recvInstanceProvider = null;
             _imageStream = null;
+            _metadataStream = null;
 
             // set function status to defaults
             IsPtz = false;
@@ -563,14 +477,14 @@ namespace VL.IO.NDI
         void ReceiveThreadProc()
         {
             using var videoFrameSubscription = new SerialDisposable();
-            while (!_exitThread && _recvInstancePtr != IntPtr.Zero)
+            while (/*!_exitThread && */_recvInstancePtr != IntPtr.Zero)
             {
                 // The descriptors
-                NDIlib.video_frame_v2_t videoFrame = new NDIlib.video_frame_v2_t();
+                NDIlib.video_frame_v2_t nativeVideoFrame = new NDIlib.video_frame_v2_t();
                 NDIlib.audio_frame_v2_t audioFrame = new NDIlib.audio_frame_v2_t();
                 NDIlib.metadata_frame_t metadataFrame = new NDIlib.metadata_frame_t();
 
-                switch (NDIlib.recv_capture_v2(_recvInstancePtr, ref videoFrame, ref audioFrame, ref metadataFrame, 1000))
+                switch (NDIlib.recv_capture_v2(_recvInstancePtr, ref nativeVideoFrame, ref audioFrame, ref metadataFrame, 1000))
                 {
                     // No data
                     case NDIlib.frame_type_e.frame_type_none:
@@ -600,40 +514,6 @@ namespace VL.IO.NDI
                             // Don't forget to free the string ptr
                             NDIlib.recv_free_string(_recvInstancePtr, webUrlPtr);
                         }
-
-                        break;
-
-                    // Video data
-                    case NDIlib.frame_type_e.frame_type_video:
-
-                        // if not enabled, just discard
-                        // this can also occasionally happen when changing sources
-                        if (!_videoEnabled || videoFrame.p_data == IntPtr.Zero)
-                        {
-                            // alreays free received frames
-                            NDIlib.recv_free_video_v2(_recvInstancePtr, ref videoFrame);
-
-                            break;
-                        }
-
-                        var image = new VideoFrame(videoFrame);
-                        var receiverHandle = _recvInstanceProvider.GetHandle();
-                        var imageProvider = ResourceProvider.Return(image, i =>
-                        {
-                            image.Dispose();
-
-                            // free frames that were received AFTER use!
-                            NDIlib.recv_free_video_v2(receiverHandle.Resource, ref videoFrame);
-
-                            // Release receiver
-                            receiverHandle.Dispose();
-                        }).ShareInParallel();
-
-                        // Release the previous frame and hold on to this one
-                        videoFrameSubscription.Disposable = imageProvider.GetHandle();
-
-                        // Tell consumers about it
-                        _videoFrames.OnNext(imageProvider);
 
                         break;
 
@@ -698,17 +578,6 @@ namespace VL.IO.NDI
 
                         break;
 
-
-                    // Metadata
-                    case NDIlib.frame_type_e.frame_type_metadata:
-
-                        // UTF-8 strings must be converted for use - length includes the terminating zero
-                        var metadata = UTF.Utf8ToString(metadataFrame.p_data, metadataFrame.length-1);
-                        _metadataFrames.OnNext(metadata);
-
-                        // free frames that were received
-                        NDIlib.recv_free_metadata(_recvInstancePtr, ref metadataFrame);
-                        break;
                 }
 
             }
@@ -728,6 +597,11 @@ namespace VL.IO.NDI
             }
 
             return floats;
+        }
+
+        protected override void Destroy(bool disposing)
+        {
+            Disconnect();
         }
     }
 

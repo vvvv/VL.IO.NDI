@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Buffers;
+using System.Collections;
 using System.Collections.Concurrent;
 using System.Diagnostics;
 using System.Linq;
@@ -13,21 +15,19 @@ using VL.Lib.Basics.Resources;
 
 //namespace NewTek.NDI
 namespace VL.IO.NDI
-
 {
-    public class Sender : IDisposable
+    public class Sender : NativeObject
     {
         private readonly Task _sendTask;
-        private readonly BlockingCollection<IResourceHandle<IImage>> _videoFrames = new BlockingCollection<IResourceHandle<IImage>>(boundedCapacity: 1);
-        private readonly SerialDisposable _imageStreamSubscription = new SerialDisposable();
+        private readonly BlockingCollection<IResourceHandle<VideoFrame>> _videoFrames = new BlockingCollection<IResourceHandle<VideoFrame>>(boundedCapacity: 1);
         private readonly IntPtr _sendInstancePtr;
 
         private NDIlib.tally_t _ndiTally = new NDIlib.tally_t();
         private IObservable<IResourceProvider<IImage>> _imageStream;
 
-        public unsafe Sender(String sourceName, bool clockVideo=true, bool clockAudio=false, String[] groups = null, String failoverName=null)
+        public unsafe Sender(string sourceName, bool clockVideo=true, bool clockAudio=false, String[] groups = null, String failoverName=null)
         {
-            if (String.IsNullOrEmpty(sourceName))
+            if (string.IsNullOrEmpty(sourceName))
             {
                 throw new ArgumentException("sourceName can not be null or empty.", sourceName);
             }
@@ -88,35 +88,26 @@ namespace VL.IO.NDI
                 {
                     foreach (var handle in _videoFrames.GetConsumingEnumerable())
                     {
-                        var image = handle.Resource;
+                        var videoFrame = handle.Resource;
+                        if (videoFrame is null)
+                            continue;
+
+                        var image = videoFrame.Image;
                         if (image is null)
                             continue;
 
                         var info = image.Info;
                         var imageData = image.GetData();
                         var memoryHandle = imageData.Bytes.Pin();
-                        var size = imageData.ScanSize * info.Height;
-                        var ndiVideoFrame = new NDIlib.video_frame_v2_t()
-                        {
-                            xres = info.Width,
-                            yres = info.Height,
-                            FourCC = ToFourCC(info.Format),
-                            frame_rate_N = 0,
-                            frame_rate_D = 0,
-                            picture_aspect_ratio = (float)info.Width / info.Height,
-                            frame_format_type = NDIlib.frame_format_type_e.frame_format_type_progressive,
-                            timecode = NDIlib.send_timecode_synthesize,
-                            p_data = new IntPtr(memoryHandle.Pointer),
-                            line_stride_in_bytes = imageData.ScanSize,
-                            p_metadata = IntPtr.Zero,
-                            timestamp = 0
-                        };
+                        var metadataHandle = GCHandle.Alloc(UTF.StringToUtf8(videoFrame.Metadata), GCHandleType.Pinned);
 
+                        var ndiVideoFrame = ToNativeVideoFrame(info, imageData, new IntPtr(memoryHandle.Pointer), metadataHandle.AddrOfPinnedObject());
                         NDIlib.send_send_video_async_v2(_sendInstancePtr, ref ndiVideoFrame);
 
                         // Release the previous frame and hold on to this one
                         videoFrameSubscription.Disposable = Disposable.Create(() =>
                         {
+                            metadataHandle.Free();
                             memoryHandle.Dispose();
                             imageData.Dispose();
                             handle.Dispose();
@@ -130,23 +121,6 @@ namespace VL.IO.NDI
 
                     NDIlib.send_send_video_async_v2(_sendInstancePtr, ref Unsafe.AsRef<NDIlib.video_frame_v2_t>(IntPtr.Zero.ToPointer()));
                 }
-
-                static NDIlib.FourCC_type_e ToFourCC(PixelFormat format)
-                {
-                    switch (format)
-                    {
-                        case PixelFormat.R8G8B8X8:
-                            return NDIlib.FourCC_type_e.FourCC_type_RGBX;
-                        case PixelFormat.R8G8B8A8:
-                            return NDIlib.FourCC_type_e.FourCC_type_RGBA;
-                        case PixelFormat.B8G8R8X8:
-                            return NDIlib.FourCC_type_e.FourCC_type_BGRX;
-                        case PixelFormat.B8G8R8A8:
-                            return NDIlib.FourCC_type_e.FourCC_type_BGRA;
-                        default:
-                            throw new UnsupportedPixelFormatException(format);
-                    }
-                }
             });
         }
 
@@ -155,9 +129,6 @@ namespace VL.IO.NDI
         {
             get
             {
-                if (_sendInstancePtr == IntPtr.Zero)
-                    return _ndiTally;
-
                 NDIlib.send_get_tally(_sendInstancePtr, ref _ndiTally, 0);
 
                 return _ndiTally;
@@ -168,9 +139,6 @@ namespace VL.IO.NDI
         // and return the current tally immediately. The return value is whether anything has actually change (true) or whether it timed out (false)
         public bool GetTally(ref NDIlib.tally_t tally, int timeout)
         {
-            if (_sendInstancePtr == IntPtr.Zero)
-                return false;
-
             return NDIlib.send_get_tally(_sendInstancePtr, ref tally, (uint)timeout);
         }
         
@@ -179,9 +147,6 @@ namespace VL.IO.NDI
         {
             get
             {
-                if (_sendInstancePtr == IntPtr.Zero)
-                    return 0;
-
                 return NDIlib.send_get_no_connections(_sendInstancePtr, 0);
             }
         }
@@ -191,28 +156,40 @@ namespace VL.IO.NDI
         // 0 then it will wait until there are connections for this amount of time.
         public int GetConnections(int waitMs)
         {
-            if (_sendInstancePtr == IntPtr.Zero)
-                return 0;
-
             return NDIlib.send_get_no_connections(_sendInstancePtr, (uint)waitMs);
         }
 
-        public IObservable<IResourceProvider<IImage>> ImageStream
+        public unsafe void Send(VideoFrame videoFrame)
         {
-            get => _imageStream;
-            set
+            var image = videoFrame.Image;
+            if (image is null)
+                return;
+
+            Send(image, videoFrame.Metadata);
+        }
+
+        public unsafe void Send(IImage image, string metadata = null)
+        {
+            var info = image.Info;
+            var imageData = image.GetData();
+            fixed (byte* dataP = imageData.Bytes.Span)
+            fixed (byte* metadataP = UTF.StringToUtf8(metadata))
             {
-                if (value != _imageStream)
-                {
-                    _imageStream = value;
-                    _imageStreamSubscription.Disposable = value?.Subscribe(image =>
-                    {
-                        var handle = image?.GetHandle();
-                        if (handle != null)
-                            _videoFrames.Add(handle);
-                    });
-                }
+                var nativeVideoFrame = ToNativeVideoFrame(info, imageData, new IntPtr(dataP), new IntPtr(metadataP));
+                NDIlib.send_send_video_v2(_sendInstancePtr, ref nativeVideoFrame);
             }
+        }
+
+        public void SendAsync(IResourceProvider<IImage> image, string metadata = null)
+        {
+            SendAsync(image.Bind(i => new VideoFrame(i, metadata)));
+        }
+
+        public void SendAsync(IResourceProvider<VideoFrame> videoFrame)
+        {
+            var handle = videoFrame?.GetHandle();
+            if (handle != null)
+                _videoFrames.Add(handle);
         }
 
         public void Send(AudioFrame audioFrame)
@@ -222,37 +199,55 @@ namespace VL.IO.NDI
 
         public void Send(ref NDIlib.audio_frame_v2_t audioFrame)
         {
-            if (_sendInstancePtr == IntPtr.Zero)
-                return;
-
             NDIlib.send_send_audio_v2(_sendInstancePtr, ref audioFrame);
         }
 
-        public void Dispose()
+        protected override void Destroy(bool disposing)
         {
-            Dispose(true);
-            GC.SuppressFinalize(this);
-        }
-
-        ~Sender() 
-        {
-            Dispose(false);
-        }
-
-        protected virtual unsafe void Dispose(bool disposing)
-        {
-            if (disposing) 
+            try
             {
-                try
+                _videoFrames.CompleteAdding();
+                _sendTask.Wait();
+            }
+            finally
+            {
+                NDIlib.send_destroy(_sendInstancePtr);
+                NDIlib.destroy();
+            }
+        }
+
+        private static unsafe NDIlib.video_frame_v2_t ToNativeVideoFrame(ImageInfo info, IImageData imageData, IntPtr data, IntPtr metadata)
+        {
+            return new NDIlib.video_frame_v2_t()
+            {
+                xres = info.Width,
+                yres = info.Height,
+                FourCC = ToFourCC(info.Format),
+                frame_rate_N = 0,
+                frame_rate_D = 0,
+                picture_aspect_ratio = (float)info.Width / info.Height,
+                frame_format_type = NDIlib.frame_format_type_e.frame_format_type_progressive,
+                timecode = NDIlib.send_timecode_synthesize,
+                p_data = data,
+                line_stride_in_bytes = imageData.ScanSize,
+                p_metadata = metadata,
+                timestamp = 0
+            };
+
+            static NDIlib.FourCC_type_e ToFourCC(PixelFormat format)
+            {
+                switch (format)
                 {
-                    _imageStreamSubscription.Dispose();
-                    _videoFrames.CompleteAdding();
-                    _sendTask.Wait();
-                }
-                finally
-                {
-                    NDIlib.send_destroy(_sendInstancePtr);
-                    NDIlib.destroy();
+                    case PixelFormat.R8G8B8X8:
+                        return NDIlib.FourCC_type_e.FourCC_type_RGBX;
+                    case PixelFormat.R8G8B8A8:
+                        return NDIlib.FourCC_type_e.FourCC_type_RGBA;
+                    case PixelFormat.B8G8R8X8:
+                        return NDIlib.FourCC_type_e.FourCC_type_BGRX;
+                    case PixelFormat.B8G8R8A8:
+                        return NDIlib.FourCC_type_e.FourCC_type_BGRA;
+                    default:
+                        throw new UnsupportedPixelFormatException(format);
                 }
             }
         }

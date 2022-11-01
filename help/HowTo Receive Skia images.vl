@@ -148,7 +148,6 @@
               <p:stringtype p:Assembly="VL.Core" p:Type="VL.Core.StringType">Comment</p:stringtype>
             </p:ValueBoxSettings>
           </Pad>
-          <Pad Id="KzqHaMcuV2XPJkeiFG5SKZ" Comment="Connected Source" Bounds="560,318,295,15" ShowValueBox="true" isIOBox="true" />
           <Pad Id="SKDUob0v9MHMKikrTciGLo" Bounds="559,341,311,100" ShowValueBox="true" isIOBox="true" Value="Be aware that NDI Receiver can connect to sources and remain “connected” to them even when they are no longer available on the network; it will automatically reconnect if the source becomes available again.">
             <p:TypeAnnotation LastCategoryFullName="Primitive" LastSymbolSource="CoreLibBasics.vl">
               <Choice Kind="TypeFlag" Name="String" />
@@ -190,8 +189,8 @@
             <Pin Id="QrdKHDnEWyrMtDVBRDrFj7" Name="Enabled" Kind="InputPin" />
             <Pin Id="NsQBc31khxQP146m2fU1eN" Name="Bandwidth" Kind="InputPin" />
             <Pin Id="Suvub77hUQIQS2FBP7Om1f" Name="Output" Kind="OutputPin" />
-            <Pin Id="I47TPPgAa3zPORepR8Pijg" Name="Connected Source" Kind="OutputPin" />
             <Pin Id="Spz2CF8WRY8On8uKikcB3y" Name="Metadata" Kind="OutputPin" />
+            <Pin Id="QrIpMW9UVc1NWb3qbux2vG" Name="Video Frames" Kind="OutputPin" />
           </Node>
           <Pad Id="BN1ElESlcRCOL1jr0KPBmG" Comment="Enabled" Bounds="668,192,35,35" ShowValueBox="true" isIOBox="true" Value="True">
             <p:TypeAnnotation>
@@ -207,14 +206,6 @@
               <Choice Kind="TypeFlag" Name="Bandwidth" />
             </p:TypeAnnotation>
           </Pad>
-          <Node Bounds="413,337,78,19" Id="LELnmlzivxpP9qxwExAk9J">
-            <p:NodeReference LastCategoryFullName="IO.NDI" LastSymbolSource="VL.IO.NDI.vl">
-              <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
-              <Choice Kind="ProcessAppFlag" Name="ReceiveImage" />
-            </p:NodeReference>
-            <Pin Id="CMQYfWV0Sy6O9R4UCjMzea" Name="Input" Kind="InputPin" />
-            <Pin Id="KNLztLIHpYuQQaFMg0ugrb" Name="Output" Kind="OutputPin" />
-          </Node>
         </Canvas>
         <Patch Id="RXbXPrEDZ5UN9J32SGvmAW" Name="Create" />
         <Patch Id="QpxSgEoztp6NSBKwkBB7d3" Name="Update" />
@@ -231,14 +222,12 @@
         <Link Id="AZeMqMtbgkeOQfKbNzxIPA" Ids="QdejmNuTjMmMvf8cHosqzt,HWzDmXlaygjOy1TrwhLiRQ" />
         <Link Id="B6B6ougBha6ML7umMYGRf5" Ids="DGoxAY5x4cULvcSDEXLRqG,FOeNnB68xK2N9aFpR2hXb1" />
         <Link Id="NIMYaV9UA6wOagMhcQ5QGA" Ids="RARPNCZ2zMvM2aCncfOStT,CV8kRMgBESgLnNA4qtv4M3" />
-        <Link Id="R9Jp8he3yYsQMbSMhXI5r3" Ids="Suvub77hUQIQS2FBP7Om1f,CMQYfWV0Sy6O9R4UCjMzea" />
-        <Link Id="NHTyCLe7cXcLFFngbcbG47" Ids="I47TPPgAa3zPORepR8Pijg,KzqHaMcuV2XPJkeiFG5SKZ" />
         <Link Id="OJj2wtSSPddOJISlK98tvd" Ids="IFzRQtSJucQOhvqCMfLNbL,JDSLkC1jiZ6NDsIblbTZmJ" />
         <Link Id="H6LM6oO8qM0PsAB6fwvmJp" Ids="GKmXFN4l7xDONxcvR7EP9o,ERtm2A09LVoMmaRhg7V2Z7" />
         <Link Id="CqGX43zF48zLe6oRDy5Ajd" Ids="QJklW1YGnhEMWNCvO51fWV,S9nqkRCcJMXMKPUpeUQgWC" />
         <Link Id="E6nXw6W5URDOgaa58AmA4I" Ids="BN1ElESlcRCOL1jr0KPBmG,QrdKHDnEWyrMtDVBRDrFj7" />
         <Link Id="VSQlNbZDoHYPQm14J1GYWC" Ids="CQOZHyMkBClPi3uhuxnMaF,NsQBc31khxQP146m2fU1eN" />
-        <Link Id="BkctL38dQ9QML4hYYleqqy" Ids="KNLztLIHpYuQQaFMg0ugrb,C35oVvC3u42PmPmAYuh3Oo" />
+        <Link Id="TINUJVFSkmgMYBASpQeFJJ" Ids="QrIpMW9UVc1NWb3qbux2vG,C35oVvC3u42PmPmAYuh3Oo" />
       </Patch>
     </Node>
   </Patch>

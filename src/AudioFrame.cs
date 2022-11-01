@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Runtime.InteropServices;
-using System.Xml.Linq;
 using NewTek;
 
 namespace VL.IO.NDI
@@ -114,18 +113,14 @@ namespace VL.IO.NDI
             }
         }
 
-        public XElement MetaData
+        public string Metadata
         {
             get
             {
                 if (_ndiAudioFrame.p_metadata == IntPtr.Zero)
                     return null;
 
-                String mdString = UTF.Utf8ToString(_ndiAudioFrame.p_metadata);
-                if (String.IsNullOrEmpty(mdString))
-                    return null;
-
-                return XElement.Parse(mdString);
+                return UTF.Utf8ToString(_ndiAudioFrame.p_metadata);
             }
         }
 
@@ -149,8 +144,6 @@ namespace VL.IO.NDI
                     Marshal.FreeHGlobal(_ndiAudioFrame.p_data);
                     _ndiAudioFrame.p_data = IntPtr.Zero;
                 }
-
-                NDIlib.destroy();
             }
         }
 

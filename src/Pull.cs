@@ -39,7 +39,7 @@ namespace VL.IO.NDI
 
         public void Dispose()
         {
-            _enumerator.Dispose();
+            _enumerator?.Dispose();
         }
     }
 }
