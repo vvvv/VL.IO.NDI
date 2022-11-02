@@ -68,7 +68,7 @@ namespace VL.IO.NDI
             Disconnect();
 
             // Sanity
-            if (source == null || string.IsNullOrEmpty(source.Name))
+            if (source == null || source.IsNone)
                 return;
 
             // create a new instance connected to this source

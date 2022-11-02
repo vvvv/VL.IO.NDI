@@ -2,6 +2,7 @@
 using System;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
+using System.Reflection.Metadata;
 using VL.Core;
 using VL.Lib.Basics.Imaging;
 using VL.Lib.Basics.Resources;
@@ -26,18 +27,28 @@ namespace VL.IO.NDI
                 {
                     imageStream = value;
 
-                    imageStreamSubscription.Disposable = value?.Subscribe(provider =>
-                    {
-                        var skImageProvider = SkiaUtils.ToSKImage(provider).ShareInParallel();
-                        var handle = skImageProvider.GetHandle(); // Upload the texture
-
-                        // Exchange provider
-                        lock (this)
+                    imageStreamSubscription.Disposable = value?
+                        .Do(provider =>
                         {
-                            latest = skImageProvider;
-                            latestSubscription.Disposable = handle;
-                        }
-                    });
+                            var skImageProvider = SkiaUtils.ToSKImage(provider).ShareInParallel();
+                            var handle = skImageProvider.GetHandle(); // Upload the texture
+
+                            // Exchange provider
+                            lock (this)
+                            {
+                                latest = skImageProvider;
+                                latestSubscription.Disposable = handle;
+                            }
+                        })
+                        .Finally(() =>
+                        {
+                            lock (this)
+                            {
+                                latest = null;
+                                latestSubscription.Disposable = null;
+                            }
+                        })
+                        .Subscribe();
                 }
             }
         }

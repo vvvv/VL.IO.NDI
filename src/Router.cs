@@ -89,7 +89,7 @@ namespace VL.IO.NDI
             }
 
             // Sanity
-            if (_selectedSource == null || String.IsNullOrEmpty(_selectedSource.Name))
+            if (_selectedSource == null || _selectedSource.IsNone)
             {
                 Clear();
                 return;

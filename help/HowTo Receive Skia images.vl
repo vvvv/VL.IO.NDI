@@ -173,7 +173,7 @@
             <Pin Id="FOeNnB68xK2N9aFpR2hXb1" Name="Input" Kind="InputPin" />
             <Pin Id="RARPNCZ2zMvM2aCncfOStT" Name="Resource" Kind="OutputPin" />
           </Node>
-          <Pad Id="QJklW1YGnhEMWNCvO51fWV" Comment="Source" Bounds="416,108,295,15" ShowValueBox="true" isIOBox="true" Value="HOPE-05 (vvvv)">
+          <Pad Id="QJklW1YGnhEMWNCvO51fWV" Comment="Source" Bounds="416,108,295,15" ShowValueBox="true" isIOBox="true" Value="NONE">
             <p:TypeAnnotation LastCategoryFullName="IO.NDI" LastSymbolSource="VL.IO.NDI.vl">
               <Choice Kind="TypeFlag" Name="Source" />
             </p:TypeAnnotation>

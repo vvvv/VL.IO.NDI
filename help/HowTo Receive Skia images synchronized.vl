@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Document xmlns:p="property" Id="QHpr0fv5ZhbPHgd1D9pUc5" LanguageVersion="2021.4.11.1237" Version="0.128">
+<Document xmlns:p="property" Id="BMw1edCU1jWP5D5Wjy63nU" LanguageVersion="2021.4.11.1237" Version="0.128">
   <NugetDependency Id="QDKWB4liQfJMDPWein5ERc" Location="VL.Core" Version="2021.4.11-1237-gbe7b40ca9c" />
   <NugetDependency Id="JngbdjrQttWP3C056ivUGZ" Location="VL.CoreLib" Version="2021.4.11-1237-gbe7b40ca9c" />
   <NugetDependency Id="FDjgov6DOmvM906MD3ltdI" Location="VL.Skia" Version="2021.4.11-1237-gbe7b40ca9c" />
@@ -148,7 +148,7 @@
               <p:stringtype p:Assembly="VL.Core" p:Type="VL.Core.StringType">Comment</p:stringtype>
             </p:ValueBoxSettings>
           </Pad>
-          <Pad Id="QJklW1YGnhEMWNCvO51fWV" Comment="Source" Bounds="416,108,295,15" ShowValueBox="true" isIOBox="true" Value="HOPE-05 (vvvv)">
+          <Pad Id="QJklW1YGnhEMWNCvO51fWV" Comment="Source" Bounds="416,108,295,15" ShowValueBox="true" isIOBox="true" Value="NONE">
             <p:TypeAnnotation LastCategoryFullName="IO.NDI" LastSymbolSource="VL.IO.NDI.vl">
               <Choice Kind="TypeFlag" Name="Source" />
             </p:TypeAnnotation>

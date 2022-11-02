@@ -2,6 +2,7 @@
 using System;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
+using System.Reflection.Metadata;
 using VL.Core;
 using VL.Lib.Basics.Imaging;
 using VL.Lib.Basics.Resources;
@@ -33,18 +34,28 @@ namespace VL.IO.NDI
                 {
                     imageStream = value;
 
-                    imageStreamSubscription.Disposable = value?.Subscribe(provider =>
-                    {
-                        var textureProvider = StrideUtils.ToTexture(provider, graphicsDevice.Resource).ShareInParallel();
-                        var handle = textureProvider.GetHandle(); // Upload the texture
-
-                        // Exchange provider
-                        lock (this)
+                    imageStreamSubscription.Disposable = value?
+                        .Do(provider =>
                         {
-                            latest = textureProvider;
-                            latestSubscription.Disposable = handle;
-                        }
-                    });
+                            var textureProvider = StrideUtils.ToTexture(provider, graphicsDevice.Resource).ShareInParallel();
+                            var handle = textureProvider.GetHandle(); // Upload the texture
+
+                            // Exchange provider
+                            lock (this)
+                            {
+                                latest = textureProvider;
+                                latestSubscription.Disposable = handle;
+                            }
+                        })
+                        .Finally(() =>
+                        {
+                            lock (this)
+                            {
+                                latest = null;
+                                latestSubscription.Disposable = null;
+                            }
+                        })
+                        .Subscribe();
                 }
             }
         }

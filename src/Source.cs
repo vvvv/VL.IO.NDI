@@ -12,6 +12,13 @@ namespace VL.IO.NDI
     [Serializable]
     public sealed class Source : DynamicEnumBase<Source, SourceDefinition>, IEquatable<Source>
     {
+        private const string NONE = "NONE";
+
+        public static readonly Source None = new Source(NONE);
+
+        [CreateDefault]
+        public static Source CreateDefault() => None;
+
         private string _computerName;
         private string _sourceName;
         private Lazy<Uri> _uri;
@@ -28,6 +35,8 @@ namespace VL.IO.NDI
             : base(name)
         {
         }
+
+        internal bool IsNone => string.IsNullOrEmpty(Name) || Name == NONE;
 
         public string Name => Value;
 
@@ -82,12 +91,12 @@ namespace VL.IO.NDI
         private readonly IObservable<Spread<Source>> observable;
         private readonly IDisposable subscription;
 
-        private Spread<Source> mostRecentSources = Spread<Source>.Empty;
+        private Spread<Source> mostRecentSources = Spread.Create(Source.None);
 
         public SourceDefinition()
         {
             observable = Finder.GetSources(showLocalSources: true).Publish().RefCount();
-            subscription = observable.Subscribe(s => mostRecentSources = s);
+            subscription = observable.Subscribe(s => mostRecentSources = s.Add(Source.None));
         }
 
         ~SourceDefinition()
