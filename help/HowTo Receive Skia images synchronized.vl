@@ -156,16 +156,16 @@
           <Node Bounds="413,284,85,19" Id="T3HSkSflO36M32IkkxMbw7">
             <p:NodeReference LastCategoryFullName="IO.NDI" LastSymbolSource="VL.IO.NDI.vl">
               <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
-              <Choice Kind="ProcessAppFlag" Name="NDIReceiver" />
+              <Choice Kind="ProcessAppFlag" Name="NDIReceiver (Synchronized)" />
             </p:NodeReference>
             <Pin Id="S9nqkRCcJMXMKPUpeUQgWC" Name="Source" Kind="InputPin" />
+            <Pin Id="NFaLNSyUp0HO6DI6lE9hHj" Name="Receiver Name" Kind="InputPin" />
             <Pin Id="JDSLkC1jiZ6NDsIblbTZmJ" Name="On Program" Kind="InputPin" />
             <Pin Id="ERtm2A09LVoMmaRhg7V2Z7" Name="On Preview" Kind="InputPin" />
             <Pin Id="QrdKHDnEWyrMtDVBRDrFj7" Name="Enabled" Kind="InputPin" />
             <Pin Id="NsQBc31khxQP146m2fU1eN" Name="Bandwidth" Kind="InputPin" />
             <Pin Id="Suvub77hUQIQS2FBP7Om1f" Name="Output" Kind="OutputPin" />
-            <Pin Id="M00kv7wyfxcMv3axlWe11k" Name="Metadata" Kind="OutputPin" />
-            <Pin Id="NLKQq5vj9Q6Owkn9qNU1hz" Name="Video Frames" Kind="OutputPin" />
+            <Pin Id="KYtbbu7r7vjL8eA97ApaJZ" Name="Metadata Frames" Kind="OutputPin" />
           </Node>
           <Pad Id="BN1ElESlcRCOL1jr0KPBmG" Comment="Enabled" Bounds="668,192,35,35" ShowValueBox="true" isIOBox="true" Value="True">
             <p:TypeAnnotation>
@@ -201,22 +201,15 @@
             <Pin Id="M8uke4Ph6tKNMA6ES8ITIl" Name="Discard Higher Bits" Kind="InputPin" />
             <Pin Id="A0kb0pdGtS4MVQAK87UaaW" Name="Result" Kind="OutputPin" />
           </Node>
-          <Node Bounds="413,321,18,19" Id="IPMQKFEHhcMMTvkJhUMjJV">
-            <p:NodeReference LastCategoryFullName="IO.NDI" LastSymbolSource="VL.IO.NDI.vl">
-              <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
-              <Choice Kind="ProcessAppFlag" Name="NDISync" />
-            </p:NodeReference>
-            <Pin Id="Et0iZdrTkQdO4OYyRdfrU4" Name="Receiver" Kind="InputPin" />
-            <Pin Id="PyoPdbTZ6OsOL1sQxwdejM" Name="Output" Kind="OutputPin" />
-          </Node>
           <Node Bounds="413,352,60,26" Id="VPgE0Z205sXNPO3vRMB2D4">
-            <p:NodeReference LastCategoryFullName="IO.NDI.NDISync" LastSymbolSource="VL.IO.NDI.vl">
+            <p:NodeReference LastCategoryFullName="IO.NDI.NDIReceiver (Synchronized)" LastSymbolSource="VL.IO.NDI.vl">
               <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
-              <Choice Kind="OperationCallFlag" Name="PullImage" />
+              <CategoryReference Kind="ClassType" Name="NDIReceiver (Synchronized)" />
+              <Choice Kind="OperationCallFlag" Name="ReceiveVideoFrame" />
             </p:NodeReference>
             <Pin Id="EIil2j5c7EYMpxnSsPm2y1" Name="Input" Kind="StateInputPin" />
             <Pin Id="C61z2Mn6jXCLLhfCtryXkN" Name="Output" Kind="StateOutputPin" />
-            <Pin Id="LQsMCCkRqCqLitnKwDXvX3" Name="Image" Kind="OutputPin" />
+            <Pin Id="BTRoHjGwpBiPQzWgjKcsnI" Name="Video Frame" Kind="OutputPin" />
           </Node>
         </Canvas>
         <Patch Id="RXbXPrEDZ5UN9J32SGvmAW" Name="Create" />
@@ -239,9 +232,8 @@
         <Link Id="VSQlNbZDoHYPQm14J1GYWC" Ids="CQOZHyMkBClPi3uhuxnMaF,NsQBc31khxQP146m2fU1eN" />
         <Link Id="TTrh5ZrAyJHMiOQ8nBFhTI" Ids="C2npSZOCRR2PB4jl2UWdpc,DpyUZk9NZgDNTRZxTH928z" />
         <Link Id="BKWpUDXJeGQM0FvmArJp9L" Ids="A0kb0pdGtS4MVQAK87UaaW,CV8kRMgBESgLnNA4qtv4M3" />
-        <Link Id="KD12a1qXShyNhZXDRzxzCi" Ids="Suvub77hUQIQS2FBP7Om1f,Et0iZdrTkQdO4OYyRdfrU4" />
-        <Link Id="HQrcggyvtUZQPxRIUzaCG6" Ids="PyoPdbTZ6OsOL1sQxwdejM,EIil2j5c7EYMpxnSsPm2y1" />
-        <Link Id="BM4Uob2yWawNAFdQp0ULsQ" Ids="LQsMCCkRqCqLitnKwDXvX3,C43wQTdK4iELkU0VNK4Bn6" />
+        <Link Id="Q7cjvNve88oNUJjRlmHa41" Ids="Suvub77hUQIQS2FBP7Om1f,EIil2j5c7EYMpxnSsPm2y1" />
+        <Link Id="IdPRhb7irXRMSSjukdBDQK" Ids="BTRoHjGwpBiPQzWgjKcsnI,C43wQTdK4iELkU0VNK4Bn6" />
       </Patch>
     </Node>
   </Patch>

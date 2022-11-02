@@ -4,6 +4,7 @@ using System.Collections;
 using System.Collections.Concurrent;
 using System.Diagnostics;
 using System.Linq;
+using System.Reactive;
 using System.Reactive.Disposables;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
@@ -19,7 +20,7 @@ namespace VL.IO.NDI
     public class Sender : NativeObject
     {
         private readonly Task _sendTask;
-        private readonly BlockingCollection<IResourceHandle<VideoFrame>> _videoFrames = new BlockingCollection<IResourceHandle<VideoFrame>>(boundedCapacity: 1);
+        private readonly BlockingCollection<(TaskCompletionSource<Unit> tcs, IResourceHandle<VideoFrame> handle)> _videoFrames = new BlockingCollection<(TaskCompletionSource<Unit> tcs, IResourceHandle<VideoFrame> handle)>(boundedCapacity: 1);
         private readonly IntPtr _sendInstancePtr;
 
         private NDIlib.tally_t _ndiTally = new NDIlib.tally_t();
@@ -86,32 +87,37 @@ namespace VL.IO.NDI
                 using var videoFrameSubscription = new SerialDisposable();
                 try
                 {
-                    foreach (var handle in _videoFrames.GetConsumingEnumerable())
+                    foreach (var (tcs, handle) in _videoFrames.GetConsumingEnumerable())
                     {
-                        var videoFrame = handle.Resource;
-                        if (videoFrame is null)
-                            continue;
-
-                        var image = videoFrame.Image;
-                        if (image is null)
-                            continue;
-
-                        var info = image.Info;
-                        var imageData = image.GetData();
-                        var memoryHandle = imageData.Bytes.Pin();
-                        var metadataHandle = GCHandle.Alloc(UTF.StringToUtf8(videoFrame.Metadata), GCHandleType.Pinned);
-
-                        var ndiVideoFrame = ToNativeVideoFrame(info, imageData, new IntPtr(memoryHandle.Pointer), metadataHandle.AddrOfPinnedObject());
-                        NDIlib.send_send_video_async_v2(_sendInstancePtr, ref ndiVideoFrame);
-
-                        // Release the previous frame and hold on to this one
-                        videoFrameSubscription.Disposable = Disposable.Create(() =>
+                        try
                         {
-                            metadataHandle.Free();
-                            memoryHandle.Dispose();
-                            imageData.Dispose();
-                            handle.Dispose();
-                        });
+                            var videoFrame = handle.Resource;
+                            var image = videoFrame.Image;
+                            var info = image.Info;
+                            var imageData = image.GetData();
+                            var memoryHandle = imageData.Bytes.Pin();
+                            var metadataHandle = GCHandle.Alloc(UTF.StringToUtf8(videoFrame.Metadata), GCHandleType.Pinned);
+
+                            var ndiVideoFrame = ToNativeVideoFrame(info, imageData, new IntPtr(memoryHandle.Pointer), metadataHandle.AddrOfPinnedObject());
+                            NDIlib.send_send_video_async_v2(_sendInstancePtr, ref ndiVideoFrame);
+
+                            // Release the previous frame and hold on to this one
+                            videoFrameSubscription.Disposable = Disposable.Create(() =>
+                            {
+                                metadataHandle.Free();
+                                memoryHandle.Dispose();
+                                imageData.Dispose();
+                                handle.Dispose();
+                            });
+
+                            // Mark task as completed
+                            tcs.SetResult(default);
+                        }
+                        catch (Exception e)
+                        {
+                            // Mark task as faulted
+                            tcs.SetException(e);
+                        }
                     }
                 }
                 finally
@@ -123,6 +129,8 @@ namespace VL.IO.NDI
                 }
             });
         }
+
+        public bool Enabled { get; set; } = true;
 
         // The current tally state
         public NDIlib.tally_t Tally
@@ -180,16 +188,20 @@ namespace VL.IO.NDI
             }
         }
 
-        public void SendAsync(IResourceProvider<IImage> image, string metadata = null)
+        public Task SendAsync(IResourceProvider<IImage> image, string metadata = null)
         {
-            SendAsync(image.Bind(i => new VideoFrame(i, metadata)));
+            return SendAsync(image.Bind(i => new VideoFrame(i, metadata)));
         }
 
-        public void SendAsync(IResourceProvider<VideoFrame> videoFrame)
+        public Task SendAsync(IResourceProvider<VideoFrame> videoFrame)
         {
             var handle = videoFrame?.GetHandle();
-            if (handle != null)
-                _videoFrames.Add(handle);
+            if (handle?.Resource?.Image is null)
+                return Task.CompletedTask;
+
+            var tcs = new TaskCompletionSource<Unit>();
+            _videoFrames.Add((tcs, handle));
+            return tcs.Task;
         }
 
         public void Send(AudioFrame audioFrame)

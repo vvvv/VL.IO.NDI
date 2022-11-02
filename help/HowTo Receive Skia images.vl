@@ -184,13 +184,13 @@
               <Choice Kind="ProcessAppFlag" Name="NDIReceiver" />
             </p:NodeReference>
             <Pin Id="S9nqkRCcJMXMKPUpeUQgWC" Name="Source" Kind="InputPin" />
+            <Pin Id="BpKO2RrL3TbLSZNlRF3jP7" Name="Receiver Name" Kind="InputPin" />
             <Pin Id="JDSLkC1jiZ6NDsIblbTZmJ" Name="On Program" Kind="InputPin" />
             <Pin Id="ERtm2A09LVoMmaRhg7V2Z7" Name="On Preview" Kind="InputPin" />
             <Pin Id="QrdKHDnEWyrMtDVBRDrFj7" Name="Enabled" Kind="InputPin" />
             <Pin Id="NsQBc31khxQP146m2fU1eN" Name="Bandwidth" Kind="InputPin" />
-            <Pin Id="Suvub77hUQIQS2FBP7Om1f" Name="Output" Kind="OutputPin" />
-            <Pin Id="Spz2CF8WRY8On8uKikcB3y" Name="Metadata" Kind="OutputPin" />
             <Pin Id="QrIpMW9UVc1NWb3qbux2vG" Name="Video Frames" Kind="OutputPin" />
+            <Pin Id="Op3ChDV9uuoN9hIDl7f55M" Name="Metadata Frames" Kind="OutputPin" />
           </Node>
           <Pad Id="BN1ElESlcRCOL1jr0KPBmG" Comment="Enabled" Bounds="668,192,35,35" ShowValueBox="true" isIOBox="true" Value="True">
             <p:TypeAnnotation>

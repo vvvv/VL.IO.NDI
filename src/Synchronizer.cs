@@ -1,11 +1,8 @@
-﻿//using NAudio.Wave;
-using NewTek;
-using System;
+﻿using NewTek;
 
-using VL.Lib.Basics.Imaging;
+using System;
 using VL.Lib.Basics.Resources;
 using System.Reactive.Disposables;
-using System.Collections.Generic;
 
 namespace VL.IO.NDI
 {
@@ -19,19 +16,24 @@ namespace VL.IO.NDI
 
         private IntPtr GetSyncInstance()
         {
-            var syncInstance = Receiver.SyncInstanceProvider;
-            if (syncInstance != _syncInstanceProvider)
-            {
-                _syncInstanceProvider = syncInstance;
-                _syncInstanceHandle?.Dispose();
-                _syncInstanceHandle = syncInstance?.GetHandle();
-            }
             return _syncInstanceHandle?.Resource ?? default;
         }
 
-        public Receiver Receiver { get; set; }
+        public Receiver Receiver
+        {
+            set
+            {
+                var syncInstance = value?.SyncInstanceProvider;
+                if (syncInstance != _syncInstanceProvider)
+                {
+                    _syncInstanceProvider = syncInstance;
+                    _syncInstanceHandle?.Dispose();
+                    _syncInstanceHandle = syncInstance?.GetHandle();
+                }
+            }
+        }
 
-        public IResourceProvider<VideoFrame> PullVideoFrame()
+        public IResourceProvider<VideoFrame> ReceiveVideoFrame()
         {
             var syncInstance = GetSyncInstance();
             if (syncInstance == default)
@@ -58,12 +60,7 @@ namespace VL.IO.NDI
             return imageProvider;
         }
 
-        public IResourceProvider<IImage> PullImage()
-        {
-            return PullVideoFrame().Bind(v => v?.Image);
-        }
-
-        public IResourceProvider<AudioFrame> PullAudioFrame()
+        public IResourceProvider<AudioFrame> ReceiveAudioFrame()
         {
             throw new NotImplementedException();
         }

@@ -1,8 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Document xmlns:p="property" Id="EDpXcQUiaNFMZEqe06FgkO" LanguageVersion="2021.4.11.1237" Version="0.128">
-  <NugetDependency Id="QDKWB4liQfJMDPWein5ERc" Location="VL.Core" Version="2021.4.11-1237-gbe7b40ca9c" />
-  <NugetDependency Id="JngbdjrQttWP3C056ivUGZ" Location="VL.CoreLib" Version="2021.4.11-1237-gbe7b40ca9c" />
-  <NugetDependency Id="FDjgov6DOmvM906MD3ltdI" Location="VL.Skia" Version="2021.4.11-1237-gbe7b40ca9c" />
+<Document xmlns:p="property" Id="EDpXcQUiaNFMZEqe06FgkO" LanguageVersion="2021.4.11.1289" Version="0.128">
+  <NugetDependency Id="QDKWB4liQfJMDPWein5ERc" Location="VL.Core" Version="2021.4.11-1230-g4d0ac709b7" />
+  <NugetDependency Id="JngbdjrQttWP3C056ivUGZ" Location="VL.CoreLib" Version="2021.4.11-1230-g4d0ac709b7" />
+  <NugetDependency Id="FDjgov6DOmvM906MD3ltdI" Location="VL.Skia" Version="2021.4.11-1230-g4d0ac709b7" />
   <Patch Id="IiCA7zHpiE6LeILS7YZGKy">
     <Canvas Id="PmobLB0HSYAL6JU48f5ahA" DefaultCategory="Main" CanvasType="FullCategory">
       <!--
@@ -769,7 +769,7 @@
             </p:TypeAnnotation>
           </Pad>
           <Pad Id="RYLfsMZaSZ4M9AdnycTZEe" Comment="Connection Count" Bounds="414,586,35,15" ShowValueBox="true" isIOBox="true" />
-          <Node Bounds="607,548,89,95" Id="P9LejOWWpYmLOCEhlxXZGD">
+          <Node Bounds="607,548,109,95" Id="P9LejOWWpYmLOCEhlxXZGD">
             <p:NodeReference LastCategoryFullName="Reactive" LastSymbolSource="VL.Reactive.vl">
               <Choice Kind="ProcessAppFlag" Name="ForEach" />
               <CategoryReference Kind="Category" Name="Reactive" NeedsToBeDirectParent="true" />
@@ -790,7 +790,7 @@
                 <p:NodeReference LastCategoryFullName="IO.NDI.NDISender" LastSymbolSource="VL.IO.NDI.vl">
                   <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
                   <CategoryReference Kind="ClassType" Name="NDISender" />
-                  <Choice Kind="OperationCallFlag" Name="SendAsync" />
+                  <Choice Kind="OperationCallFlag" Name="SendImageAsync" />
                 </p:NodeReference>
                 <Pin Id="KcyWFJslcdTNtftf2Pi1qp" Name="Input" Kind="StateInputPin" />
                 <Pin Id="Nkf8YsIHtTxQKeUInncI0Z" Name="Image" Kind="InputPin" />
