@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reactive.Disposables;
 using System.Reactive.Linq;
 using System.Text.RegularExpressions;
 using NewTek;
+using VL.Core;
 using VL.Core.CompilerServices;
 using VL.Lib.Collections;
 
@@ -88,21 +90,7 @@ namespace VL.IO.NDI
 
     public sealed class SourceDefinition : DynamicEnumDefinitionBase<SourceDefinition>
     {
-        private readonly IObservable<Spread<Source>> observable;
-        private readonly IDisposable subscription;
-
         private Spread<Source> mostRecentSources = Spread.Create(Source.None);
-
-        public SourceDefinition()
-        {
-            observable = Finder.GetSources(showLocalSources: true).Publish().RefCount();
-            subscription = observable.Subscribe(s => mostRecentSources = s.Add(Source.None));
-        }
-
-        ~SourceDefinition()
-        {
-            subscription.Dispose();
-        }
 
         protected override IReadOnlyDictionary<string, object> GetEntries()
         {
@@ -111,7 +99,8 @@ namespace VL.IO.NDI
 
         protected override IObservable<object> GetEntriesChangedObservable()
         {
-            return observable;
+            return Finder.GetSources(showLocalSources: true)
+                .Do(s => mostRecentSources = s.Add(Source.None));
         }
     }
 }

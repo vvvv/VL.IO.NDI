@@ -63,7 +63,7 @@ namespace VL.IO.NDI
                     if (latest != current)
                     {
                         current = latest;
-                        currentSubscription.Disposable = current.GetHandle();
+                        currentSubscription.Disposable = current?.GetHandle();
                     }
                     return current ?? ResourceProvider.Default<SKImage>.GetInstance(default);
                 }

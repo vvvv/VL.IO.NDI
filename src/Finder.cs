@@ -10,6 +10,7 @@ using VL.Lib.Basics.Resources;
 using System.Reactive.Linq;
 using System.Reactive.Concurrency;
 using VL.Core;
+using System.Reactive.Disposables;
 
 namespace VL.IO.NDI
 {
@@ -17,12 +18,11 @@ namespace VL.IO.NDI
     {
         public static IObservable<Spread<Source>> GetSources(bool showLocalSources = false, string[] groups = null, string[] extraIps = null)
         {
-            return Observable.Create<Spread<Source>>(async (observer, ct) =>
-            {
-                while (!ct.IsCancellationRequested)
+            return Observable.Using(
+                () => CreateNativeInstanceProvider(showLocalSources, groups, extraIps).GetHandle(), 
+                handle => Observable.Create<Spread<Source>>(async (observer, ct) =>
                 {
-                    // Create and destroy new finder on each iteration - prevents vvvv.exe from lingering around
-                    using (var handle = CreateNativeInstanceProvider(showLocalSources, groups, extraIps).GetHandle())
+                    while (!ct.IsCancellationRequested)
                     {
                         // Wait up to 500ms for sources to change
                         if (NDIlib.find_wait_for_sources(handle.Resource, 500))
@@ -32,11 +32,10 @@ namespace VL.IO.NDI
                             var sources = GetSources(sourcesPtr, (int)numSources);
                             observer.OnNext(sources);
                         }
-                    }
 
-                    await Task.Delay(500);
-                }
-            }).SubscribeOn(Scheduler.Default);
+                        await Task.Delay(500, ct);
+                    }
+                }).SubscribeOn(Scheduler.Default));
 
             static unsafe Spread<Source> GetSources(IntPtr sourcesPtr, int numSources)
             {
