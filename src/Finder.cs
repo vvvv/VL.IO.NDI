@@ -66,8 +66,8 @@ namespace VL.IO.NDI
             // make a flat list of ip addresses as comma separated strings
             var flatIps = extraIps != null ? string.Join(",", extraIps) : null;
 
-            fixed (byte* groupsNamePtr = UTF.StringToUtf8(flatGroups))
-            fixed (byte* extraIpsPtr = UTF.StringToUtf8(flatIps))
+            fixed (byte* groupsNamePtr = Utils.StringToUtf8(flatGroups))
+            fixed (byte* extraIpsPtr = Utils.StringToUtf8(flatIps))
             {
                 // how we want our find to operate
                 NDIlib.find_create_t findDesc = new NDIlib.find_create_t()

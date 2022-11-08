@@ -10,10 +10,10 @@
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <NoWarn>1701;1702;1591</NoWarn>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
-    
+
     <!-- Startup properties -->
     <PackageRepositories>$(MsBuildThisFileDirectory)..\..</PackageRepositories>
-    <VLVersion>2021.4.11-1237-gbe7b40ca9c</VLVersion>
+    <VLVersion>2021.4.11-1331-gcf3b83d15b</VLVersion>
     
     <Version>0.3.0</Version>
     <Authors>NewTek, Motzi, sebl, vvvv group</Authors>

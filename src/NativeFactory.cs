@@ -13,8 +13,8 @@ namespace VL.IO.NDI
         {
             return ResourceProvider.New(() =>
             {
-                fixed (byte* sourceNamePtr = UTF.StringToUtf8(sourceName))
-                fixed (byte* receiverNamePtr = UTF.StringToUtf8(receiverName))
+                fixed (byte* sourceNamePtr = Utils.StringToUtf8(sourceName))
+                fixed (byte* receiverNamePtr = Utils.StringToUtf8(receiverName))
                 {
                     // a source_t to describe the source to connect to.
                     NDIlib.source_t source_t = new NDIlib.source_t()

@@ -27,7 +27,7 @@ namespace VL.IO.NDI
 
         // Construct from NDIlib.source_t
         internal Source(NDIlib.source_t source_t)
-            : this(UTF.Utf8ToString(source_t.p_ndi_name))
+            : this(Utils.Utf8ToString(source_t.p_ndi_name))
         {
 
         }

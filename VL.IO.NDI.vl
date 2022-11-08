@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Document xmlns:p="property" Id="Cj0Zq5GjQw4Qay7PkQAX1S" Summary="Receive and send video content over network via the NewTek NDI protocol" Authors="Motzi" Credits="NewTek" LanguageVersion="2021.4.11.1289" Version="0.128">
-  <NugetDependency Id="Jq3wdcDI0TrOhpQpUk16ie" Location="VL.Core" Version="2021.4.11-1230-g4d0ac709b7" />
-  <NugetDependency Id="GNWGzTmrnVzNQptZEu7DrG" Location="VL.CoreLib" Version="2021.4.11-1230-g4d0ac709b7" />
+<Document xmlns:p="property" Id="Cj0Zq5GjQw4Qay7PkQAX1S" Summary="Receive and send video content over network via the NewTek NDI protocol" Authors="Motzi" Credits="NewTek" LanguageVersion="2021.4.11.1331" Version="0.128">
+  <NugetDependency Id="Jq3wdcDI0TrOhpQpUk16ie" Location="VL.Core" Version="2021.4.11-1331-gcf3b83d15b" />
+  <NugetDependency Id="GNWGzTmrnVzNQptZEu7DrG" Location="VL.CoreLib" Version="2021.4.11-1331-gcf3b83d15b" />
   <Patch Id="C6h2Mz3rqxPNUeN6Nz2YoP">
     <Canvas Id="UCJJ4ngvXb5MPzaX1CGF2Y" DefaultCategory="IO.NDI" CanvasType="FullCategory">
       <!--
@@ -76,6 +76,7 @@
             <ControlPoint Id="Jt3rUk02JnhMlUkm1wrIbF" Bounds="298,226" />
             <ControlPoint Id="FrXd1xwh8oKNUxu0IRjmZB" Bounds="329,275" />
             <ControlPoint Id="GjHEh7r5FOGNxo0Wk8m4V8" Bounds="422,275" />
+            <ControlPoint Id="Mlfy0FcGmkKQVy1tLSJ8t3" Bounds="508,274" />
           </Canvas>
           <ProcessDefinition Id="QhISnFligioP29HCNY5zYq">
             <Fragment Id="SmrTotybGUrLi5vjdnHjQB" Patch="VMp21LQRD5WNavwUSRMsh0" Enabled="true" />
@@ -96,11 +97,14 @@
           <Link Id="AMBMQN27NVOPJEc1orPyEe" Ids="AzJmtrq6GzoMjTwBzIO05Z,IMlX7htl8bLM5MEU2FfELl" />
           <Link Id="ICztkduWuzlOcwq9KVT45S" Ids="Ik3jZ9LToepOdbuWNkY5AS,TQIbUrGajteNO50ll6LJPE" />
           <Link Id="HPJXSUlT8ZPPXTvJwdzHAC" Ids="PTD4gbd9Lz1MQpS0qCtKNd,I4z8KfbKpO8Pk1kTfaKGm2" />
+          <Link Id="JSZgugB7xwzQVZD7aXUa2n" Ids="Mlfy0FcGmkKQVy1tLSJ8t3,J7mejQWTeeHPI7hlSikrog" />
+          <Link Id="KrlBoItOMhyL9NzesSja85" Ids="AsgS1DzsKWeMrBghSYZdwq,Mlfy0FcGmkKQVy1tLSJ8t3" IsHidden="true" />
           <Patch Id="VMp21LQRD5WNavwUSRMsh0" Name="Create" />
           <Patch Id="C7fyQnrVLtSPBtiyNZPvQ1" Name="Update">
             <Pin Id="Agv0Bvv6DwbOQ0wmEyFZjz" Name="Show Local Sources" Kind="InputPin" Bounds="650,270" DefaultValue="True" Summary="Tells the finder whether it should locate and report NDI send sources that are running on the current local machine." />
             <Pin Id="Fyc7CeSH27BOal3C6Qc17I" Name="Groups" Kind="InputPin" Bounds="814,265" Summary="Specifies groups for which this NDI finder will report sources." />
             <Pin Id="Ai0zbq8gZAfMne4mCtMkvA" Name="Extra Ips" Kind="InputPin" Bounds="924,274" Summary="List of IP addresses outside the local network that will be queried for NDI sources." />
+            <Pin Id="AsgS1DzsKWeMrBghSYZdwq" Name="Clear" Kind="InputPin" Bounds="186,217" />
             <Pin Id="EaLAoduYwxkNgHWIv7R05P" Name="Sources" Kind="OutputPin" Bounds="217,924" />
           </Patch>
           <Patch Id="Hd39rSaNk3tLJAEc1joiyL" Name="Dispose" />
@@ -574,24 +578,6 @@
           <Patch Id="KavdryGa5YJLNIjgfCOFwJ">
             <Canvas Id="DqnWak6smvSMI6fGm1oDoL" CanvasType="Group" />
             <ProcessDefinition Id="M1dhTqdeoLfMA7JEGfyqFn" IsHidden="true" />
-          </Patch>
-        </Node>
-        <!--
-
-    ************************ VideoFrame ************************
-
--->
-        <Node Name="VideoFrame" Bounds="502,315" Id="UvJtIf5JAq1LHYYHL11UAX">
-          <p:NodeReference>
-            <Choice Kind="ForwardDefinition" Name="Forward" />
-            <FullNameCategoryReference ID="Primitive" />
-          </p:NodeReference>
-          <p:TypeAnnotation LastCategoryFullName="VL.IO.NDI" LastSymbolSource="VL.IO.NDI.dll">
-            <Choice Kind="TypeFlag" Name="VideoFrame" />
-          </p:TypeAnnotation>
-          <Patch Id="EstbklceESkPMDQggy9c5T">
-            <Canvas Id="NXLuq30JMa6MRAJOgvrZ3q" CanvasType="Group" />
-            <ProcessDefinition Id="HnDR2l6nnLzMtLawdm9nbs" IsHidden="true" />
           </Patch>
         </Node>
       </Canvas>
@@ -1285,6 +1271,42 @@
             <ProcessDefinition Id="HmfJNsigylmNXmNlJZyii4" IsHidden="true" />
           </Patch>
         </Node>
+        <!--
+
+    ************************ VideoFrame ************************
+
+-->
+        <Node Name="VideoFrame" Bounds="384,322" Id="MKCbj7TfqrhNiUcvK2plmd">
+          <p:NodeReference>
+            <Choice Kind="ForwardDefinition" Name="Forward" />
+            <FullNameCategoryReference ID="Primitive" />
+          </p:NodeReference>
+          <p:TypeAnnotation LastCategoryFullName="VL.IO.NDI" LastSymbolSource="VL.IO.NDI.dll">
+            <Choice Kind="TypeFlag" Name="VideoFrame" />
+          </p:TypeAnnotation>
+          <Patch Id="Sc1Sm7gVduxMvovLQ5XIfb">
+            <Canvas Id="KclPJ3wGVyvLR6WMHr7rOu" CanvasType="Group" />
+            <ProcessDefinition Id="Kh7IcYqz8eSQS8oZq586rg" IsHidden="true" />
+          </Patch>
+        </Node>
+        <!--
+
+    ************************ AudioFrame ************************
+
+-->
+        <Node Name="AudioFrame" Bounds="386,365" Id="EbwVRPx2pN9QP6fyI6494b">
+          <p:NodeReference>
+            <Choice Kind="ForwardDefinition" Name="Forward" />
+            <CategoryReference Kind="Category" Name="Primitive" />
+          </p:NodeReference>
+          <p:TypeAnnotation LastCategoryFullName="VL.IO.NDI" LastSymbolSource="VL.IO.NDI.dll">
+            <Choice Kind="TypeFlag" Name="AudioFrame" />
+          </p:TypeAnnotation>
+          <Patch Id="ImrScFJEPuZL8IBk6ku4DT">
+            <Canvas Id="M2T4lfMlEFEQLKInb5rvuY" BordersChecked="false" CanvasType="Group" />
+            <ProcessDefinition Id="Ms3JGkaxoVANdWV747ovZe" IsHidden="true" />
+          </Patch>
+        </Node>
       </Canvas>
       <!--
 
@@ -1364,12 +1386,31 @@
             <ControlPoint Id="DCP1MKMAze6P2bBHT6jAVQ" Bounds="646,165" />
             <ControlPoint Id="CIJBN5eY8nhMid4y2P6HeU" Bounds="665,182" />
             <ControlPoint Id="IR3E09Va6OZNY0PhdvEEfg" Bounds="694,202" />
+            <Node Bounds="524,455,63,26" Id="HFsD0E2FdPANXgGYNoO1kd">
+              <p:NodeReference LastCategoryFullName="VL.IO.NDI.Synchronizer" LastSymbolSource="VL.IO.NDI.dll">
+                <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
+                <CategoryReference Kind="AssemblyCategory" Name="Synchronizer" NeedsToBeDirectParent="true" />
+                <Choice Kind="OperationCallFlag" Name="ReceiveAudioFrame" />
+              </p:NodeReference>
+              <Pin Id="JgOaP9PjHuUQALfkvF2gpp" Name="Input" Kind="StateInputPin" />
+              <Pin Id="HEYeUKSl1j8MFX6mjEc2K0" Name="Sample Rate" Kind="InputPin" />
+              <Pin Id="MgR7lnlZfzONCmahORGw9y" Name="Channel Count" Kind="InputPin" />
+              <Pin Id="U3vC0DrLSpWPMsRNnhAbeN" Name="Sample Count" Kind="InputPin" />
+              <Pin Id="GrgTBKB7R2wP5GGoRtBIWY" Name="Output" Kind="StateOutputPin" />
+              <Pin Id="AkyJIx0vkrrQHVEUhOVAAO" Name="Result" Kind="OutputPin" />
+            </Node>
+            <Pad Id="Rm93FYvHWjFLiqKWDE66Ap" SlotId="Rv1KmUx3td9L9CqyAK2ZvF" Bounds="525,432" />
+            <ControlPoint Id="AMQtJELzBxMLEWUtg07koZ" Bounds="626,530" />
+            <ControlPoint Id="LRWLITeEeURLncelj1LFvU" Bounds="575,415" />
+            <ControlPoint Id="R7i6DPgAWtpO0YaUDrWoSs" Bounds="648,415" />
+            <ControlPoint Id="QpDId8AeMV2LEcP0FS7dIV" Bounds="743,415" />
           </Canvas>
           <ProcessDefinition Id="L1nmMRwrEK9NA2I5qNB6iV" HasStateOut="true">
             <Fragment Id="BJiq98K8bBdLGE7xXxRMVg" Patch="TxwNJzewPeBLUcos2AALyo" Enabled="true" />
             <Fragment Id="Awl8f1EtYo9PYTKsQ7rWoj" Patch="TCTahD76ISJMEmcTrqgAXv" Enabled="true" />
             <Fragment Id="GIr8Jeqk7qxOgWo4EeNDwr" Patch="PPhcCxcO6wWLFDg41lTaeE" />
             <Fragment Id="LQD7AV2OqgONB3sGsFYzWP" Patch="H7D4gZ4xi1LNAkytWtvyFg" />
+            <Fragment Id="SiEfARhhmV0Qd4U1E2xKSx" Patch="GUlftTkjInqMg4yydU21sZ" />
           </ProcessDefinition>
           <Patch Id="TxwNJzewPeBLUcos2AALyo" Name="Create (Internal)" ParticipatingElements="AQuqy17UJyQLSsjTXbEI8L" />
           <Patch Id="TCTahD76ISJMEmcTrqgAXv" Name="Update (Internal)" ManuallySortedPins="true">
@@ -1413,6 +1454,21 @@
           <Link Id="VBWnr9kPJXiPspNk1pxzDi" Ids="SPCdL2Tb00KOrBmf1N84HX,CIJBN5eY8nhMid4y2P6HeU" IsHidden="true" />
           <Link Id="FCYu8OVO4iSLnCqPuZD15y" Ids="IR3E09Va6OZNY0PhdvEEfg,A7VwFxj9lRvORKKYxkYfCs" />
           <Link Id="TH5XufvC8aNMB9Jmqu8DLY" Ids="GAF9IAIZ96WNYU8ubSyhRT,IR3E09Va6OZNY0PhdvEEfg" IsHidden="true" />
+          <Link Id="D271HD37wpoOstZrtoN40m" Ids="Rm93FYvHWjFLiqKWDE66Ap,JgOaP9PjHuUQALfkvF2gpp" />
+          <Link Id="LRYl5ej8MgBPWPBNgaXxZK" Ids="AkyJIx0vkrrQHVEUhOVAAO,AMQtJELzBxMLEWUtg07koZ" />
+          <Patch Id="GUlftTkjInqMg4yydU21sZ" Name="ReceiveAudioFrame">
+            <Pin Id="T43XlnS0CLvNoNAEzeo32K" Name="Audio Frame" Kind="OutputPin" />
+            <Pin Id="HHcQzM9dw3QQPyz4p88LQ2" Name="Sample Rate" Kind="InputPin" />
+            <Pin Id="OTrh1TpC332P5sDYgMIOpy" Name="Channel Count" Kind="InputPin" />
+            <Pin Id="DYhubz4TKP2Pfy2eBMki6m" Name="Sample Count" Kind="InputPin" Bounds="789,423" />
+          </Patch>
+          <Link Id="K10vYhiKS07OVB1N9HNGjv" Ids="AMQtJELzBxMLEWUtg07koZ,T43XlnS0CLvNoNAEzeo32K" IsHidden="true" />
+          <Link Id="GPzqSIEJbigMRMgH31ZUkA" Ids="LRWLITeEeURLncelj1LFvU,HEYeUKSl1j8MFX6mjEc2K0" />
+          <Link Id="FxEE9cGE13jQcOJntDyWnn" Ids="HHcQzM9dw3QQPyz4p88LQ2,LRWLITeEeURLncelj1LFvU" IsHidden="true" />
+          <Link Id="QBCvlCxzvW9LBRB7fi3PJy" Ids="R7i6DPgAWtpO0YaUDrWoSs,MgR7lnlZfzONCmahORGw9y" />
+          <Link Id="LNn3UVqkHshMYi385LltcH" Ids="OTrh1TpC332P5sDYgMIOpy,R7i6DPgAWtpO0YaUDrWoSs" IsHidden="true" />
+          <Link Id="G42nB8uT6ssNQJrKJeMsuT" Ids="QpDId8AeMV2LEcP0FS7dIV,U3vC0DrLSpWPMsRNnhAbeN" />
+          <Link Id="OwbId2A5UuaQHivjvvnpN8" Ids="DYhubz4TKP2Pfy2eBMki6m,QpDId8AeMV2LEcP0FS7dIV" IsHidden="true" />
         </Patch>
       </Node>
       <!--
@@ -1506,6 +1562,6 @@
   <PlatformDependency Id="LkvwleFmgyILglvCd3xlo8" Location="System.Collections.Concurrent" />
   <PlatformDependency Id="PbBDxB1VqidPbC5834fuSg" Location="./lib/net472/VL.IO.NDI.dll" />
   <NugetDependency Id="ME1qVyIaycMPxPRpbfPJie" Location="VL.Audio" Version="0.2.23-alpha" />
-  <NugetDependency Id="MXkgfRvHR8mLi2Lo4UP3Uz" Location="VL.Skia" Version="2021.4.11-1230-g4d0ac709b7" />
-  <NugetDependency Id="Nxw58NhCoslNV6E9s0Gelh" Location="VL.Stride.Runtime" Version="2021.4.11-1289-g8a110a3f7a" />
+  <NugetDependency Id="MXkgfRvHR8mLi2Lo4UP3Uz" Location="VL.Skia" Version="2021.4.11-1331-gcf3b83d15b" />
+  <NugetDependency Id="Nxw58NhCoslNV6E9s0Gelh" Location="VL.Stride.Runtime" Version="2021.4.11-1331-gcf3b83d15b" />
 </Document>

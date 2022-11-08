@@ -8,7 +8,8 @@ namespace VL.IO.NDI
 {
     public unsafe class Synchronizer : NativeObject
     {
-        private readonly SerialDisposable imageSubscription = new SerialDisposable();
+        private readonly SerialDisposable videoFrameSubscription = new SerialDisposable();
+        private readonly SerialDisposable audioFrameSubscription = new SerialDisposable();
 
         // our unmanaged NDI sync instance
         private IResourceProvider<IntPtr> _syncInstanceProvider;
@@ -37,17 +38,17 @@ namespace VL.IO.NDI
         {
             var syncInstance = GetSyncInstance();
             if (syncInstance == default)
-                return ResourceProvider.Default<VideoFrame>.GetInstance(default);
+                return null;
 
             var nativeVideoFrame = new NDIlib.video_frame_v2_t();
             NDIlib.framesync_capture_video(syncInstance, ref nativeVideoFrame, NDIlib.frame_format_type_e.frame_format_type_interleaved);
 
             if (nativeVideoFrame.p_data == default)
-                return ResourceProvider.Default<VideoFrame>.GetInstance(default);
+                return null;
 
             var image = nativeVideoFrame.ToImage();
-            var videoFrame = new VideoFrame(image, UTF.Utf8ToString(nativeVideoFrame.p_metadata));
-            var imageProvider = _syncInstanceProvider.Bind(s => ResourceProvider.Return(videoFrame, i =>
+            var videoFrame = new VideoFrame(image, Utils.Utf8ToString(nativeVideoFrame.p_metadata));
+            var frameProvider = _syncInstanceProvider.Bind(s => ResourceProvider.Return(videoFrame, i =>
             {
                 image.Dispose();
 
@@ -55,19 +56,43 @@ namespace VL.IO.NDI
                 NDIlib.framesync_free_video(s, ref nativeVideoFrame);
             })).ShareInParallel();
 
-            imageSubscription.Disposable = imageProvider.GetHandle();
+            videoFrameSubscription.Disposable = frameProvider.GetHandle();
 
-            return imageProvider;
+            return frameProvider;
         }
 
-        public IResourceProvider<AudioFrame> ReceiveAudioFrame()
+        public IResourceProvider<AudioFrame> ReceiveAudioFrame(int sampleRate = 44000, int channelCount = 2, int sampleCount = 1024)
         {
-            throw new NotImplementedException();
+            var syncInstance = GetSyncInstance();
+            if (syncInstance == default)
+                return null;
+
+            var nativeAudioFrame = new NDIlib.audio_frame_v2_t();
+            NDIlib.framesync_capture_audio(syncInstance, ref nativeAudioFrame, sampleRate, channelCount, sampleCount);
+
+            if (nativeAudioFrame.p_data == default)
+                return null;
+
+            var bufferOwner = Utils.GetPlanarBuffer(ref nativeAudioFrame); // Utils.GetInterleavedBuffer(ref nativeAudioFrame);
+            var size = nativeAudioFrame.no_samples * nativeAudioFrame.no_channels;
+            var audioFrame = new AudioFrame(bufferOwner.Memory/*.Slice(0, size)*/, nativeAudioFrame.no_samples, nativeAudioFrame.no_channels, nativeAudioFrame.sample_rate, Utils.Utf8ToString(nativeAudioFrame.p_metadata));
+            var frameProvider = _syncInstanceProvider.Bind(s => ResourceProvider.Return(audioFrame, i =>
+            {
+                // Free allocated memory
+                bufferOwner.Dispose();
+                // Free audio frame
+                NDIlib.framesync_free_audio(s, ref nativeAudioFrame);
+            })).ShareInParallel();
+
+            audioFrameSubscription.Disposable = frameProvider.GetHandle();
+
+            return frameProvider;
         }
 
         protected override void Destroy(bool disposing)
         {
-            imageSubscription.Dispose();
+            videoFrameSubscription.Dispose();
+            audioFrameSubscription.Dispose();
             _syncInstanceHandle?.Dispose();
             _syncInstanceHandle = null;
         }

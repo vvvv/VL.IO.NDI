@@ -1,153 +1,28 @@
 ﻿using System;
-using System.Runtime.InteropServices;
-using NewTek;
 
 namespace VL.IO.NDI
 {
-    public class AudioFrame : IDisposable
+    public class AudioFrame
     {
-        public AudioFrame(int maxSamples, int sampleRate, int numChannels)
+        public AudioFrame(Memory<float> planarBuffer, int noSamples, int noChannels, int sampleRate, string metadata)
         {
-            // we have to know to free it later
-            _memoryOwned = true;
-
-            IntPtr audioBufferPtr = Marshal.AllocHGlobal(numChannels * maxSamples * sizeof(float));
-
-            _ndiAudioFrame = new NDIlib.audio_frame_v2_t()
-            {
-                sample_rate = sampleRate,
-                no_channels = numChannels,
-                no_samples = maxSamples,
-                timecode = NDIlib.send_timecode_synthesize,
-                p_data = audioBufferPtr,
-                channel_stride_in_bytes = sizeof(float) * maxSamples,
-                p_metadata = IntPtr.Zero,
-                timestamp = 0
-            };
+            PlanarBuffer = planarBuffer;
+            NoSamples = noSamples;
+            NoChannels = noChannels;
+            SampleRate = sampleRate;
+            Metadata = metadata;
         }
 
-        public AudioFrame(IntPtr bufferPtr, int sampleRate, int numChannels, int channelStride, int numSamples)
-        {
-            _ndiAudioFrame = new NDIlib.audio_frame_v2_t()
-            {
-                sample_rate = 48000,
-                no_channels = 2,
-                no_samples = 1602,
-                timecode = NDIlib.send_timecode_synthesize,
-                p_data = bufferPtr,
-                channel_stride_in_bytes = channelStride,
-                p_metadata = IntPtr.Zero,
-                timestamp = 0
-            };
-        }
+        public Memory<float> PlanarBuffer { get; }
 
-        public IntPtr AudioBuffer
-        {
-            get
-            {
-                return _ndiAudioFrame.p_data;
-            }
-        }
+        public int NoSamples { get; }
 
-        public int NumSamples
-        {
-            get
-            {
-                return _ndiAudioFrame.no_samples;
-            }
+        public int NoChannels { get; }
 
-            set
-            {
-                _ndiAudioFrame.no_samples = value;
-            }
-        }
+        public int SampleRate { get; }
 
-        public int NumChannels
-        {
-            get
-            {
-                return _ndiAudioFrame.no_channels;
-            }
+        public string Metadata { get; }
 
-            set
-            {
-                _ndiAudioFrame.no_channels = value;
-            }
-        }
-
-        public int ChannelStride
-        {
-            get
-            {
-                return _ndiAudioFrame.channel_stride_in_bytes;
-            }
-
-            set
-            {
-                _ndiAudioFrame.channel_stride_in_bytes = value;
-            }
-        }
-
-        public int SampleRate
-        {
-            get
-            {
-                return _ndiAudioFrame.sample_rate;
-            }
-
-            set
-            {
-                _ndiAudioFrame.sample_rate = value;
-            }
-        }
-
-        public Int64 TimeStamp
-        {
-            get
-            {
-                return _ndiAudioFrame.timestamp;
-            }
-            set
-            {
-                _ndiAudioFrame.timestamp = value;
-            }
-        }
-
-        public string Metadata
-        {
-            get
-            {
-                if (_ndiAudioFrame.p_metadata == IntPtr.Zero)
-                    return null;
-
-                return UTF.Utf8ToString(_ndiAudioFrame.p_metadata);
-            }
-        }
-
-        public void Dispose()
-        {
-            Dispose(true);
-            GC.SuppressFinalize(this);
-        }
-
-        ~AudioFrame()
-        {
-            Dispose(false);
-        }
-
-        protected virtual void Dispose(bool disposing)
-        {
-            if (disposing)
-            {
-                if (_memoryOwned && _ndiAudioFrame.p_data != IntPtr.Zero)
-                {
-                    Marshal.FreeHGlobal(_ndiAudioFrame.p_data);
-                    _ndiAudioFrame.p_data = IntPtr.Zero;
-                }
-            }
-        }
-
-        internal NDIlib.audio_frame_v2_t _ndiAudioFrame;
-        bool _memoryOwned = false;
+        public Memory<float> GetChannel(int index) => PlanarBuffer.Slice(index * NoSamples, NoSamples);
     }
 }

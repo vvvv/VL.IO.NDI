@@ -108,7 +108,7 @@ namespace VL.IO.NDI
 
                             NDIlib.video_frame_v2_t nativeVideoFrame = new NDIlib.video_frame_v2_t();
 
-                            switch (NDIlib.recv_capture_v2(recvInstancePtr, ref nativeVideoFrame, ref NativeUtils.NULL<NDIlib.audio_frame_v2_t>(), ref NativeUtils.NULL<NDIlib.metadata_frame_t>(), 30))
+                            switch (NDIlib.recv_capture_v2(recvInstancePtr, ref nativeVideoFrame, ref Utils.NULL<NDIlib.audio_frame_v2_t>(), ref Utils.NULL<NDIlib.metadata_frame_t>(), 30))
                             {
                                 // Video data
                                 case NDIlib.frame_type_e.frame_type_video:
@@ -124,7 +124,7 @@ namespace VL.IO.NDI
                                     }
 
                                     var image = nativeVideoFrame.ToImage();
-                                    var videoFrame = new VideoFrame(image, UTF.Utf8ToString(nativeVideoFrame.p_metadata));
+                                    var videoFrame = new VideoFrame(image, Utils.Utf8ToString(nativeVideoFrame.p_metadata));
                                     var imageProvider = recvInstanceProvider.Bind(r => ResourceProvider.Return(videoFrame, i =>
                                     {
                                         image.Dispose();
@@ -165,13 +165,13 @@ namespace VL.IO.NDI
 
                             NDIlib.metadata_frame_t nativeMetadataFrame = new NDIlib.metadata_frame_t();
 
-                            switch (NDIlib.recv_capture_v2(recvInstancePtr, ref NativeUtils.NULL<NDIlib.video_frame_v2_t>(), ref NativeUtils.NULL<NDIlib.audio_frame_v2_t>(), ref nativeMetadataFrame, 30))
+                            switch (NDIlib.recv_capture_v2(recvInstancePtr, ref Utils.NULL<NDIlib.video_frame_v2_t>(), ref Utils.NULL<NDIlib.audio_frame_v2_t>(), ref nativeMetadataFrame, 30))
                             {
                                 // Video data
                                 case NDIlib.frame_type_e.frame_type_metadata:
 
                                     // UTF-8 strings must be converted for use - length includes the terminating zero
-                                    var metadata = UTF.Utf8ToString(nativeMetadataFrame.p_data, nativeMetadataFrame.length - 1);
+                                    var metadata = Utils.Utf8ToString(nativeMetadataFrame.p_data, nativeMetadataFrame.length - 1);
 
                                     // free frames that were received
                                     NDIlib.recv_free_metadata(_recvInstancePtr, ref nativeMetadataFrame);

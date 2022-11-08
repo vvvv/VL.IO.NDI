@@ -96,7 +96,7 @@ namespace VL.IO.NDI
             }
 
             // a source_t to describe the source to connect to.
-            fixed (byte* selectedSourceNamePtr = UTF.StringToUtf8(_selectedSource.Name))
+            fixed (byte* selectedSourceNamePtr = Utils.StringToUtf8(_selectedSource.Name))
             {
                 NDIlib.source_t source_t = new NDIlib.source_t()
                 {
@@ -167,8 +167,8 @@ namespace VL.IO.NDI
             var flatGroups = _groups != null ? string.Join(",", _groups) : null;
 
             // .Net interop doesn't handle UTF-8 strings, so do it manually
-            fixed (byte* sourceNamePtr = UTF.StringToUtf8(_routingName))
-            fixed (byte* groupsNamePtr = UTF.StringToUtf8(flatGroups))
+            fixed (byte* sourceNamePtr = Utils.StringToUtf8(_routingName))
+            fixed (byte* groupsNamePtr = Utils.StringToUtf8(flatGroups))
             {
                 // Create an NDI routing description
                 NDIlib.routing_create_t createDesc = new NDIlib.routing_create_t()

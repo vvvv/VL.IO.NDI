@@ -44,8 +44,8 @@ namespace VL.IO.NDI
             // .Net interop doesn't handle UTF-8 strings, so do it manually
             // These must be freed later
             var flatGroups = groups != null ? string.Join(",", groups) : null;
-            fixed (byte* sourceNamePtr = UTF.StringToUtf8(sourceName))
-            fixed (byte* groupsNamePtr = UTF.StringToUtf8(flatGroups))
+            fixed (byte* sourceNamePtr = Utils.StringToUtf8(sourceName))
+            fixed (byte* groupsNamePtr = Utils.StringToUtf8(flatGroups))
             {
                 // Create an NDI source description
                 NDIlib.send_create_t createDesc = new NDIlib.send_create_t()
@@ -62,7 +62,7 @@ namespace VL.IO.NDI
                 // did it succeed?
                 if (_sendInstancePtr == IntPtr.Zero)
                 {
-                    throw new InvalidOperationException("Failed to create send instance.");
+                    throw new InvalidOperationException("Failed to create send instance. Make sure the source name is unique.");
                 }
             }
 
@@ -70,7 +70,7 @@ namespace VL.IO.NDI
             {
                 // .Net interop doesn't handle UTF-8 strings, so do it manually
                 // These must be freed later
-                fixed (byte* failoverNamePtr = UTF.StringToUtf8(failoverName))
+                fixed (byte* failoverNamePtr = Utils.StringToUtf8(failoverName))
                 {
                     NDIlib.source_t failoverDesc = new NDIlib.source_t()
                     {
@@ -96,7 +96,7 @@ namespace VL.IO.NDI
                             var info = image.Info;
                             var imageData = image.GetData();
                             var memoryHandle = imageData.Bytes.Pin();
-                            var metadataHandle = GCHandle.Alloc(UTF.StringToUtf8(videoFrame.Metadata), GCHandleType.Pinned);
+                            var metadataHandle = GCHandle.Alloc(Utils.StringToUtf8(videoFrame.Metadata), GCHandleType.Pinned);
 
                             var ndiVideoFrame = ToNativeVideoFrame(info, imageData, new IntPtr(memoryHandle.Pointer), metadataHandle.AddrOfPinnedObject());
                             NDIlib.send_send_video_async_v2(_sendInstancePtr, ref ndiVideoFrame);
@@ -181,7 +181,7 @@ namespace VL.IO.NDI
             var info = image.Info;
             var imageData = image.GetData();
             fixed (byte* dataP = imageData.Bytes.Span)
-            fixed (byte* metadataP = UTF.StringToUtf8(metadata))
+            fixed (byte* metadataP = Utils.StringToUtf8(metadata))
             {
                 var nativeVideoFrame = ToNativeVideoFrame(info, imageData, new IntPtr(dataP), new IntPtr(metadataP));
                 NDIlib.send_send_video_v2(_sendInstancePtr, ref nativeVideoFrame);
@@ -204,9 +204,24 @@ namespace VL.IO.NDI
             return tcs.Task;
         }
 
-        public void Send(AudioFrame audioFrame)
+        public unsafe void Send(AudioFrame audioFrame)
         {
-            Send(ref audioFrame._ndiAudioFrame);
+            throw new NotImplementedException();
+
+            //using var bufferHandle = audioFrame.PlanarBuffer.Pin();
+            //fixed (byte* metadataPointer = Utils.StringToUtf8(audioFrame.Metadata))
+            //{
+            //    var nativeAudioFrame = new NDIlib.audio_frame_v2_t()
+            //    {
+            //        channel_stride_in_bytes = audioFrame.ChannelStrideInBytes,
+            //        no_channels = audioFrame.NoChannels,
+            //        no_samples = audioFrame.NoSamples,
+            //        p_data = new IntPtr(bufferHandle.Pointer),
+            //        p_metadata = new IntPtr(metadataPointer),
+            //        sample_rate = audioFrame.SampleRate
+            //    };
+            //    Send(ref nativeAudioFrame);
+            //}
         }
 
         public void Send(ref NDIlib.audio_frame_v2_t audioFrame)
@@ -219,7 +234,7 @@ namespace VL.IO.NDI
             try
             {
                 _videoFrames.CompleteAdding();
-                _sendTask.Wait();
+                _sendTask?.Wait();
             }
             finally
             {
