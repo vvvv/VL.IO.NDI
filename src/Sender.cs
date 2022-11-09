@@ -206,27 +206,20 @@ namespace VL.IO.NDI
 
         public unsafe void Send(AudioFrame audioFrame)
         {
-            throw new NotImplementedException();
-
-            //using var bufferHandle = audioFrame.PlanarBuffer.Pin();
-            //fixed (byte* metadataPointer = Utils.StringToUtf8(audioFrame.Metadata))
-            //{
-            //    var nativeAudioFrame = new NDIlib.audio_frame_v2_t()
-            //    {
-            //        channel_stride_in_bytes = audioFrame.ChannelStrideInBytes,
-            //        no_channels = audioFrame.NoChannels,
-            //        no_samples = audioFrame.NoSamples,
-            //        p_data = new IntPtr(bufferHandle.Pointer),
-            //        p_metadata = new IntPtr(metadataPointer),
-            //        sample_rate = audioFrame.SampleRate
-            //    };
-            //    Send(ref nativeAudioFrame);
-            //}
-        }
-
-        public void Send(ref NDIlib.audio_frame_v2_t audioFrame)
-        {
-            NDIlib.send_send_audio_v2(_sendInstancePtr, ref audioFrame);
+            using var bufferHandle = audioFrame.PlanarBuffer.Pin();
+            fixed (byte* metadataPointer = Utils.StringToUtf8(audioFrame.Metadata))
+            {
+                var nativeAudioFrame = new NDIlib.audio_frame_v2_t()
+                {
+                    channel_stride_in_bytes = (audioFrame.PlanarBuffer.Length / audioFrame.NoChannels) * sizeof(float),
+                    no_channels = audioFrame.NoChannels,
+                    no_samples = audioFrame.NoSamples,
+                    p_data = new IntPtr(bufferHandle.Pointer),
+                    p_metadata = new IntPtr(metadataPointer),
+                    sample_rate = audioFrame.SampleRate
+                };
+                NDIlib.send_send_audio_v2(_sendInstancePtr, ref nativeAudioFrame);
+            }
         }
 
         protected override void Destroy(bool disposing)
