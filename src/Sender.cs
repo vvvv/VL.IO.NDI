@@ -24,7 +24,6 @@ namespace VL.IO.NDI
         private readonly IntPtr _sendInstancePtr;
 
         private NDIlib.tally_t _ndiTally = new NDIlib.tally_t();
-        private IObservable<IResourceProvider<IImage>> _imageStream;
 
         public unsafe Sender(string sourceName, bool clockVideo=true, bool clockAudio=false, String[] groups = null, String failoverName=null)
         {
@@ -155,7 +154,25 @@ namespace VL.IO.NDI
         {
             get
             {
-                return NDIlib.send_get_no_connections(_sendInstancePtr, 0);
+                return NDIlib.send_get_no_connections(_sendInstancePtr, 0) / 2;
+            }
+        }
+
+        public bool OnPreview
+        {
+            get
+            {
+                GetTally(ref _ndiTally, 0);
+                return _ndiTally.on_preview;
+            }
+        }
+
+        public bool OnProgram
+        {
+            get
+            {
+                GetTally(ref _ndiTally, 0);
+                return _ndiTally.on_program;
             }
         }
 

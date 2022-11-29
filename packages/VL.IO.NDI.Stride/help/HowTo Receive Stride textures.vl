@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Document xmlns:p="property" Id="QHpr0fv5ZhbPHgd1D9pUc5" LanguageVersion="2021.4.11.1237" Version="0.128">
-  <NugetDependency Id="QDKWB4liQfJMDPWein5ERc" Location="VL.Core" Version="2021.4.11-1237-gbe7b40ca9c" />
-  <NugetDependency Id="JngbdjrQttWP3C056ivUGZ" Location="VL.CoreLib" Version="2021.4.11-1237-gbe7b40ca9c" />
+<Document xmlns:p="property" Id="Bg789xHyXceNA1GXsP6GGg" LanguageVersion="2021.4.12.1369" Version="0.128">
+  <NugetDependency Id="QDKWB4liQfJMDPWein5ERc" Location="VL.Core" Version="2021.4.12-1361-g53776bfdff" />
+  <NugetDependency Id="JngbdjrQttWP3C056ivUGZ" Location="VL.CoreLib" Version="2021.4.12-1361-g53776bfdff" />
   <Patch Id="IiCA7zHpiE6LeILS7YZGKy">
     <Canvas Id="PmobLB0HSYAL6JU48f5ahA" DefaultCategory="Main" CanvasType="FullCategory" />
     <!--
@@ -17,15 +17,6 @@
       <Patch Id="VX8x6j7wJ3GQSwpxICFXQ7">
         <Canvas Id="FntGeiaET6xNjAVP7uNJ4R" CanvasType="Group">
           <Pad Id="BfLDmsMxtouMcjJf8v4Wm2" Bounds="38,342,366,85" ShowValueBox="true" isIOBox="true" Value="Check for hidden pins to configure receiving properties.&#xD;&#xA;- ColorFormat: the format NDI will convert the source to&#xD;&#xA;- Bandwith: allows you to lower bandwith at reduced quality&#xD;&#xA;- AllowVideoFields: let NDI deinterlace the source">
-            <p:TypeAnnotation LastCategoryFullName="Primitive" LastSymbolSource="CoreLibBasics.vl">
-              <Choice Kind="TypeFlag" Name="String" />
-            </p:TypeAnnotation>
-            <p:ValueBoxSettings>
-              <p:fontsize p:Type="Int32">9</p:fontsize>
-              <p:stringtype p:Assembly="VL.Core" p:Type="VL.Core.StringType">Comment</p:stringtype>
-            </p:ValueBoxSettings>
-          </Pad>
-          <Pad Id="GqT1F7X8JA1NdEbM0V8QU0" Bounds="86,485,282,44" ShowValueBox="true" isIOBox="true" Value="Convert the received image to a SKImage asynchonously">
             <p:TypeAnnotation LastCategoryFullName="Primitive" LastSymbolSource="CoreLibBasics.vl">
               <Choice Kind="TypeFlag" Name="String" />
             </p:TypeAnnotation>
@@ -53,7 +44,6 @@
               <p:stringtype p:Assembly="VL.Core" p:Type="VL.Core.StringType">Comment</p:stringtype>
             </p:ValueBoxSettings>
           </Pad>
-          <Pad Id="KzqHaMcuV2XPJkeiFG5SKZ" Comment="Connected Source" Bounds="558,388,295,15" ShowValueBox="true" isIOBox="true" />
           <Pad Id="SKDUob0v9MHMKikrTciGLo" Bounds="557,411,311,100" ShowValueBox="true" isIOBox="true" Value="Be aware that NDI Receiver can connect to sources and remain “connected” to them even when they are no longer available on the network; it will automatically reconnect if the source becomes available again.">
             <p:TypeAnnotation LastCategoryFullName="Primitive" LastSymbolSource="CoreLibBasics.vl">
               <Choice Kind="TypeFlag" Name="String" />
@@ -63,15 +53,7 @@
               <p:stringtype p:Assembly="VL.Core" p:Type="VL.Core.StringType">Comment</p:stringtype>
             </p:ValueBoxSettings>
           </Pad>
-          <Node Bounds="426,499,42,19" Id="HzKSFBIhwQSLwJpqkG0ubP">
-            <p:NodeReference LastCategoryFullName="System.Resources" LastSymbolSource="CoreLibBasics.vl">
-              <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
-              <Choice Kind="ProcessAppFlag" Name="Using (Process)" />
-            </p:NodeReference>
-            <Pin Id="FOeNnB68xK2N9aFpR2hXb1" Name="Input" Kind="InputPin" />
-            <Pin Id="RARPNCZ2zMvM2aCncfOStT" Name="Resource" Kind="OutputPin" />
-          </Node>
-          <Pad Id="QJklW1YGnhEMWNCvO51fWV" Comment="Source" Bounds="428,178,295,15" ShowValueBox="true" isIOBox="true" Value="JOREX (Test Pattern)">
+          <Pad Id="QJklW1YGnhEMWNCvO51fWV" Comment="Source" Bounds="428,178,295,15" ShowValueBox="true" isIOBox="true" Value="NONE">
             <p:TypeAnnotation LastCategoryFullName="IO.NDI" LastSymbolSource="VL.IO.NDI.vl">
               <Choice Kind="TypeFlag" Name="Source" />
             </p:TypeAnnotation>
@@ -83,21 +65,13 @@
             </p:NodeReference>
             <p:HelpFocus p:Assembly="VL.Lang" p:Type="VL.Model.HelpPriority">High</p:HelpFocus>
             <Pin Id="S9nqkRCcJMXMKPUpeUQgWC" Name="Source" Kind="InputPin" />
+            <Pin Id="PpgzU5iruelOAdMEozxVh3" Name="Receiver Name" Kind="InputPin" />
             <Pin Id="JDSLkC1jiZ6NDsIblbTZmJ" Name="On Program" Kind="InputPin" />
             <Pin Id="ERtm2A09LVoMmaRhg7V2Z7" Name="On Preview" Kind="InputPin" />
             <Pin Id="QrdKHDnEWyrMtDVBRDrFj7" Name="Enabled" Kind="InputPin" DefaultValue="True" />
             <Pin Id="TxJPXyyxemDLBr1eP76Z1U" Name="Bandwidth" Kind="InputPin" />
-            <Pin Id="Suvub77hUQIQS2FBP7Om1f" Name="Output" Kind="OutputPin" />
-            <Pin Id="I47TPPgAa3zPORepR8Pijg" Name="Connected Source" Kind="OutputPin" />
-            <Pin Id="MB2DhRk3IYtP6DwFzvAP3s" Name="Metadata" Kind="OutputPin" />
-          </Node>
-          <Node Bounds="426,458,83,19" Id="UpAOToD1pNyMTxhJs0s5Vx">
-            <p:NodeReference LastCategoryFullName="IO.NDI" LastSymbolSource="VL.IO.NDI.vl">
-              <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
-              <Choice Kind="ProcessAppFlag" Name="ImageStreamToTexture" />
-            </p:NodeReference>
-            <Pin Id="IK23LHWn2UKNc7hkAuiFGr" Name="Input" Kind="InputPin" />
-            <Pin Id="P0MrENhfTY3P6jiIhuhfvB" Name="Output" Kind="OutputPin" />
+            <Pin Id="Vbz0wj5j0R7NCrYQddrZXM" Name="Output" Kind="OutputPin" />
+            <Pin Id="OcVCzsnhtH1NN5fn3FzSFd" Name="Metadata Frames" Kind="OutputPin" />
           </Node>
           <Node Bounds="406,640,185,19" Id="EmUpQHI8G1cNoFoEJkwaoX">
             <p:NodeReference LastCategoryFullName="Stride.Textures" LastSymbolSource="VL.Stride.Engine.vl">
@@ -149,6 +123,14 @@
               <Choice Kind="TypeFlag" Name="Bandwidth" />
             </p:TypeAnnotation>
           </Pad>
+          <Node Bounds="426,452,7,19" Id="GR1uGbIRe4pPLhl9GmJTBX">
+            <p:NodeReference LastCategoryFullName="IO.NDI" LastSymbolSource="VL.IO.NDI.Stride.vl">
+              <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
+              <Choice Kind="ProcessAppFlag" Name="Video (Stride Receive)" />
+            </p:NodeReference>
+            <Pin Id="GPUp29xxtGwPeQn3RWpHt1" Name="Input" Kind="InputPin" />
+            <Pin Id="D35I5sieicGNQWt1b2LK2j" Name="Output" Kind="OutputPin" />
+          </Node>
         </Canvas>
         <Patch Id="RXbXPrEDZ5UN9J32SGvmAW" Name="Create" />
         <Patch Id="QpxSgEoztp6NSBKwkBB7d3" Name="Update" />
@@ -158,19 +140,18 @@
         </ProcessDefinition>
         <Patch Id="M902u7q3k0RP1kg1zsLj5M" Name="Dispose" />
         <Link Id="Ra2kQyhxnFtLfM3UDAUJ20" Ids="QJklW1YGnhEMWNCvO51fWV,S9nqkRCcJMXMKPUpeUQgWC" />
-        <Link Id="NHTyCLe7cXcLFFngbcbG47" Ids="I47TPPgAa3zPORepR8Pijg,KzqHaMcuV2XPJkeiFG5SKZ" />
         <Link Id="OJj2wtSSPddOJISlK98tvd" Ids="IFzRQtSJucQOhvqCMfLNbL,JDSLkC1jiZ6NDsIblbTZmJ" />
         <Link Id="H6LM6oO8qM0PsAB6fwvmJp" Ids="GKmXFN4l7xDONxcvR7EP9o,ERtm2A09LVoMmaRhg7V2Z7" />
-        <Link Id="N4c7kapSZjkNqUn82xFDzM" Ids="Suvub77hUQIQS2FBP7Om1f,IK23LHWn2UKNc7hkAuiFGr" />
-        <Link Id="NJELRnzxcqqM2cgS9DgoV7" Ids="P0MrENhfTY3P6jiIhuhfvB,FOeNnB68xK2N9aFpR2hXb1" />
-        <Link Id="F2l71Cxge66L987IdCZZkL" Ids="RARPNCZ2zMvM2aCncfOStT,NJMQ0cD75KlPwd3fCyEwhJ" />
-        <Link Id="K1GTBOI99b2OchLQ2HPn8P" Ids="RARPNCZ2zMvM2aCncfOStT,SyiOa8OULkcMhkc9cLrRvr" />
         <Link Id="LS8tPWq6vZzMosPh3zA8E4" Ids="VPufFU13y4ZODqUtKp9rJ4,Svi7IDj1tQNLV6EZBhJ7j4" />
         <Link Id="Uq0UZAh7quKQHuVT4DISKR" Ids="Cq0VZjG8KVoM8ncGCfBWbs,QrdKHDnEWyrMtDVBRDrFj7" />
         <Link Id="RA2iiUHMMhJM7e5LFLU8PE" Ids="V1zpD1cnMxVPCwc1IlGiVI,TxJPXyyxemDLBr1eP76Z1U" />
+        <Link Id="VaFASdRiMJPPBOrphClj1U" Ids="D35I5sieicGNQWt1b2LK2j,NJMQ0cD75KlPwd3fCyEwhJ" />
+        <Link Id="VGoFTHQIdbvO3hHUxs0GRq" Ids="D35I5sieicGNQWt1b2LK2j,SyiOa8OULkcMhkc9cLrRvr" />
+        <Link Id="KCqDUe0eA6oOZz7vXGtOsz" Ids="Vbz0wj5j0R7NCrYQddrZXM,GPUp29xxtGwPeQn3RWpHt1" />
       </Patch>
     </Node>
   </Patch>
-  <NugetDependency Id="RZKOzWqotVjQVRGarARfLh" Location="VL.Stride" Version="2021.4.11-1237-gbe7b40ca9c" />
+  <NugetDependency Id="RZKOzWqotVjQVRGarARfLh" Location="VL.Stride" Version="2021.4.12-1369-g300decc9b1" />
   <NugetDependency Id="SoARYR0FAkdOO0nZ0bPMDR" Location="VL.IO.NDI" Version="0.0.0.0" />
+  <NugetDependency Id="CgEW1hek9i4MoIT01e418Z" Location="VL.IO.NDI.Stride" Version="0.0.0.0" />
 </Document>

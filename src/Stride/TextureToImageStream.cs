@@ -1,4 +1,5 @@
-﻿using Stride.Graphics;
+﻿using Microsoft.CodeAnalysis;
+using Stride.Graphics;
 using Stride.Rendering;
 using System;
 using System.Collections.Generic;
@@ -17,9 +18,9 @@ namespace VL.IO.NDI
     public sealed class TextureToImageStream : RendererBase
     {
         private readonly SynchronizationContext synchronizationContext = SynchronizationContext.Current;
-        private readonly Queue<Texture> textureDownloads = new Queue<Texture>();
+        private readonly Queue<(Texture texture, string metadata)> textureDownloads = new Queue<(Texture texture, string metadata)>();
         private readonly Stopwatch stopwatch = new Stopwatch();
-        private readonly Subject<IResourceProvider<IImage>> imageStream = new Subject<IResourceProvider<IImage>>();
+        private readonly Subject<IResourceProvider<VideoFrame>> videoStream = new Subject<IResourceProvider<VideoFrame>>();
         private readonly ServiceRegistry serviceRegistry;
         private readonly CompositeDisposable subscriptions;
         private readonly SerialDisposable texturePoolSubscription;
@@ -37,7 +38,9 @@ namespace VL.IO.NDI
 
         public Texture Texture { get; set; }
 
-        public IObservable<IResourceProvider<IImage>> ImageStream => imageStream;
+        public string Metadata { get; set; }
+
+        public IObservable<IResourceProvider<VideoFrame>> VideoStream => videoStream;
 
         public bool DownloadAsync { get; set; } = true;
 
@@ -65,19 +68,19 @@ namespace VL.IO.NDI
                 // Request copy
                 var stagingTexture = texturePool.Rent();
                 context.CommandList.Copy(texture, stagingTexture);
-                textureDownloads.Enqueue(stagingTexture);
+                textureDownloads.Enqueue((stagingTexture, Metadata));
             }
 
             if (!DownloadAsync)
             {
                 // Drain the queue
                 while (textureDownloads.Count > 1)
-                    textureDownloads.Dequeue().Dispose();
+                    textureDownloads.Dequeue().texture.Dispose();
             }
 
             {
                 // Download recently staged
-                var stagedTexture = textureDownloads.Peek();
+                var (stagedTexture, metadata) = textureDownloads.Peek();
                 var doNotWait = DownloadAsync && textureDownloads.Count < 4;
                 var commandList = context.CommandList;
                 var mappedResource = commandList.MapSubresource(stagedTexture, 0, Stride.Graphics.MapMode.Read, doNotWait);
@@ -96,7 +99,7 @@ namespace VL.IO.NDI
                     imageSubscription.Disposable = imageProvider.GetHandle();
 
                     // Push it downstream
-                    imageStream.OnNext(imageProvider);
+                    videoStream.OnNext(imageProvider.Bind(i => new VideoFrame(i, metadata)));
 
                     ElapsedTime = stopwatch.Elapsed;
 
@@ -146,7 +149,7 @@ namespace VL.IO.NDI
         protected override void Destroy()
         {
             while (textureDownloads.Count > 0)
-                textureDownloads.Dequeue().Dispose();
+                textureDownloads.Dequeue().texture.Dispose();
 
             subscriptions.Dispose();
 

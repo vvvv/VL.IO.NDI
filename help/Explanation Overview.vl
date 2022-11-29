@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Document xmlns:p="property" Id="QHpr0fv5ZhbPHgd1D9pUc5" LanguageVersion="2021.4.11.1232" Version="0.128">
-  <NugetDependency Id="QDKWB4liQfJMDPWein5ERc" Location="VL.Core" Version="2021.4.11-1215-ga840232e2e" />
-  <NugetDependency Id="JngbdjrQttWP3C056ivUGZ" Location="VL.CoreLib" Version="2021.4.11-1215-ga840232e2e" />
+<Document xmlns:p="property" Id="QHpr0fv5ZhbPHgd1D9pUc5" LanguageVersion="2021.4.12.1369" Version="0.128">
+  <NugetDependency Id="QDKWB4liQfJMDPWein5ERc" Location="VL.Core" Version="2021.4.12-1361-g53776bfdff" />
+  <NugetDependency Id="JngbdjrQttWP3C056ivUGZ" Location="VL.CoreLib" Version="2021.4.12-1361-g53776bfdff" />
   <Patch Id="IiCA7zHpiE6LeILS7YZGKy">
     <Canvas Id="PmobLB0HSYAL6JU48f5ahA" DefaultCategory="Main" CanvasType="FullCategory" />
     <!--
@@ -103,12 +103,12 @@
               <Choice Kind="ProcessAppFlag" Name="NDIReceiver" />
             </p:NodeReference>
             <Pin Id="P9R68YliElGQabNP3FGaxq" Name="Source" Kind="InputPin" />
+            <Pin Id="S8Vr3T9C8C3QbmJkyBt4sa" Name="Receiver Name" Kind="InputPin" />
             <Pin Id="PQekApObLqOOq1w2n6GnAs" Name="On Program" Kind="InputPin" />
             <Pin Id="L8dYEkruZI0NdBS2jnjAgV" Name="On Preview" Kind="InputPin" />
             <Pin Id="JLvwF46QiiqPb2X83jl6dh" Name="Enabled" Kind="InputPin" />
-            <Pin Id="DRN9dF6u7EUQZnuNYzVzfs" Name="Output" Kind="OutputPin" />
-            <Pin Id="GLu2Jlo962WLisrNuEe1gn" Name="Connected Source" Kind="OutputPin" />
-            <Pin Id="TztA9Etw7BRP3uVNa2EJDu" Name="Metadata" Kind="OutputPin" />
+            <Pin Id="Srsxh6Q5e6QLTOoz4Ej29l" Name="Video Frames" Kind="OutputPin" />
+            <Pin Id="FO0T4M9oQWpPmsTwhgFXWA" Name="Metadata Frames" Kind="OutputPin" />
           </Node>
           <Node Bounds="147,650,75,19" Id="U13NXcJqtrlMKrHZANTMdw">
             <p:NodeReference LastCategoryFullName="IO.NDI" LastSymbolSource="VL.IO.NDI.vl">
@@ -119,6 +119,7 @@
             <Pin Id="NWFUEVDtCZEMiY2ASQqmiH" Name="Show Local Sources" Kind="InputPin" />
             <Pin Id="VUdQXTXMeeYOWOqXQ5Xetl" Name="Groups" Kind="InputPin" />
             <Pin Id="E9LHjtre06OLkxjOBNuM6B" Name="Extra Ips" Kind="InputPin" />
+            <Pin Id="G8QhG7gzWs7NXvGvBdH6vQ" Name="Clear" Kind="InputPin" />
             <Pin Id="NhT6bkF15jDQYAPmQGxIzu" Name="Sources" Kind="OutputPin" />
           </Node>
           <Pad Id="ICwTxIsFM86OXQVS547fnZ" Comment="Sources" Bounds="149,725,153,109" ShowValueBox="true" isIOBox="true">
@@ -139,10 +140,10 @@
               <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
               <Choice Kind="ProcessAppFlag" Name="NDISender" />
             </p:NodeReference>
-            <Pin Id="OFRGnR6dgadLQMR8133f4i" Name="Input" Kind="InputPin" />
             <Pin Id="NUYTKqkQSKZNeWIVY9jFGK" Name="Source Name" Kind="InputPin" />
             <Pin Id="KebRcNnBfznLUszyBMVtR3" Name="Groups" Kind="InputPin" />
-            <Pin Id="NRR4t2tT58mLGgcrZoMb8W" Name="Enabled" Kind="InputPin" />
+            <Pin Id="ILjpGfaxOcWNQLJpHgQJhh" Name="Video Frames" Kind="InputPin" />
+            <Pin Id="SzZm0k3QhqnO6LjZGa6kUV" Name="Audio Frames" Kind="InputPin" />
             <Pin Id="J2fozS2fW53MGQ3v50fBcQ" Name="On Program" Kind="OutputPin" />
             <Pin Id="TWs2GoYYApULjmUnF4WoKo" Name="On Preview" Kind="OutputPin" />
             <Pin Id="MbAqbRzwrqmNX6a9pQ7BFW" Name="Connection Count" Kind="OutputPin" />
@@ -240,6 +241,6 @@
       </Patch>
     </Node>
   </Patch>
-  <NugetDependency Id="RZKOzWqotVjQVRGarARfLh" Location="VL.Stride" Version="2021.4.11-1232-gb3c6282bbb" />
+  <NugetDependency Id="RZKOzWqotVjQVRGarARfLh" Location="VL.Stride" Version="2021.4.12-1369-g300decc9b1" />
   <NugetDependency Id="SoARYR0FAkdOO0nZ0bPMDR" Location="VL.IO.NDI" Version="0.0.0.0" />
 </Document>

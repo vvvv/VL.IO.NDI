@@ -19,14 +19,14 @@ namespace VL.IO.NDI
     public sealed class SKImageToImageStream : IDisposable
     {
         private static readonly IRefCounter<SKImage> refCounter = RefCounting.GetRefCounter<SKImage>();
-        private static readonly IObservable<IResourceProvider<IImage>> emptyObservable = Observable.Empty<IResourceProvider<IImage>>();
+        private static readonly IObservable<IResourceProvider<VideoFrame>> emptyObservable = Observable.Empty<IResourceProvider<VideoFrame>>();
 
         // 2021.4.11 comes with crucial fix that
         private static readonly bool isFastDownloadSupported = VL.Core.VersionUtils.ParseLanguageVersion(VL.Core.VersionUtils.FullVersionString) >= new Version(2021, 4, 11);
 
         private readonly SynchronizationContext synchronizationContext = SynchronizationContext.Current;
-        private readonly Queue<Texture2D> textureDownloads = new Queue<Texture2D>();
-        private readonly Subject<IResourceProvider<IImage>> imageStream = new Subject<IResourceProvider<IImage>>();
+        private readonly Queue<(Texture2D texture, string metadata)> textureDownloads = new Queue<(Texture2D texture, string metadata)>();
+        private readonly Subject<IResourceProvider<VideoFrame>> imageStream = new Subject<IResourceProvider<VideoFrame>>();
         private readonly SerialDisposable imageSubscription = new SerialDisposable();
         private readonly SerialDisposable texturePoolSubscription = new SerialDisposable();
         private readonly RenderContext renderContext;
@@ -45,20 +45,20 @@ namespace VL.IO.NDI
                 device = new Device(devicePtr);
         }
 
-        public IObservable<IResourceProvider<IImage>> Update(SKImage image, bool downloadAsync = true)
+        public IObservable<IResourceProvider<VideoFrame>> Update(SKImage image, string metadata, bool downloadAsync = true)
         {
             if (image is null)
                 return emptyObservable;
 
             if (isFastDownloadSupported && device != null)
-                DownloadWithStagingTexture(image, downloadAsync);
+                DownloadWithStagingTexture(image, metadata, downloadAsync);
             else
-                DownloadWithRasterImage(image);
+                DownloadWithRasterImage(image, metadata);
 
             return imageStream;
         }
 
-        private void DownloadWithStagingTexture(SKImage skImage, bool downloadAsync)
+        private void DownloadWithStagingTexture(SKImage skImage, string metadata, bool downloadAsync)
         {
             // Fast path
             // - Create render texture
@@ -113,19 +113,19 @@ namespace VL.IO.NDI
 
                 var stagingTexture = texturePool.Rent();
                 device.ImmediateContext.CopyResource(renderTarget, stagingTexture);
-                textureDownloads.Enqueue(stagingTexture);
+                textureDownloads.Enqueue((stagingTexture, metadata));
             }
 
             if (!downloadAsync)
             {
                 // Drain the queue
                 while (textureDownloads.Count > 1)
-                    textureDownloads.Dequeue().Dispose();
+                    textureDownloads.Dequeue().texture.Dispose();
             }
 
             // Download recently staged
             {
-                var stagedTexture = textureDownloads.Peek();
+                var (stagedTexture, stagedMetadata) = textureDownloads.Peek();
                 var doNotWait = downloadAsync && textureDownloads.Count < 4;
                 var data = device.ImmediateContext.MapSubresource(stagedTexture, 0, MapMode.Read, doNotWait ? MapFlags.DoNotWait : MapFlags.None);
                 if (!data.IsEmpty)
@@ -144,7 +144,7 @@ namespace VL.IO.NDI
                     imageSubscription.Disposable = imageProvider.GetHandle();
 
                     // Push it downstream
-                    imageStream.OnNext(imageProvider);
+                    imageStream.OnNext(imageProvider.Bind(i => new VideoFrame(i, stagedMetadata)));
 
                     void ReleaseImage(IntPtrImage i)
                     {
@@ -214,12 +214,12 @@ namespace VL.IO.NDI
             static extern void glFramebufferTexture2D(uint target, uint attachment, uint textarget, uint texture, int level);
         }
 
-        private void DownloadWithRasterImage(SKImage skImage)
+        private void DownloadWithRasterImage(SKImage skImage, string metadata)
         {
             // Slow path through ToRasterImage
             var provider = GetProvider(skImage);
             if (provider != null)
-                imageStream.OnNext(provider.BindNew(img => img.ToImage()));
+                imageStream.OnNext(provider.BindNew(img => img.ToImage()).Bind(i => new VideoFrame(i, metadata)));
 
             imageSubscription.Disposable = provider?.GetHandle();
         }
@@ -231,7 +231,7 @@ namespace VL.IO.NDI
             texturePoolSubscription.Dispose();
 
             while (textureDownloads.Count > 0)
-                textureDownloads.Dequeue().Dispose();
+                textureDownloads.Dequeue().texture.Dispose();
 
             surface?.Dispose();
             eglSurface?.Dispose();
