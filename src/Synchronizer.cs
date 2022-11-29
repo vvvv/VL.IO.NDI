@@ -3,6 +3,8 @@
 using System;
 using VL.Lib.Basics.Resources;
 using System.Reactive.Disposables;
+using VL.Lib.Basics.Audio;
+using VL.Lib.Basics.Imaging;
 
 namespace VL.IO.NDI
 {
@@ -34,7 +36,7 @@ namespace VL.IO.NDI
             }
         }
 
-        public IResourceProvider<VideoFrame> ReceiveVideoFrame()
+        public IResourceProvider<IImage> ReceiveVideoFrame()
         {
             var syncInstance = GetSyncInstance();
             if (syncInstance == default)
@@ -46,9 +48,8 @@ namespace VL.IO.NDI
             if (nativeVideoFrame.p_data == default)
                 return null;
 
-            var image = nativeVideoFrame.ToImage();
-            var videoFrame = new VideoFrame(image, Utils.Utf8ToString(nativeVideoFrame.p_metadata));
-            var frameProvider = _syncInstanceProvider.Bind(s => ResourceProvider.Return(videoFrame, i =>
+            var image = nativeVideoFrame.ToImage(Utils.Utf8ToString(nativeVideoFrame.p_metadata));
+            var imageProvider = _syncInstanceProvider.Bind(s => ResourceProvider.Return(image, i =>
             {
                 image.Dispose();
 
@@ -56,12 +57,12 @@ namespace VL.IO.NDI
                 NDIlib.framesync_free_video(s, ref nativeVideoFrame);
             })).ShareInParallel();
 
-            videoFrameSubscription.Disposable = frameProvider.GetHandle();
+            videoFrameSubscription.Disposable = imageProvider.GetHandle();
 
-            return frameProvider;
+            return imageProvider;
         }
 
-        public IResourceProvider<AudioFrame> ReceiveAudioFrame(int sampleRate = 44000, int channelCount = 2, int sampleCount = 1024)
+        public IResourceProvider<AudioFrame<float>> ReceiveAudioFrame(int sampleRate = 44000, int channelCount = 2, int sampleCount = 1024)
         {
             var syncInstance = GetSyncInstance();
             if (syncInstance == default)
@@ -73,9 +74,15 @@ namespace VL.IO.NDI
             if (nativeAudioFrame.p_data == default)
                 return null;
 
-            var bufferOwner = Utils.GetPlanarBuffer(ref nativeAudioFrame); // Utils.GetInterleavedBuffer(ref nativeAudioFrame);
-            var size = nativeAudioFrame.no_samples * nativeAudioFrame.no_channels;
-            var audioFrame = new AudioFrame(bufferOwner.Memory/*.Slice(0, size)*/, nativeAudioFrame.no_samples, nativeAudioFrame.no_channels, nativeAudioFrame.sample_rate, Utils.Utf8ToString(nativeAudioFrame.p_metadata));
+            var bufferOwner = Utils.GetPlanarBuffer(ref nativeAudioFrame);
+
+            var audioFrame = new AudioFrame<float>(
+                bufferOwner.Memory,
+                nativeAudioFrame.no_samples,
+                nativeAudioFrame.no_channels, 
+                nativeAudioFrame.sample_rate, 
+                Utils.Utf8ToString(nativeAudioFrame.p_metadata));
+
             var frameProvider = _syncInstanceProvider.Bind(s => ResourceProvider.Return(audioFrame, i =>
             {
                 // Free allocated memory

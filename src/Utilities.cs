@@ -1,17 +1,9 @@
-﻿using ExCSS;
-using Microsoft.Toolkit.HighPerformance;
-using NewTek;
+﻿using NewTek;
 using System;
 using System.Buffers;
-using System.Reflection;
 using System.Runtime.CompilerServices;
-using System.Runtime.InteropServices;
-using System.Security;
 using System.Text;
 using VL.Lib.Basics.Imaging;
-
-// Utility functions outside of the NDILib SDK itself,
-// but useful for working with NDI from managed languages.
 
 namespace VL.IO.NDI
 {
@@ -62,7 +54,7 @@ namespace VL.IO.NDI
             return ref Unsafe.AsRef<T>(IntPtr.Zero.ToPointer());
         }
 
-        public static IntPtrImage ToImage(this NDIlib.video_frame_v2_t videoFrame)
+        public static IntPtrImage ToImage(this NDIlib.video_frame_v2_t videoFrame, string metadata)
         {
             return new IntPtrImage(
                 pointer: videoFrame.p_data,
@@ -73,7 +65,10 @@ namespace VL.IO.NDI
                     ToPixelFormat(videoFrame.FourCC),
                     isPremultipliedAlpha: false,
                     scanSize: videoFrame.line_stride_in_bytes,
-                    originalFormat: videoFrame.FourCC.ToString()));
+                    originalFormat: videoFrame.FourCC.ToString())
+                { 
+                    Metadata = metadata 
+                });
 
             static PixelFormat ToPixelFormat(NDIlib.FourCC_type_e fourCC)
             {

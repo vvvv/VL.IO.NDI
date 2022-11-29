@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Document xmlns:p="property" Id="QHpr0fv5ZhbPHgd1D9pUc5" LanguageVersion="2021.4.11.1237" Version="0.128">
+<Document xmlns:p="property" Id="QHpr0fv5ZhbPHgd1D9pUc5" LanguageVersion="2022.5.0-0394-e26395d9e4" Version="0.128">
   <NugetDependency Id="QDKWB4liQfJMDPWein5ERc" Location="VL.Core" Version="2021.4.11-1237-gbe7b40ca9c" />
   <NugetDependency Id="JngbdjrQttWP3C056ivUGZ" Location="VL.CoreLib" Version="2021.4.11-1237-gbe7b40ca9c" />
   <Patch Id="IiCA7zHpiE6LeILS7YZGKy">
@@ -63,15 +63,7 @@
               <p:stringtype p:Assembly="VL.Core" p:Type="VL.Core.StringType">Comment</p:stringtype>
             </p:ValueBoxSettings>
           </Pad>
-          <Node Bounds="426,499,42,19" Id="HzKSFBIhwQSLwJpqkG0ubP">
-            <p:NodeReference LastCategoryFullName="System.Resources" LastSymbolSource="CoreLibBasics.vl">
-              <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
-              <Choice Kind="ProcessAppFlag" Name="Using (Process)" />
-            </p:NodeReference>
-            <Pin Id="FOeNnB68xK2N9aFpR2hXb1" Name="Input" Kind="InputPin" />
-            <Pin Id="RARPNCZ2zMvM2aCncfOStT" Name="Resource" Kind="OutputPin" />
-          </Node>
-          <Pad Id="QJklW1YGnhEMWNCvO51fWV" Comment="Source" Bounds="428,178,295,15" ShowValueBox="true" isIOBox="true" Value="JOREX (Test Pattern)">
+          <Pad Id="QJklW1YGnhEMWNCvO51fWV" Comment="Source" Bounds="428,178,295,15" ShowValueBox="true" isIOBox="true" Value="NONE">
             <p:TypeAnnotation LastCategoryFullName="IO.NDI" LastSymbolSource="VL.IO.NDI.vl">
               <Choice Kind="TypeFlag" Name="Source" />
             </p:TypeAnnotation>
@@ -79,20 +71,21 @@
           <Node Bounds="426,354,71,19" Id="T3HSkSflO36M32IkkxMbw7">
             <p:NodeReference LastCategoryFullName="IO.NDI" LastSymbolSource="VL.IO.NDI.vl">
               <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
-              <Choice Kind="ProcessAppFlag" Name="NDIReceiver" />
+              <Choice Kind="ProcessAppFlag" Name="NDIReceiver (Immediate)" />
             </p:NodeReference>
             <p:HelpFocus p:Assembly="VL.Lang" p:Type="VL.Model.HelpPriority">High</p:HelpFocus>
             <Pin Id="S9nqkRCcJMXMKPUpeUQgWC" Name="Source" Kind="InputPin" />
+            <Pin Id="R30gmOfSofKOXQVKLjCqyy" Name="Receiver Name" Kind="InputPin" />
             <Pin Id="JDSLkC1jiZ6NDsIblbTZmJ" Name="On Program" Kind="InputPin" />
             <Pin Id="ERtm2A09LVoMmaRhg7V2Z7" Name="On Preview" Kind="InputPin" />
             <Pin Id="QrdKHDnEWyrMtDVBRDrFj7" Name="Enabled" Kind="InputPin" DefaultValue="True" />
             <Pin Id="TxJPXyyxemDLBr1eP76Z1U" Name="Bandwidth" Kind="InputPin" />
-            <Pin Id="Suvub77hUQIQS2FBP7Om1f" Name="Output" Kind="OutputPin" />
+            <Pin Id="AqxvZv1WLKpQETyTqAnqmy" Name="Video Frames" Kind="OutputPin" />
+            <Pin Id="De95m7NcYeNNYGjUJjvkKm" Name="Metadata Frames" Kind="OutputPin" />
             <Pin Id="I47TPPgAa3zPORepR8Pijg" Name="Connected Source" Kind="OutputPin" />
-            <Pin Id="MB2DhRk3IYtP6DwFzvAP3s" Name="Metadata" Kind="OutputPin" />
           </Node>
           <Node Bounds="426,458,83,19" Id="UpAOToD1pNyMTxhJs0s5Vx">
-            <p:NodeReference LastCategoryFullName="IO.NDI" LastSymbolSource="VL.IO.NDI.vl">
+            <p:NodeReference LastCategoryFullName="Stride.ImageStream" LastSymbolSource="VL.Stride.Runtime.vl" LastDependency="VL.Stride.vl">
               <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
               <Choice Kind="ProcessAppFlag" Name="ImageStreamToTexture" />
             </p:NodeReference>
@@ -100,7 +93,7 @@
             <Pin Id="P0MrENhfTY3P6jiIhuhfvB" Name="Output" Kind="OutputPin" />
           </Node>
           <Node Bounds="406,640,185,19" Id="EmUpQHI8G1cNoFoEJkwaoX">
-            <p:NodeReference LastCategoryFullName="Stride.Textures" LastSymbolSource="VL.Stride.Engine.vl">
+            <p:NodeReference LastCategoryFullName="Stride.Textures" LastSymbolSource="VL.Stride.Runtime.vl" LastDependency="VL.Stride.vl">
               <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
               <Choice Kind="ProcessAppFlag" Name="TextureWindow" />
             </p:NodeReference>
@@ -118,23 +111,6 @@
             <Pin Id="EW5BPVBzYspPZ9uX8kXgyf" Name="Client Bounds" Kind="OutputPin" />
             <Pin Id="AQyk7OmKbwoO5KveCc26FE" Name="Input Source" Kind="OutputPin" />
           </Node>
-          <Node Bounds="468,543,105,19" Id="KizhDH0KTC3NL84dUqsBlm">
-            <p:NodeReference LastCategoryFullName="Stride.Textures.Utils" LastSymbolSource="VL.Stride.Graphics.vl">
-              <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
-              <Choice Kind="OperationCallFlag" Name="Info" />
-              <CategoryReference Kind="Category" Name="Utils" NeedsToBeDirectParent="true">
-                <p:OuterCategoryReference Kind="Category" Name="Textures" NeedsToBeDirectParent="true" />
-              </CategoryReference>
-            </p:NodeReference>
-            <Pin Id="SyiOa8OULkcMhkc9cLrRvr" Name="Input" Kind="InputPin" />
-            <Pin Id="CsHj56ms1csL4EPDNIZrlh" Name="Output" Kind="OutputPin" />
-            <Pin Id="VPufFU13y4ZODqUtKp9rJ4" Name="View Size" Kind="OutputPin" />
-            <Pin Id="AYmDCFB4Ie7Pkh01xQnrZy" Name="View Format" Kind="OutputPin" />
-            <Pin Id="Jwhx7lmrSmjLrFc3rSjORk" Name="Resource Size" Kind="OutputPin" />
-            <Pin Id="JTvf1GJ8041Pq5ExmgzsPo" Name="Resource Format" Kind="OutputPin" />
-            <Pin Id="Oio8MNNuL3GPrcGZTGJGPI" Name="Exists" Kind="OutputPin" />
-          </Node>
-          <Pad Id="Svi7IDj1tQNLV6EZBhJ7j4" Comment="View Size" Bounds="490,585,35,28" ShowValueBox="true" isIOBox="true" />
           <Pad Id="Cq0VZjG8KVoM8ncGCfBWbs" Comment="Enabled" Bounds="681,256,35,35" ShowValueBox="true" isIOBox="true" Value="True">
             <p:TypeAnnotation>
               <Choice Kind="ImmutableTypeFlag" Name="Boolean" />
@@ -161,13 +137,10 @@
         <Link Id="NHTyCLe7cXcLFFngbcbG47" Ids="I47TPPgAa3zPORepR8Pijg,KzqHaMcuV2XPJkeiFG5SKZ" />
         <Link Id="OJj2wtSSPddOJISlK98tvd" Ids="IFzRQtSJucQOhvqCMfLNbL,JDSLkC1jiZ6NDsIblbTZmJ" />
         <Link Id="H6LM6oO8qM0PsAB6fwvmJp" Ids="GKmXFN4l7xDONxcvR7EP9o,ERtm2A09LVoMmaRhg7V2Z7" />
-        <Link Id="N4c7kapSZjkNqUn82xFDzM" Ids="Suvub77hUQIQS2FBP7Om1f,IK23LHWn2UKNc7hkAuiFGr" />
-        <Link Id="NJELRnzxcqqM2cgS9DgoV7" Ids="P0MrENhfTY3P6jiIhuhfvB,FOeNnB68xK2N9aFpR2hXb1" />
-        <Link Id="F2l71Cxge66L987IdCZZkL" Ids="RARPNCZ2zMvM2aCncfOStT,NJMQ0cD75KlPwd3fCyEwhJ" />
-        <Link Id="K1GTBOI99b2OchLQ2HPn8P" Ids="RARPNCZ2zMvM2aCncfOStT,SyiOa8OULkcMhkc9cLrRvr" />
-        <Link Id="LS8tPWq6vZzMosPh3zA8E4" Ids="VPufFU13y4ZODqUtKp9rJ4,Svi7IDj1tQNLV6EZBhJ7j4" />
         <Link Id="Uq0UZAh7quKQHuVT4DISKR" Ids="Cq0VZjG8KVoM8ncGCfBWbs,QrdKHDnEWyrMtDVBRDrFj7" />
         <Link Id="RA2iiUHMMhJM7e5LFLU8PE" Ids="V1zpD1cnMxVPCwc1IlGiVI,TxJPXyyxemDLBr1eP76Z1U" />
+        <Link Id="MTC1XuLujMRO8rka88oqw2" Ids="P0MrENhfTY3P6jiIhuhfvB,NJMQ0cD75KlPwd3fCyEwhJ" />
+        <Link Id="SoPBvqmEOsiOqmFV6S3Ymh" Ids="AqxvZv1WLKpQETyTqAnqmy,IK23LHWn2UKNc7hkAuiFGr" />
       </Patch>
     </Node>
   </Patch>

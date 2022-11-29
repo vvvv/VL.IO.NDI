@@ -1,10 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <LangVersion>latest</LangVersion>
-    <TargetFramework>net472</TargetFramework>
-    <!--<OutputType>WinExe</OutputType>-->
-    <!--<RuntimeIdentifier>win-x64</RuntimeIdentifier>-->
+    <TargetFramework>net6.0</TargetFramework>
     
     <OutputPath>..\lib\</OutputPath>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
@@ -13,7 +10,7 @@
 
     <!-- Startup properties -->
     <PackageRepositories>$(MsBuildThisFileDirectory)..\..</PackageRepositories>
-    <VLVersion>2021.4.11-1331-gcf3b83d15b</VLVersion>
+    <VLVersion>2022.5.0-0394-ge26395d9e4</VLVersion>
     
     <Version>0.3.0</Version>
     <Authors>NewTek, Motzi, sebl, vvvv group</Authors>
@@ -25,23 +22,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="NAudio" Version="2.1.0" />
-    <PackageReference Include="Stride.Rendering" Version="4.0.1.1428" />
-    <PackageReference Include="VL.Audio" Version="1.0.14" />
-    <PackageReference Include="VL.Core" Version="$(VLVersion)" />
-    <PackageReference Include="VL.Skia" Version="$(VLVersion)" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Reference Include="NAudio">
-      <HintPath>..\dependencies\NAudio.dll</HintPath>
-    </Reference>
-    <Reference Include="VVVV.Audio.Core">
-      <HintPath>..\dependencies\VVVV.Audio.Core.dll</HintPath>
-    </Reference>
-    <Reference Include="VVVV.Audio.Signals">
-      <HintPath>..\dependencies\VVVV.Audio.Signals.dll</HintPath>
-    </Reference>
+    <ProjectReference Include="..\..\vvvv\public-vl\VL.Core\src\VL.Core.csproj" />
   </ItemGroup>
 
 </Project>

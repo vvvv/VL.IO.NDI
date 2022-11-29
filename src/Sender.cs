@@ -11,6 +11,7 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using NewTek;
+using VL.Lib.Basics.Audio;
 using VL.Lib.Basics.Imaging;
 using VL.Lib.Basics.Resources;
 
@@ -20,11 +21,10 @@ namespace VL.IO.NDI
     public class Sender : NativeObject
     {
         private readonly Task _sendTask;
-        private readonly BlockingCollection<(TaskCompletionSource<Unit> tcs, IResourceHandle<VideoFrame> handle)> _videoFrames = new BlockingCollection<(TaskCompletionSource<Unit> tcs, IResourceHandle<VideoFrame> handle)>(boundedCapacity: 1);
+        private readonly BlockingCollection<(TaskCompletionSource<Unit> tcs, IResourceHandle<IImage> handle)> _videoFrames = new BlockingCollection<(TaskCompletionSource<Unit> tcs, IResourceHandle<IImage> handle)>(boundedCapacity: 1);
         private readonly IntPtr _sendInstancePtr;
 
         private NDIlib.tally_t _ndiTally = new NDIlib.tally_t();
-        private IObservable<IResourceProvider<IImage>> _imageStream;
 
         public unsafe Sender(string sourceName, bool clockVideo=true, bool clockAudio=false, String[] groups = null, String failoverName=null)
         {
@@ -91,12 +91,11 @@ namespace VL.IO.NDI
                     {
                         try
                         {
-                            var videoFrame = handle.Resource;
-                            var image = videoFrame.Image;
+                            var image = handle.Resource;
                             var info = image.Info;
                             var imageData = image.GetData();
                             var memoryHandle = imageData.Bytes.Pin();
-                            var metadataHandle = GCHandle.Alloc(Utils.StringToUtf8(videoFrame.Metadata), GCHandleType.Pinned);
+                            var metadataHandle = GCHandle.Alloc(Utils.StringToUtf8(info.Metadata), GCHandleType.Pinned);
 
                             var ndiVideoFrame = ToNativeVideoFrame(info, imageData, new IntPtr(memoryHandle.Pointer), metadataHandle.AddrOfPinnedObject());
                             NDIlib.send_send_video_async_v2(_sendInstancePtr, ref ndiVideoFrame);
@@ -149,13 +148,17 @@ namespace VL.IO.NDI
         {
             return NDIlib.send_get_tally(_sendInstancePtr, ref tally, (uint)timeout);
         }
-        
+
+        public bool OnPreview => Tally.on_preview;
+
+        public bool OnProgram => Tally.on_program;
+
         // The number of current connections
         public int Connections
         {
             get
             {
-                return NDIlib.send_get_no_connections(_sendInstancePtr, 0);
+                return NDIlib.send_get_no_connections(_sendInstancePtr, 0) / 2;
             }
         }
 
@@ -167,36 +170,28 @@ namespace VL.IO.NDI
             return NDIlib.send_get_no_connections(_sendInstancePtr, (uint)waitMs);
         }
 
-        public unsafe void Send(VideoFrame videoFrame)
+        public unsafe void Send(IImage image)
         {
-            var image = videoFrame.Image;
-            if (image is null)
+            if (!Enabled)
                 return;
 
-            Send(image, videoFrame.Metadata);
-        }
-
-        public unsafe void Send(IImage image, string metadata = null)
-        {
             var info = image.Info;
             var imageData = image.GetData();
             fixed (byte* dataP = imageData.Bytes.Span)
-            fixed (byte* metadataP = Utils.StringToUtf8(metadata))
+            fixed (byte* metadataP = Utils.StringToUtf8(info.Metadata))
             {
                 var nativeVideoFrame = ToNativeVideoFrame(info, imageData, new IntPtr(dataP), new IntPtr(metadataP));
                 NDIlib.send_send_video_v2(_sendInstancePtr, ref nativeVideoFrame);
             }
         }
 
-        public Task SendAsync(IResourceProvider<IImage> image, string metadata = null)
+        public Task SendAsync(IResourceProvider<IImage> image)
         {
-            return SendAsync(image.Bind(i => new VideoFrame(i, metadata)));
-        }
+            if (!Enabled)
+                return Task.CompletedTask;
 
-        public Task SendAsync(IResourceProvider<VideoFrame> videoFrame)
-        {
-            var handle = videoFrame?.GetHandle();
-            if (handle?.Resource?.Image is null)
+            var handle = image?.GetHandle();
+            if (handle?.Resource is null)
                 return Task.CompletedTask;
 
             var tcs = new TaskCompletionSource<Unit>();
@@ -204,17 +199,21 @@ namespace VL.IO.NDI
             return tcs.Task;
         }
 
-        public unsafe void Send(AudioFrame audioFrame)
+        public unsafe void Send(AudioFrame<float> audioFrame)
         {
-            using var bufferHandle = audioFrame.PlanarBuffer.Pin();
+            if (!Enabled)
+                return;
+
+            var buffer = audioFrame.PlanarBuffer.Span;
+            fixed (float* bufferPointer = buffer)
             fixed (byte* metadataPointer = Utils.StringToUtf8(audioFrame.Metadata))
             {
                 var nativeAudioFrame = new NDIlib.audio_frame_v2_t()
                 {
-                    channel_stride_in_bytes = (audioFrame.PlanarBuffer.Length / audioFrame.NoChannels) * sizeof(float),
+                    channel_stride_in_bytes = (buffer.Length / audioFrame.NoChannels) * sizeof(float),
                     no_channels = audioFrame.NoChannels,
                     no_samples = audioFrame.NoSamples,
-                    p_data = new IntPtr(bufferHandle.Pointer),
+                    p_data = new IntPtr(bufferPointer),
                     p_metadata = new IntPtr(metadataPointer),
                     sample_rate = audioFrame.SampleRate
                 };
