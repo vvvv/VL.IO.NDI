@@ -26,7 +26,7 @@ namespace VL.IO.NDI
 
         private NDIlib.tally_t _ndiTally = new NDIlib.tally_t();
 
-        public unsafe Sender(string sourceName, bool clockVideo=true, bool clockAudio=false, String[] groups = null, String failoverName=null)
+        public unsafe Sender(string sourceName, bool clockVideo = true, bool clockAudio = false, String[] groups = null, Source failsafe = null)
         {
             if (string.IsNullOrEmpty(sourceName))
             {
@@ -66,11 +66,11 @@ namespace VL.IO.NDI
                 }
             }
 
-            if (!String.IsNullOrEmpty(failoverName))
+            if (failsafe != null && !failsafe.IsNone)
             {
                 // .Net interop doesn't handle UTF-8 strings, so do it manually
                 // These must be freed later
-                fixed (byte* failoverNamePtr = Utils.StringToUtf8(failoverName))
+                fixed (byte* failoverNamePtr = Utils.StringToUtf8(failsafe.Name))
                 {
                     NDIlib.source_t failoverDesc = new NDIlib.source_t()
                     {
@@ -204,20 +204,23 @@ namespace VL.IO.NDI
             if (!Enabled)
                 return;
 
-            var buffer = audioFrame.PlanarBuffer.Span;
-            fixed (float* bufferPointer = buffer)
-            fixed (byte* metadataPointer = Utils.StringToUtf8(audioFrame.Metadata))
+            if (audioFrame.IsPlanar)
             {
-                var nativeAudioFrame = new NDIlib.audio_frame_v2_t()
+                var buffer = audioFrame.Data.Span;
+                fixed (float* bufferPointer = buffer)
+                fixed (byte* metadataPointer = Utils.StringToUtf8(audioFrame.Metadata))
                 {
-                    channel_stride_in_bytes = (buffer.Length / audioFrame.NoChannels) * sizeof(float),
-                    no_channels = audioFrame.NoChannels,
-                    no_samples = audioFrame.NoSamples,
-                    p_data = new IntPtr(bufferPointer),
-                    p_metadata = new IntPtr(metadataPointer),
-                    sample_rate = audioFrame.SampleRate
-                };
-                NDIlib.send_send_audio_v2(_sendInstancePtr, ref nativeAudioFrame);
+                    var nativeAudioFrame = new NDIlib.audio_frame_v2_t()
+                    {
+                        channel_stride_in_bytes = buffer.Width * sizeof(float),
+                        no_channels = audioFrame.ChannelCount,
+                        no_samples = audioFrame.SampleCount,
+                        p_data = new IntPtr(bufferPointer),
+                        p_metadata = new IntPtr(metadataPointer),
+                        sample_rate = audioFrame.SampleRate
+                    };
+                    NDIlib.send_send_audio_v2(_sendInstancePtr, ref nativeAudioFrame);
+                }
             }
         }
 

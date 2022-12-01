@@ -1,17 +1,18 @@
 ﻿using NewTek;
-
+using CommunityToolkit.HighPerformance;
 using System;
 using VL.Lib.Basics.Resources;
 using System.Reactive.Disposables;
 using VL.Lib.Basics.Audio;
 using VL.Lib.Basics.Imaging;
+using System.Buffers;
+using VL.Core;
 
 namespace VL.IO.NDI
 {
-    public unsafe class Synchronizer : NativeObject
+    public unsafe class Synchronizer : NativeObject, IAudioSource<float>
     {
         private readonly SerialDisposable videoFrameSubscription = new SerialDisposable();
-        private readonly SerialDisposable audioFrameSubscription = new SerialDisposable();
 
         // our unmanaged NDI sync instance
         private IResourceProvider<IntPtr> _syncInstanceProvider;
@@ -62,44 +63,58 @@ namespace VL.IO.NDI
             return imageProvider;
         }
 
-        public IResourceProvider<AudioFrame<float>> ReceiveAudioFrame(int sampleRate = 44000, int channelCount = 2, int sampleCount = 1024)
+        public IResourceHandle<AudioFrame<float>> GrabAudioFrame(int sampleCount, Optional<int> sampleRate, Optional<int> channelCount, Optional<bool> interleaved)
         {
             var syncInstance = GetSyncInstance();
             if (syncInstance == default)
-                return null;
+                return ResourceProvider.NewHandle(AudioFrame<float>.Empty, () => { });
 
             var nativeAudioFrame = new NDIlib.audio_frame_v2_t();
-            NDIlib.framesync_capture_audio(syncInstance, ref nativeAudioFrame, sampleRate, channelCount, sampleCount);
+            NDIlib.framesync_capture_audio(syncInstance, ref nativeAudioFrame, sampleRate.Value, channelCount.Value, sampleCount);
 
             if (nativeAudioFrame.p_data == default)
-                return null;
-
-            var bufferOwner = Utils.GetPlanarBuffer(ref nativeAudioFrame);
-
-            var audioFrame = new AudioFrame<float>(
-                bufferOwner.Memory,
-                nativeAudioFrame.no_samples,
-                nativeAudioFrame.no_channels, 
-                nativeAudioFrame.sample_rate, 
-                Utils.Utf8ToString(nativeAudioFrame.p_metadata));
-
-            var frameProvider = _syncInstanceProvider.Bind(s => ResourceProvider.Return(audioFrame, i =>
             {
+                NDIlib.framesync_free_audio(syncInstance, ref nativeAudioFrame);
+                return ResourceProvider.NewHandle(AudioFrame<float>.Empty, () => { });
+            }
+
+            IMemoryOwner<float> bufferOwner;
+            AudioFrame<float> audioFrame;
+
+            if (interleaved.Value)
+            {
+                bufferOwner = Utils.GetInterleavedBuffer(ref nativeAudioFrame);
+
+                audioFrame = new AudioFrame<float>(
+                    bufferOwner.Memory.AsMemory2D(nativeAudioFrame.no_samples, nativeAudioFrame.no_channels),
+                    nativeAudioFrame.sample_rate,
+                    IsInterleaved: true,
+                    Metadata: Utils.Utf8ToString(nativeAudioFrame.p_metadata));
+            }
+            else
+            {
+                bufferOwner = Utils.GetPlanarBuffer(ref nativeAudioFrame);
+
+                audioFrame = new AudioFrame<float>(
+                    bufferOwner.Memory.AsMemory2D(nativeAudioFrame.no_channels, nativeAudioFrame.no_samples),
+                    nativeAudioFrame.sample_rate,
+                    IsInterleaved: false,
+                    Metadata: Utils.Utf8ToString(nativeAudioFrame.p_metadata));
+            }
+
+            return ResourceProvider.NewHandle(audioFrame, (syncInstance, bufferOwner, nativeAudioFrame), x =>
+            {
+                var (s, bufferOwner, nativeAudioFrame) = x;
                 // Free allocated memory
                 bufferOwner.Dispose();
                 // Free audio frame
                 NDIlib.framesync_free_audio(s, ref nativeAudioFrame);
-            })).ShareInParallel();
-
-            audioFrameSubscription.Disposable = frameProvider.GetHandle();
-
-            return frameProvider;
+            });
         }
 
         protected override void Destroy(bool disposing)
         {
             videoFrameSubscription.Dispose();
-            audioFrameSubscription.Dispose();
             _syncInstanceHandle?.Dispose();
             _syncInstanceHandle = null;
         }

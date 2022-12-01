@@ -1,4 +1,5 @@
-﻿using NewTek;
+﻿using CommunityToolkit.HighPerformance.Buffers;
+using NewTek;
 using System;
 using System.Buffers;
 using System.Runtime.CompilerServices;
@@ -111,18 +112,20 @@ namespace VL.IO.NDI
 
         public static unsafe IMemoryOwner<float> GetInterleavedBuffer(ref NDIlib.audio_frame_v2_t audioFrame)
         {
-            var bufferOwner = MemoryPool<float>.Shared.Rent(audioFrame.no_samples * audioFrame.no_channels);
+            var bufferOwner = MemoryOwner<float>.Allocate(audioFrame.no_samples * audioFrame.no_channels);
 
-            using var handle = bufferOwner.Memory.Pin();
-            var interleavedFrame = new NDIlib.audio_frame_interleaved_32f_t()
+            fixed (float* pointer = bufferOwner.Span)
             {
-                no_channels = audioFrame.no_samples,
-                no_samples = audioFrame.no_samples,
-                sample_rate = audioFrame.sample_rate,
-                timecode = audioFrame.timecode,
-                p_data = new IntPtr(handle.Pointer)
-            };
-            NDIlib.util_audio_to_interleaved_32f_v2(ref audioFrame, ref interleavedFrame);
+                var interleavedFrame = new NDIlib.audio_frame_interleaved_32f_t()
+                {
+                    no_channels = audioFrame.no_channels,
+                    no_samples = audioFrame.no_samples,
+                    sample_rate = audioFrame.sample_rate,
+                    timecode = audioFrame.timecode,
+                    p_data = new IntPtr(pointer)
+                };
+                NDIlib.util_audio_to_interleaved_32f_v2(ref audioFrame, ref interleavedFrame);
+            }
 
             return bufferOwner;
         }

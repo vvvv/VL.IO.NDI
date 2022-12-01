@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Document xmlns:p="property" Id="Cj0Zq5GjQw4Qay7PkQAX1S" Summary="Receive and send video content over network via the NewTek NDI protocol" Authors="Motzi" Credits="NewTek" LanguageVersion="2022.5.0-0394-e26395d9e4" Version="0.128">
+<Document xmlns:p="property" Id="Cj0Zq5GjQw4Qay7PkQAX1S" Summary="Receive and send video content over network via the NewTek NDI protocol" Authors="Motzi" Credits="NewTek" LanguageVersion="2022.5.0-0395-62a5313337" Version="0.128">
   <NugetDependency Id="Jq3wdcDI0TrOhpQpUk16ie" Location="VL.Core" Version="2021.4.11-1331-gcf3b83d15b" />
   <NugetDependency Id="GNWGzTmrnVzNQptZEu7DrG" Location="VL.CoreLib" Version="2021.4.11-1331-gcf3b83d15b" />
   <Patch Id="C6h2Mz3rqxPNUeN6Nz2YoP">
@@ -348,7 +348,7 @@
                   <Pin Id="Ahlqmy1T5WYPaqkhYCiDUt" Name="Clock Video" Kind="InputPin" />
                   <Pin Id="Gag0GBSmB9tObvuEXe92P4" Name="Clock Audio" Kind="InputPin" />
                   <Pin Id="AEH49bl8H9cOw0IBcOw9cC" Name="Groups" Kind="InputPin" />
-                  <Pin Id="EAFkbbpGsPxO8JIDmJfT3K" Name="Failover Name" Kind="InputPin" />
+                  <Pin Id="NzN8GVZe15lLFbvbQcr2pZ" Name="Failsafe" Kind="InputPin" />
                   <Pin Id="BhakbKO6lEzNTdyNWrhZjC" Name="Output" Kind="StateOutputPin" />
                 </Node>
                 <Node Bounds="232,275,83,26" Id="NlXpcPFUvNdMy63Zo0IaF5">
@@ -493,7 +493,6 @@
           <Link Id="QURmHxD2TYIMVZiDhBTjwi" Ids="PYfr6h8aFvFNstnu4tLy69,GMHCa37iqaPPVVNy6xwumN" />
           <Link Id="LtsM1fsPi6JMFkHQzvdwNG" Ids="EOcPWCYzgdeQUVzRJbJeAQ,PYfr6h8aFvFNstnu4tLy69" />
           <Link Id="Db5bL1rs0fCO5p2MZZ7HZS" Ids="NDhHTXCp86bLXwaarFZrt9,EOcPWCYzgdeQUVzRJbJeAQ" IsHidden="true" />
-          <Link Id="MsafDhDwVVQMnfAp4fmrtF" Ids="CwqCo6HieTaNZSTqs13xBc,EAFkbbpGsPxO8JIDmJfT3K" />
           <Link Id="JQzalg9f8ubOMCyuVR7gHN" Ids="I9Yh2xuiXyZNouncJMiQxA,CwqCo6HieTaNZSTqs13xBc" />
           <Link Id="Mp8N217kw4PLKzxDlaTvSs" Ids="T5Iuj0RAWnyPc2bhoONTgg,I9Yh2xuiXyZNouncJMiQxA" IsHidden="true" />
           <Link Id="DV9C9dfQnTFLRNuB7xyYbu" Ids="Lbz7GqkqbZdMikZLC2PvOm,ESK3k8zZvEuMfiWuxIzDTq" IsHidden="true" />
@@ -505,7 +504,7 @@
             <Pin Id="EwaTFsfDoOyLF5ZWAGeN8N" Name="On Preview" Kind="OutputPin" Bounds="229,719" />
             <Pin Id="ESK3k8zZvEuMfiWuxIzDTq" Name="Connection Count" Kind="OutputPin" Bounds="266,742" />
             <Pin Id="IRWUXTArsfTLgqTJ4M8rLW" Name="Source Name" Kind="InputPin" DefaultValue="vvvv" />
-            <Pin Id="T5Iuj0RAWnyPc2bhoONTgg" Name="Failover Name" Kind="InputPin" Visibility="Optional" Summary="If you specify a failsafe source on an NDI sender and the sender fails for any reason (even the machine failing completely), any receivers viewing that sender will automatically switch over to the failsafe sender. If the failed source comes back online, receivers will switch back to that source" />
+            <Pin Id="T5Iuj0RAWnyPc2bhoONTgg" Name="Failsafe" Kind="InputPin" Visibility="Optional" Summary="If you specify a failsafe source on an NDI sender and the sender fails for any reason (even the machine failing completely), any receivers viewing that sender will automatically switch over to the failsafe sender. If the failed source comes back online, receivers will switch back to that source" />
             <Pin Id="RhZwXspx7Q7QPHr75xL2lX" Name="Clock Video" Kind="InputPin" Visibility="Optional" />
             <Pin Id="IA1GoywlPrDOm8OwZudDrk" Name="Clock Audio" Kind="InputPin" Visibility="Optional" />
             <Pin Id="NDhHTXCp86bLXwaarFZrt9" Name="Groups" Kind="InputPin" Summary="Groups are sets of NDI sources. Any source can be part of any number of groups. On the finding side, you can specify which groups to look for and look in multiple groups. If the group is NULL then the system default groups will be used" />
@@ -536,6 +535,7 @@
           <Link Id="BZUfdh4QYmSMziM59l4pEU" Ids="FR4Z8PBn8P4QdwlzkB0OXK,Lbz7GqkqbZdMikZLC2PvOm" />
           <Link Id="GHSEzlabv0JL6WgznnoUga" Ids="ETZ0H0BRPynPb4M1IwJrcG,TolsL50CkgkLDiJuGNWw5Q" />
           <Link Id="KNTYE4TcRwTO7p0cBxFyDE" Ids="KwZ1M93rrGqOsVw1VkPvby,SYLkozHXwuIPTH7EXEjIKv" />
+          <Link Id="U2wsNSPDTyGMMCZRQLetOb" Ids="CwqCo6HieTaNZSTqs13xBc,NzN8GVZe15lLFbvbQcr2pZ" />
         </Patch>
       </Node>
       <Canvas Id="OlKWtq69SFZLTj5kbF4a1d" Name="Advanced" Position="370,236">
@@ -735,51 +735,17 @@
             <ControlPoint Id="DCP1MKMAze6P2bBHT6jAVQ" Bounds="646,165" />
             <ControlPoint Id="CIJBN5eY8nhMid4y2P6HeU" Bounds="665,182" />
             <ControlPoint Id="IR3E09Va6OZNY0PhdvEEfg" Bounds="694,202" />
-            <Node Bounds="524,455,63,26" Id="HFsD0E2FdPANXgGYNoO1kd">
-              <p:NodeReference LastCategoryFullName="VL.IO.NDI.Synchronizer" LastSymbolSource="VL.IO.NDI.dll">
-                <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
-                <CategoryReference Kind="AssemblyCategory" Name="Synchronizer" NeedsToBeDirectParent="true" />
-                <Choice Kind="OperationCallFlag" Name="ReceiveAudioFrame" />
-              </p:NodeReference>
-              <Pin Id="JgOaP9PjHuUQALfkvF2gpp" Name="Input" Kind="StateInputPin" />
-              <Pin Id="HEYeUKSl1j8MFX6mjEc2K0" Name="Sample Rate" Kind="InputPin" />
-              <Pin Id="MgR7lnlZfzONCmahORGw9y" Name="Channel Count" Kind="InputPin" />
-              <Pin Id="U3vC0DrLSpWPMsRNnhAbeN" Name="Sample Count" Kind="InputPin" />
-              <Pin Id="GrgTBKB7R2wP5GGoRtBIWY" Name="Output" Kind="StateOutputPin" />
-              <Pin Id="AkyJIx0vkrrQHVEUhOVAAO" Name="Result" Kind="OutputPin" />
-            </Node>
-            <Pad Id="Rm93FYvHWjFLiqKWDE66Ap" SlotId="Rv1KmUx3td9L9CqyAK2ZvF" Bounds="525,432" />
-            <ControlPoint Id="AMQtJELzBxMLEWUtg07koZ" Bounds="626,530" />
-            <ControlPoint Id="LRWLITeEeURLncelj1LFvU" Bounds="575,415" />
-            <ControlPoint Id="R7i6DPgAWtpO0YaUDrWoSs" Bounds="648,415" />
-            <ControlPoint Id="QpDId8AeMV2LEcP0FS7dIV" Bounds="743,415" />
+            <ControlPoint Id="UtWP2YHLKU1OB0bhVKYsHy" Bounds="514,533" />
           </Canvas>
           <ProcessDefinition Id="L1nmMRwrEK9NA2I5qNB6iV" HasStateOut="true">
             <Fragment Id="BJiq98K8bBdLGE7xXxRMVg" Patch="TxwNJzewPeBLUcos2AALyo" Enabled="true" />
             <Fragment Id="Awl8f1EtYo9PYTKsQ7rWoj" Patch="TCTahD76ISJMEmcTrqgAXv" Enabled="true" />
             <Fragment Id="GIr8Jeqk7qxOgWo4EeNDwr" Patch="PPhcCxcO6wWLFDg41lTaeE" />
             <Fragment Id="LQD7AV2OqgONB3sGsFYzWP" Patch="H7D4gZ4xi1LNAkytWtvyFg" />
-            <Fragment Id="SiEfARhhmV0Qd4U1E2xKSx" Patch="GUlftTkjInqMg4yydU21sZ" />
           </ProcessDefinition>
-          <Patch Id="TxwNJzewPeBLUcos2AALyo" Name="Create (Internal)" ParticipatingElements="AQuqy17UJyQLSsjTXbEI8L" />
-          <Patch Id="TCTahD76ISJMEmcTrqgAXv" Name="Update (Internal)" ManuallySortedPins="true">
-            <Pin Id="VqDoH1gzdRuPirs6yU4Eny" Name="Metadata Frames" Kind="OutputPin" Bounds="506,353" />
-            <Pin Id="GbpwF9Bbr87NdudEiv2qrE" Name="Source" Kind="InputPin" Bounds="354,114" />
-            <Pin Id="FdRxXY3UFlrMtKaY0ZxHbl" Name="Receiver Name" Kind="InputPin" Bounds="421,118" />
-            <Pin Id="Tfrfvv7cOcVQRjTlxnIJzY" Name="On Program" Kind="InputPin" Bounds="470,140" Visibility="Optional" />
-            <Pin Id="S0PTTwe8KUJOKdtaJgzeOL" Name="On Preview" Kind="InputPin" Bounds="555,140" Visibility="Optional" />
-            <Pin Id="DYQwiQvTecrLCt8WAqJURt" Name="Enabled" Kind="InputPin" Bounds="639,138" />
-            <Pin Id="RWGaYZaBsRBP9NtwVutuyx" Name="Color Format" Kind="InputPin" Bounds="646,165" Visibility="Optional" />
-            <Pin Id="SPCdL2Tb00KOrBmf1N84HX" Name="Bandwidth" Kind="InputPin" Bounds="667,181" Visibility="Optional" />
-            <Pin Id="GAF9IAIZ96WNYU8ubSyhRT" Name="Allow Video Fields" Kind="InputPin" Bounds="695,202" Visibility="Optional" />
-          </Patch>
-          <Patch Id="H7D4gZ4xi1LNAkytWtvyFg" Name="Dispose (Internal)" ParticipatingElements="JGtNxMXvA6LMF6pFzoC4Js" />
           <Slot Id="Rv1KmUx3td9L9CqyAK2ZvF" Name="Synchronizer" />
           <Link Id="Fa7dVzY3mjKPREdBzyF7hQ" Ids="Oc08dx7PTCjQCspKZP7cWl,Q7BRKxioz0mNINO8mGF2Ec" />
           <Link Id="CKrBB0QTFKlPd6hpwUjMdY" Ids="Q7BRKxioz0mNINO8mGF2Ec,GuPTx6hRREJM4fKZyNnzd4" />
-          <Patch Id="PPhcCxcO6wWLFDg41lTaeE" Name="ReceiveVideoFrame" ParticipatingElements="F5AIHd6NzIyNyTuE0r3MMu">
-            <Pin Id="RndPOyva6rWM2k7KttOAGC" Name="Video Frame" Kind="OutputPin" Bounds="641,325" />
-          </Patch>
           <Link Id="Pr1xaKxZXL8MtLRmAPglar" Ids="LU4XmGT6bJNP7xIZOsnJ7e,C9ChUVpLCM5Pt8TUBA7eXA" />
           <Link Id="SYniF03UWaNLbUg3blLt25" Ids="PYwGH4QRDhILoJf7Pf5x4P,GNbR7wDrmbGPK14rF8GsP4" />
           <Link Id="Js4U9D1TzP7M8IgZUNW6l0" Ids="GNbR7wDrmbGPK14rF8GsP4,RndPOyva6rWM2k7KttOAGC" IsHidden="true" />
@@ -803,21 +769,29 @@
           <Link Id="VBWnr9kPJXiPspNk1pxzDi" Ids="SPCdL2Tb00KOrBmf1N84HX,CIJBN5eY8nhMid4y2P6HeU" IsHidden="true" />
           <Link Id="FCYu8OVO4iSLnCqPuZD15y" Ids="IR3E09Va6OZNY0PhdvEEfg,A7VwFxj9lRvORKKYxkYfCs" />
           <Link Id="TH5XufvC8aNMB9Jmqu8DLY" Ids="GAF9IAIZ96WNYU8ubSyhRT,IR3E09Va6OZNY0PhdvEEfg" IsHidden="true" />
-          <Link Id="D271HD37wpoOstZrtoN40m" Ids="Rm93FYvHWjFLiqKWDE66Ap,JgOaP9PjHuUQALfkvF2gpp" />
-          <Link Id="LRYl5ej8MgBPWPBNgaXxZK" Ids="AkyJIx0vkrrQHVEUhOVAAO,AMQtJELzBxMLEWUtg07koZ" />
-          <Patch Id="GUlftTkjInqMg4yydU21sZ" Name="ReceiveAudioFrame">
-            <Pin Id="T43XlnS0CLvNoNAEzeo32K" Name="Audio Frame" Kind="OutputPin" />
-            <Pin Id="HHcQzM9dw3QQPyz4p88LQ2" Name="Sample Rate" Kind="InputPin" />
-            <Pin Id="OTrh1TpC332P5sDYgMIOpy" Name="Channel Count" Kind="InputPin" />
-            <Pin Id="DYhubz4TKP2Pfy2eBMki6m" Name="Sample Count" Kind="InputPin" Bounds="789,423" />
+          <Link Id="TPeFn5rJCG9MPnfZBpcnYi" Ids="Izr270CH1eHMYDkak5Z9RC,UtWP2YHLKU1OB0bhVKYsHy" />
+          <Link Id="ASMHiMQe70sP2garAdQue7" Ids="UtWP2YHLKU1OB0bhVKYsHy,U8qU6KWekxmOVgE1FWNudL" IsHidden="true" />
+          <Patch Id="TxwNJzewPeBLUcos2AALyo" Name="Create (Internal)" ParticipatingElements="AQuqy17UJyQLSsjTXbEI8L" />
+          <Patch Id="TCTahD76ISJMEmcTrqgAXv" Name="Update (Internal)" ManuallySortedPins="true">
+            <Pin Id="GbpwF9Bbr87NdudEiv2qrE" Name="Source" Kind="InputPin" Bounds="354,114" />
+            <Pin Id="FdRxXY3UFlrMtKaY0ZxHbl" Name="Receiver Name" Kind="InputPin" Bounds="421,118" />
+            <Pin Id="Tfrfvv7cOcVQRjTlxnIJzY" Name="On Program" Kind="InputPin" Bounds="470,140" Visibility="Optional" />
+            <Pin Id="S0PTTwe8KUJOKdtaJgzeOL" Name="On Preview" Kind="InputPin" Bounds="555,140" Visibility="Optional" />
+            <Pin Id="DYQwiQvTecrLCt8WAqJURt" Name="Enabled" Kind="InputPin" Bounds="639,138" />
+            <Pin Id="RWGaYZaBsRBP9NtwVutuyx" Name="Color Format" Kind="InputPin" Bounds="646,165" Visibility="Optional" />
+            <Pin Id="SPCdL2Tb00KOrBmf1N84HX" Name="Bandwidth" Kind="InputPin" Bounds="667,181" Visibility="Optional" />
+            <Pin Id="GAF9IAIZ96WNYU8ubSyhRT" Name="Allow Video Fields" Kind="InputPin" Bounds="695,202" Visibility="Optional" />
+            <Pin Id="VqDoH1gzdRuPirs6yU4Eny" Name="Metadata Frames" Kind="OutputPin" Bounds="506,353" />
+            <Pin Id="U8qU6KWekxmOVgE1FWNudL" Name="Audio Source" Kind="OutputPin" Bounds="515,533">
+              <p:TypeAnnotation LastCategoryFullName="Audio" LastSymbolSource="VL.CoreLib.vl">
+                <Choice Kind="TypeFlag" Name="IAudioSource" />
+              </p:TypeAnnotation>
+            </Pin>
           </Patch>
-          <Link Id="K10vYhiKS07OVB1N9HNGjv" Ids="AMQtJELzBxMLEWUtg07koZ,T43XlnS0CLvNoNAEzeo32K" IsHidden="true" />
-          <Link Id="GPzqSIEJbigMRMgH31ZUkA" Ids="LRWLITeEeURLncelj1LFvU,HEYeUKSl1j8MFX6mjEc2K0" />
-          <Link Id="FxEE9cGE13jQcOJntDyWnn" Ids="HHcQzM9dw3QQPyz4p88LQ2,LRWLITeEeURLncelj1LFvU" IsHidden="true" />
-          <Link Id="QBCvlCxzvW9LBRB7fi3PJy" Ids="R7i6DPgAWtpO0YaUDrWoSs,MgR7lnlZfzONCmahORGw9y" />
-          <Link Id="LNn3UVqkHshMYi385LltcH" Ids="OTrh1TpC332P5sDYgMIOpy,R7i6DPgAWtpO0YaUDrWoSs" IsHidden="true" />
-          <Link Id="G42nB8uT6ssNQJrKJeMsuT" Ids="QpDId8AeMV2LEcP0FS7dIV,U3vC0DrLSpWPMsRNnhAbeN" />
-          <Link Id="OwbId2A5UuaQHivjvvnpN8" Ids="DYhubz4TKP2Pfy2eBMki6m,QpDId8AeMV2LEcP0FS7dIV" IsHidden="true" />
+          <Patch Id="H7D4gZ4xi1LNAkytWtvyFg" Name="Dispose (Internal)" ParticipatingElements="JGtNxMXvA6LMF6pFzoC4Js" />
+          <Patch Id="PPhcCxcO6wWLFDg41lTaeE" Name="ReceiveVideoFrame" ParticipatingElements="F5AIHd6NzIyNyTuE0r3MMu">
+            <Pin Id="RndPOyva6rWM2k7KttOAGC" Name="Video Frame" Kind="OutputPin" Bounds="641,325" />
+          </Patch>
         </Patch>
       </Node>
     </Canvas>
