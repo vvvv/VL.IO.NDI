@@ -2,9 +2,6 @@
 using System;
 using VL.Lib.Basics.Resources;
 
-// Utility functions outside of the NDILib SDK itself,
-// but useful for working with NDI from managed languages.
-
 namespace VL.IO.NDI
 {
     internal static unsafe class NativeFactory
@@ -53,4 +50,4 @@ namespace VL.IO.NDI
             return receiver.Bind(r => ResourceProvider.New(() => NDIlib.framesync_create(r), NDIlib.framesync_destroy));
         }
     }
-} // namespace NewTek.NDI
+}

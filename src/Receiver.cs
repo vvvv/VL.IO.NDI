@@ -1,23 +1,22 @@
 ﻿using NewTek;
 using System;
-using System.Runtime.InteropServices;
 using System.Threading;
-using System.Reactive.Subjects;
 
 using VL.Lib.Basics.Resources;
-using System.Reactive.Disposables;
 using System.Reactive.Linq;
 using System.Threading.Tasks;
-using VL.Lib.Reactive;
-using VL.Lib.Basics.Imaging;
-using System.Collections.Generic;
 using System.Linq;
+using VL.Lib.Basics.Video;
+using VL.Lib.Basics.Audio;
+using CommunityToolkit.HighPerformance;
+using System.Buffers;
 
 namespace VL.IO.NDI
 {
     public sealed class Receiver : NativeObject
     {
-        private IObservable<IResourceProvider<IImage>> _imageStream;
+        private VideoStream _videoStream;
+        private AudioStream _audioStream;
         private IObservable<string> _metadataStream;
 
         // our unmanaged NDI receiver instance
@@ -32,12 +31,14 @@ namespace VL.IO.NDI
         /// <summary>
         /// Received Images
         /// </summary>
-        public IObservable<IResourceProvider<IImage>> ImageStream => _imageStream ?? Observable.Empty<IResourceProvider<IImage>>();
+        public VideoStream VideoStream => _videoStream;
+
+        public AudioStream AudioStream => _audioStream;
 
         /// <summary>
         /// Received Metadata
         /// </summary>
-        public IObservable<string> Metadata => _metadataStream ?? Observable.Empty<string>();
+        public IObservable<string> MetadataStream => _metadataStream ?? Observable.Empty<string>();
 
         /// <summary>
         /// Whether or not streaming is enabled.
@@ -80,14 +81,14 @@ namespace VL.IO.NDI
                 // We are now going to mark this source as being on program output for tally purposes (but not on preview)
                 SetTallyIndicators(true, false);
 
-                _imageStream = Observable.Create<IResourceProvider<IImage>>(PushVideoFrames).Publish().RefCount();
+                _videoStream = new VideoStream(Observable.Create<IResourceProvider<VideoFrame>>(PushVideoFrames).Publish().RefCount());
+                _audioStream = new AudioStream(Observable.Create<IResourceProvider<AudioFrame>>(PushAudioFrames).Publish().RefCount());
                 _metadataStream = Observable.Create<string>(PushMetadataFrames).Publish().RefCount();
 
                 _syncInstanceProvider = _recvInstanceProvider.CreateSync().ShareInParallel();
 
-                async Task PushVideoFrames(IObserver<IResourceProvider<IImage>> observer, CancellationToken token)
+                async Task PushVideoFrames(IObserver<IResourceProvider<VideoFrame>> observer, CancellationToken token)
                 {
-                    using var videoFrameSubscription = new SerialDisposable();
                     var recvInstanceProvider = _recvInstanceProvider;
                     using var nativeReceiverHandle = recvInstanceProvider.GetHandle();
                     var recvInstancePtr = nativeReceiverHandle.Resource;
@@ -119,18 +120,87 @@ namespace VL.IO.NDI
                                         break;
                                     }
 
-                                    var image = nativeVideoFrame.ToImage(Utils.Utf8ToString(nativeVideoFrame.p_metadata));
-                                    var imageProvider = recvInstanceProvider.Bind(r => ResourceProvider.Return(image, i =>
+                                    var (memoryOwner, videoFrame) = Utils.CreateVideoFrame(ref nativeVideoFrame);
+
+                                    var recvInstanceHandle = recvInstanceProvider.GetHandle();
+                                    var videoFrameProvider = ResourceProvider.Return(videoFrame, (memoryOwner, recvInstanceHandle, nativeVideoFrame),
+                                        disposeAction: static x =>
+                                        {
+                                            var (memoryOwner, recvInstanceHandle, nativeVideoFrame) = x;
+                                            memoryOwner.Dispose();
+                                            NDIlib.recv_free_video_v2(recvInstanceHandle.Resource, ref nativeVideoFrame);
+                                            recvInstanceHandle.Dispose();
+                                        });
+
+                                    using (videoFrameProvider.GetHandle())
                                     {
-                                        image.Dispose();
-                                        NDIlib.recv_free_video_v2(r, ref nativeVideoFrame);
-                                    })).ShareInParallel();
+                                        // Tell consumers about it
+                                        observer.OnNext(videoFrameProvider);
+                                    }
 
-                                    // Release the previous frame and hold on to this one
-                                    videoFrameSubscription.Disposable = imageProvider.GetHandle();
+                                    break;
 
-                                    // Tell consumers about it
-                                    observer.OnNext(imageProvider);
+                                default:
+                                    await Task.Yield();
+                                    break;
+                            }
+                        }
+                    }, token);
+                }
+
+                async Task PushAudioFrames(IObserver<IResourceProvider<AudioFrame>> observer, CancellationToken token)
+                {
+                    var recvInstanceProvider = _recvInstanceProvider;
+                    using var nativeReceiverHandle = recvInstanceProvider.GetHandle();
+                    var recvInstancePtr = nativeReceiverHandle.Resource;
+
+                    await Task.Run(async () =>
+                    {
+                        while (!token.IsCancellationRequested)
+                        {
+                            if (!Enabled)
+                            {
+                                await Task.Delay(500);
+                                continue;
+                            }
+
+                            NDIlib.audio_frame_v2_t nativeAudioFrame = new NDIlib.audio_frame_v2_t();
+
+                            switch (NDIlib.recv_capture_v2(recvInstancePtr, ref Utils.NULL<NDIlib.video_frame_v2_t>(), ref nativeAudioFrame, ref Utils.NULL<NDIlib.metadata_frame_t>(), 30))
+                            {
+                                case NDIlib.frame_type_e.frame_type_audio:
+
+                                    if (nativeAudioFrame.p_data == IntPtr.Zero)
+                                    {
+                                        // alreays free received frames
+                                        NDIlib.recv_free_audio_v2(recvInstancePtr, ref nativeAudioFrame);
+                                        break;
+                                    }
+
+                                    var bufferOwner = Utils.GetPlanarBuffer(ref nativeAudioFrame);
+
+                                    var audioFrame = new AudioFrame(
+                                        bufferOwner.Memory.AsMemory2D(nativeAudioFrame.no_channels, nativeAudioFrame.no_samples),
+                                        nativeAudioFrame.sample_rate,
+                                        IsInterleaved: false,
+                                        Metadata: Utils.Utf8ToString(nativeAudioFrame.p_metadata));
+
+                                    var audioFrameProvider = ResourceProvider.Return(audioFrame, (recvInstanceProvider.GetHandle(), bufferOwner, nativeAudioFrame), static x =>
+                                    {
+                                        var (recvInstanceHandle, bufferOwner, nativeAudioFrame) = x;
+                                        // Free allocated memory
+                                        bufferOwner.Dispose();
+                                        // Free audio frame
+                                        NDIlib.framesync_free_audio(recvInstanceHandle.Resource, ref nativeAudioFrame);
+                                        // Release the sync instance
+                                        recvInstanceHandle.Dispose();
+                                    });
+
+                                    using (audioFrameProvider.GetHandle())
+                                    {
+                                        // Tell consumers about it
+                                        observer.OnNext(audioFrameProvider);
+                                    }
 
                                     break;
 
@@ -199,7 +269,8 @@ namespace VL.IO.NDI
 
             // set it to a safe value
             _recvInstanceProvider = null;
-            _imageStream = null;
+            _videoStream = null;
+            _audioStream = null;
             _metadataStream = null;
         }
 
@@ -225,6 +296,4 @@ namespace VL.IO.NDI
             Disconnect();
         }
     }
-
-    
 }

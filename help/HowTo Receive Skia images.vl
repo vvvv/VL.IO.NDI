@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Document xmlns:p="property" Id="QHpr0fv5ZhbPHgd1D9pUc5" LanguageVersion="2022.5.0-0394-e26395d9e4" Version="0.128">
+<Document xmlns:p="property" Id="QHpr0fv5ZhbPHgd1D9pUc5" LanguageVersion="2022.5.0-0406-51a5673090" Version="0.128">
   <NugetDependency Id="QDKWB4liQfJMDPWein5ERc" Location="VL.Core" Version="2021.4.11-1237-gbe7b40ca9c" />
   <NugetDependency Id="JngbdjrQttWP3C056ivUGZ" Location="VL.CoreLib" Version="2021.4.11-1237-gbe7b40ca9c" />
   <NugetDependency Id="FDjgov6DOmvM906MD3ltdI" Location="VL.Skia" Version="2021.4.11-1237-gbe7b40ca9c" />
@@ -34,7 +34,7 @@
             <Pin Id="IlMX3kfdU6mLlHh9EiyKNQ" Name="Output" Kind="OutputPin" />
             <Pin Id="HQseenFqFW5OsoG3F4kXrn" Name="Actual Bounds" Kind="OutputPin" />
           </Node>
-          <Node Bounds="392,563,145,19" Id="VWPJbnIFTNlLRi8mDeIStu">
+          <Node Bounds="372,566,165,19" Id="VWPJbnIFTNlLRi8mDeIStu">
             <p:NodeReference LastCategoryFullName="Graphics.Skia" LastSymbolSource="VL.Skia.vl">
               <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
               <Choice Kind="ProcessAppFlag" Name="Renderer" />
@@ -44,6 +44,7 @@
                 <Choice Kind="TypeFlag" Name="Rectangle" />
               </p:TypeAnnotation>
             </Pin>
+            <Pin Id="FZQWOmfkvYqLEMgsJxS0IO" Name="Bound to Document" Kind="InputPin" DefaultValue="True" />
             <Pin Id="HWzDmXlaygjOy1TrwhLiRQ" Name="Input" Kind="InputPin" />
             <Pin Id="RJ13Er8OAYHNazyS8BfknU" Name="Color" Kind="InputPin" />
             <Pin Id="IiVQLDZ2sR9PSxQ5SCqoyx" Name="Clear" Kind="InputPin" />
@@ -102,9 +103,9 @@
             </p:ValueBoxSettings>
           </Pad>
           <Node Bounds="413,391,87,19" Id="DUtxCGeAOo4LApLuvFrl8X">
-            <p:NodeReference LastCategoryFullName="Graphics.Skia.ImageStream" LastSymbolSource="VL.Skia.vl">
+            <p:NodeReference LastCategoryFullName="Graphics.Skia.Video" LastSymbolSource="VL.Skia.vl">
               <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
-              <Choice Kind="ProcessAppFlag" Name="ImageStreamToSKImage" />
+              <Choice Kind="ProcessAppFlag" Name="VideoStreamToSKImage" />
             </p:NodeReference>
             <Pin Id="C35oVvC3u42PmPmAYuh3Oo" Name="Input" Kind="InputPin" />
             <Pin Id="DGoxAY5x4cULvcSDEXLRqG" Name="Output" Kind="OutputPin" />
@@ -117,7 +118,7 @@
           <Node Bounds="413,284,85,19" Id="T3HSkSflO36M32IkkxMbw7">
             <p:NodeReference LastCategoryFullName="IO.NDI" LastSymbolSource="VL.IO.NDI.vl">
               <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
-              <Choice Kind="ProcessAppFlag" Name="NDIReceiver (Immediate)" />
+              <Choice Kind="ProcessAppFlag" Name="NDIReceiver (Reactive)" />
             </p:NodeReference>
             <Pin Id="S9nqkRCcJMXMKPUpeUQgWC" Name="Source" Kind="InputPin" />
             <Pin Id="BpKO2RrL3TbLSZNlRF3jP7" Name="Receiver Name" Kind="InputPin" />
@@ -125,8 +126,9 @@
             <Pin Id="ERtm2A09LVoMmaRhg7V2Z7" Name="On Preview" Kind="InputPin" />
             <Pin Id="QrdKHDnEWyrMtDVBRDrFj7" Name="Enabled" Kind="InputPin" />
             <Pin Id="NsQBc31khxQP146m2fU1eN" Name="Bandwidth" Kind="InputPin" />
-            <Pin Id="QrIpMW9UVc1NWb3qbux2vG" Name="Video Frames" Kind="OutputPin" />
-            <Pin Id="Op3ChDV9uuoN9hIDl7f55M" Name="Metadata Frames" Kind="OutputPin" />
+            <Pin Id="NYw68iBr6QCO8Df8QccKOh" Name="Video Stream" Kind="OutputPin" />
+            <Pin Id="HW2C68DZYnTLIII6sQ8SN7" Name="Audio Stream" Kind="OutputPin" />
+            <Pin Id="EN7Seed3Iy5Otjfe3X5DYq" Name="Metadata Stream" Kind="OutputPin" />
           </Node>
           <Pad Id="BN1ElESlcRCOL1jr0KPBmG" Comment="Enabled" Bounds="668,192,35,35" ShowValueBox="true" isIOBox="true" Value="True">
             <p:TypeAnnotation>
@@ -155,9 +157,9 @@
         <Link Id="CqGX43zF48zLe6oRDy5Ajd" Ids="QJklW1YGnhEMWNCvO51fWV,S9nqkRCcJMXMKPUpeUQgWC" />
         <Link Id="E6nXw6W5URDOgaa58AmA4I" Ids="BN1ElESlcRCOL1jr0KPBmG,QrdKHDnEWyrMtDVBRDrFj7" />
         <Link Id="VSQlNbZDoHYPQm14J1GYWC" Ids="CQOZHyMkBClPi3uhuxnMaF,NsQBc31khxQP146m2fU1eN" />
-        <Link Id="TINUJVFSkmgMYBASpQeFJJ" Ids="QrIpMW9UVc1NWb3qbux2vG,C35oVvC3u42PmPmAYuh3Oo" />
         <Link Id="CnSOzNQG0GWOrBz4ylryDF" Ids="DGoxAY5x4cULvcSDEXLRqG,CV8kRMgBESgLnNA4qtv4M3" />
         <Link Id="GKEiQExBYJ2PydK8t4z0VN" Ids="IlMX3kfdU6mLlHh9EiyKNQ,HWzDmXlaygjOy1TrwhLiRQ" />
+        <Link Id="QDErCOvR2PkNUo3CqSGScC" Ids="NYw68iBr6QCO8Df8QccKOh,C35oVvC3u42PmPmAYuh3Oo" />
       </Patch>
     </Node>
   </Patch>

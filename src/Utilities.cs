@@ -1,10 +1,12 @@
-﻿using CommunityToolkit.HighPerformance.Buffers;
+﻿using CommunityToolkit.HighPerformance;
+using CommunityToolkit.HighPerformance.Buffers;
 using NewTek;
 using System;
 using System.Buffers;
 using System.Runtime.CompilerServices;
 using System.Text;
-using VL.Lib.Basics.Imaging;
+using VL.Core;
+using VL.Lib.Basics.Video;
 
 namespace VL.IO.NDI
 {
@@ -55,44 +57,37 @@ namespace VL.IO.NDI
             return ref Unsafe.AsRef<T>(IntPtr.Zero.ToPointer());
         }
 
-        public static IntPtrImage ToImage(this NDIlib.video_frame_v2_t videoFrame, string metadata)
+        public static(IDisposable memoryOwner, VideoFrame videoFrame) CreateVideoFrame(ref NDIlib.video_frame_v2_t nativeVideoFrame)
         {
-            return new IntPtrImage(
-                pointer: videoFrame.p_data,
-                size: videoFrame.line_stride_in_bytes * videoFrame.yres,
-                info: new ImageInfo(
-                    videoFrame.xres,
-                    videoFrame.yres,
-                    ToPixelFormat(videoFrame.FourCC),
-                    isPremultipliedAlpha: false,
-                    scanSize: videoFrame.line_stride_in_bytes,
-                    originalFormat: videoFrame.FourCC.ToString())
-                { 
-                    Metadata = metadata 
-                });
-
-            static PixelFormat ToPixelFormat(NDIlib.FourCC_type_e fourCC)
+            switch (nativeVideoFrame.FourCC)
             {
-                switch (fourCC)
-                {
-                    case NDIlib.FourCC_type_e.FourCC_type_BGRA:
-                        return PixelFormat.B8G8R8A8;
-                    case NDIlib.FourCC_type_e.FourCC_type_BGRX:
-                        return PixelFormat.B8G8R8;
-                    case NDIlib.FourCC_type_e.FourCC_type_RGBA:
-                        return PixelFormat.R8G8B8A8;
-                    case NDIlib.FourCC_type_e.FourCC_type_RGBX:
-                        return PixelFormat.R8G8B8;
-                    default:
-                        return PixelFormat.Unknown;    // TODO: need to handle other video formats which are currently unsupported by IImage
-                }
+                case NDIlib.FourCC_type_e.FourCC_type_RGBA: return CreateVideoFrame<RgbaPixel>(ref nativeVideoFrame);
+                case NDIlib.FourCC_type_e.FourCC_type_RGBX: return CreateVideoFrame<RgbxPixel>(ref nativeVideoFrame);
+                case NDIlib.FourCC_type_e.FourCC_type_BGRA: return CreateVideoFrame<BgraPixel>(ref nativeVideoFrame);
+                case NDIlib.FourCC_type_e.FourCC_type_BGRX: return CreateVideoFrame<BgrxPixel>(ref nativeVideoFrame);
+                default:
+                    throw new Exception("Unsupported pixel format");
             }
+        }
+
+        public static(IMemoryOwner<T> memoryOwner, VideoFrame<T> videoFrame) CreateVideoFrame<T>(ref NDIlib.video_frame_v2_t nativeVideoFrame)
+            where T : unmanaged, IPixel
+        {
+            var lengthInBytes = nativeVideoFrame.line_stride_in_bytes * nativeVideoFrame.yres;
+            var memoryOwner = new UnmanagedMemoryManager<T>(nativeVideoFrame.p_data, lengthInBytes);
+
+            var videoFrame = new VideoFrame<T>(
+                memoryOwner.Memory.AsMemory2D(nativeVideoFrame.yres, nativeVideoFrame.xres),
+                Utf8ToString(nativeVideoFrame.p_metadata),
+                (nativeVideoFrame.frame_rate_N, nativeVideoFrame.frame_rate_D));
+
+            return (memoryOwner, videoFrame);
         }
 
         public static unsafe IMemoryOwner<float> GetPlanarBuffer(ref NDIlib.audio_frame_v2_t audioFrame)
         {
-            var length = audioFrame.channel_stride_in_bytes / sizeof(float) * audioFrame.no_channels;
-            return new UnmanagedMemoryManager<float>((float*)audioFrame.p_data.ToPointer(), length, isOwner: false);
+            var lengthInBytes = audioFrame.channel_stride_in_bytes * audioFrame.no_channels;
+            return new UnmanagedMemoryManager<float>(audioFrame.p_data, lengthInBytes);
         }
 
         public static unsafe NDIlib.audio_frame_v2_t ToV2(ref NDIlib.audio_frame_v3_t audioFrame)

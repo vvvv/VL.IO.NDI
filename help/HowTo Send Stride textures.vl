@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Document xmlns:p="property" Id="EDpXcQUiaNFMZEqe06FgkO" LanguageVersion="2022.5.0-0394-e26395d9e4" Version="0.128">
+<Document xmlns:p="property" Id="EDpXcQUiaNFMZEqe06FgkO" LanguageVersion="2022.5.0-0406-51a5673090" Version="0.128">
   <NugetDependency Id="QDKWB4liQfJMDPWein5ERc" Location="VL.Core" Version="2021.4.11-1237-gbe7b40ca9c" />
   <NugetDependency Id="JngbdjrQttWP3C056ivUGZ" Location="VL.CoreLib" Version="2021.4.11-1237-gbe7b40ca9c" />
   <Patch Id="IiCA7zHpiE6LeILS7YZGKy">
@@ -19,9 +19,9 @@
           <Pad Id="MOBO4dMWdFsPn8QPdfVJTu" Comment="On Preview" Bounds="355,655,35,35" ShowValueBox="true" isIOBox="true" />
           <Pad Id="CquWAkrj8yrLQOtVzgpbB3" Comment="On Program" Bounds="355,613,35,35" ShowValueBox="true" isIOBox="true" />
           <Node Bounds="353,392,100,19" Id="A8MAt2Rsz7IMBOaViSVl0U">
-            <p:NodeReference LastCategoryFullName="Stride.ImageStream" LastSymbolSource="VL.Stride.Runtime.vl" LastDependency="VL.Stride.vl">
+            <p:NodeReference LastCategoryFullName="Stride.Video" LastSymbolSource="VL.Stride.Video.vl" LastDependency="VL.Stride.vl">
               <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
-              <Choice Kind="ProcessAppFlag" Name="TextureToImageStream" />
+              <Choice Kind="ProcessAppFlag" Name="TextureToVideoStream" />
             </p:NodeReference>
             <Pin Id="J94zKlNgdsCPBhKBfhpc5P" Name="Input" Kind="InputPin" />
             <Pin Id="VMyz8JbzgaGLUWnxHm5qw7" Name="Metadata" Kind="InputPin" />
@@ -68,7 +68,7 @@
             <Pin Id="Qwg7gBmlUqwO0T5gK6wy2m" Name="Output" Kind="OutputPin" />
           </Node>
           <Node Bounds="353,245,63,19" Id="Ma8nJrxmL1LM3QRw9zcJGy">
-            <p:NodeReference LastCategoryFullName="Animation" LastSymbolSource="VL.CoreLib.vl">
+            <p:NodeReference LastCategoryFullName="Animation" LastSymbolSource="CoreLibBasics.vl" LastDependency="VL.CoreLib.vl">
               <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
               <Choice Kind="ProcessAppFlag" Name="Stopwatch" />
             </p:NodeReference>
