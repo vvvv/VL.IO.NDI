@@ -1,9 +1,7 @@
 ﻿using NewTek;
-using CommunityToolkit.HighPerformance;
 using System;
 using VL.Lib.Basics.Resources;
 using VL.Lib.Basics.Audio;
-using System.Buffers;
 using VL.Core;
 using VL.Lib.Basics.Video;
 
@@ -75,29 +73,7 @@ namespace VL.IO.NDI
                 return ResourceProvider.Return(AudioFrame.Empty);
             }
 
-            IMemoryOwner<float> bufferOwner;
-            AudioFrame audioFrame;
-
-            if (interleaved.Value)
-            {
-                bufferOwner = Utils.GetInterleavedBuffer(ref nativeAudioFrame);
-
-                audioFrame = new AudioFrame(
-                    bufferOwner.Memory.AsMemory2D(nativeAudioFrame.no_samples, nativeAudioFrame.no_channels),
-                    nativeAudioFrame.sample_rate,
-                    IsInterleaved: true,
-                    Metadata: Utils.Utf8ToString(nativeAudioFrame.p_metadata));
-            }
-            else
-            {
-                bufferOwner = Utils.GetPlanarBuffer(ref nativeAudioFrame);
-
-                audioFrame = new AudioFrame(
-                    bufferOwner.Memory.AsMemory2D(nativeAudioFrame.no_channels, nativeAudioFrame.no_samples),
-                    nativeAudioFrame.sample_rate,
-                    IsInterleaved: false,
-                    Metadata: Utils.Utf8ToString(nativeAudioFrame.p_metadata));
-            }
+            var (bufferOwner, audioFrame) = Utils.CreateAudioFrame(ref nativeAudioFrame, interleaved.Value);
 
             return ResourceProvider.Return(audioFrame, (syncInstanceHandle, bufferOwner, nativeAudioFrame), static x =>
             {

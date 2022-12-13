@@ -177,13 +177,7 @@ namespace VL.IO.NDI
                                         break;
                                     }
 
-                                    var bufferOwner = Utils.GetPlanarBuffer(ref nativeAudioFrame);
-
-                                    var audioFrame = new AudioFrame(
-                                        bufferOwner.Memory.AsMemory2D(nativeAudioFrame.no_channels, nativeAudioFrame.no_samples),
-                                        nativeAudioFrame.sample_rate,
-                                        IsInterleaved: false,
-                                        Metadata: Utils.Utf8ToString(nativeAudioFrame.p_metadata));
+                                    var (bufferOwner, audioFrame) = Utils.CreateAudioFrame(ref nativeAudioFrame, isInterleaved: false);
 
                                     var audioFrameProvider = ResourceProvider.Return(audioFrame, (recvInstanceProvider.GetHandle(), bufferOwner, nativeAudioFrame), static x =>
                                     {

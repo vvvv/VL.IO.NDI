@@ -6,6 +6,7 @@ using System.Buffers;
 using System.Runtime.CompilerServices;
 using System.Text;
 using VL.Core;
+using VL.Lib.Basics.Audio;
 using VL.Lib.Basics.Video;
 
 namespace VL.IO.NDI
@@ -57,7 +58,7 @@ namespace VL.IO.NDI
             return ref Unsafe.AsRef<T>(IntPtr.Zero.ToPointer());
         }
 
-        public static(IDisposable memoryOwner, VideoFrame videoFrame) CreateVideoFrame(ref NDIlib.video_frame_v2_t nativeVideoFrame)
+        public static (IDisposable memoryOwner, VideoFrame videoFrame) CreateVideoFrame(ref NDIlib.video_frame_v2_t nativeVideoFrame)
         {
             switch (nativeVideoFrame.FourCC)
             {
@@ -70,7 +71,7 @@ namespace VL.IO.NDI
             }
         }
 
-        public static(IMemoryOwner<T> memoryOwner, VideoFrame<T> videoFrame) CreateVideoFrame<T>(ref NDIlib.video_frame_v2_t nativeVideoFrame)
+        public static (IMemoryOwner<T> memoryOwner, VideoFrame<T> videoFrame) CreateVideoFrame<T>(ref NDIlib.video_frame_v2_t nativeVideoFrame)
             where T : unmanaged, IPixel
         {
             var lengthInBytes = nativeVideoFrame.line_stride_in_bytes * nativeVideoFrame.yres;
@@ -79,9 +80,22 @@ namespace VL.IO.NDI
             var videoFrame = new VideoFrame<T>(
                 memoryOwner.Memory.AsMemory2D(nativeVideoFrame.yres, nativeVideoFrame.xres),
                 Utf8ToString(nativeVideoFrame.p_metadata),
+                new TimeSpan(nativeVideoFrame.timecode),
                 (nativeVideoFrame.frame_rate_N, nativeVideoFrame.frame_rate_D));
 
             return (memoryOwner, videoFrame);
+        }
+
+        public static (IDisposable memoryOwner, AudioFrame) CreateAudioFrame(ref NDIlib.audio_frame_v2_t nativeAudioFrame, bool isInterleaved)
+        {
+            var bufferOwner = isInterleaved ? GetInterleavedBuffer(ref nativeAudioFrame) : GetPlanarBuffer(ref nativeAudioFrame);
+
+            return (bufferOwner, new AudioFrame(
+                bufferOwner.Memory.AsMemory2D(nativeAudioFrame.no_channels, nativeAudioFrame.no_samples),
+                nativeAudioFrame.sample_rate,
+                IsInterleaved: isInterleaved,
+                Metadata: Utf8ToString(nativeAudioFrame.p_metadata),
+                Timecode: new TimeSpan(nativeAudioFrame.timecode)));
         }
 
         public static unsafe IMemoryOwner<float> GetPlanarBuffer(ref NDIlib.audio_frame_v2_t audioFrame)
