@@ -5,8 +5,6 @@ VisualStudioVersion = 17.3.32825.248
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VL.IO.NDI", "VL.IO.NDI.csproj", "{8B771692-F865-494F-9F0D-638DFFCB7D89}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VL.Core", "..\..\..\..\vvvv\vvvv\public-vl\VL.Core\src\VL.Core.csproj", "{1DD644EF-842D-4B19-A480-430809B564AB}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -23,14 +21,6 @@ Global
 		{8B771692-F865-494F-9F0D-638DFFCB7D89}.Release|Any CPU.Build.0 = Release|Any CPU
 		{8B771692-F865-494F-9F0D-638DFFCB7D89}.Release|x64.ActiveCfg = Release|x64
 		{8B771692-F865-494F-9F0D-638DFFCB7D89}.Release|x64.Build.0 = Release|x64
-		{1DD644EF-842D-4B19-A480-430809B564AB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{1DD644EF-842D-4B19-A480-430809B564AB}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{1DD644EF-842D-4B19-A480-430809B564AB}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{1DD644EF-842D-4B19-A480-430809B564AB}.Debug|x64.Build.0 = Debug|Any CPU
-		{1DD644EF-842D-4B19-A480-430809B564AB}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{1DD644EF-842D-4B19-A480-430809B564AB}.Release|Any CPU.Build.0 = Release|Any CPU
-		{1DD644EF-842D-4B19-A480-430809B564AB}.Release|x64.ActiveCfg = Release|Any CPU
-		{1DD644EF-842D-4B19-A480-430809B564AB}.Release|x64.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
