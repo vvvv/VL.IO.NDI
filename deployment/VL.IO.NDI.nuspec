@@ -18,13 +18,12 @@
     <icon>icon\nugeticon.png</icon>
   </metadata>
   <files>
-	  <file src="..\lib\net6.0\VL.IO.NDI.dll" target="lib\" exclude="" /> 
+	<file src="..\lib\net6.0\VL.IO.NDI.dll" target="lib\" exclude="" /> 
     <file src="..\lib\net6.0\VL.IO.NDI.xml" target="lib\" exclude="" />
     <file src="..\runtimes\win-x64\native\Processing.NDI.Lib.x64.dll" target="runtimes\win-x64\native\" exclude="" />
     <file src="..\*.vl" target="" exclude="" />
-    <file src="..\vl\*.vl" target="vl\" exclude="" />
     <file src="..\help\**" target="help\" exclude="" />
-	  <file src="nugeticon.png" target="icon\" />
+	<file src="nugeticon.png" target="icon\" />
     <file src="..\licenses\**" target="licenses\" exclude="" />
   </files>
 </package>
