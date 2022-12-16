@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Document xmlns:p="property" Id="QwzvqkCZNFBNTdZ92967Sh" LanguageVersion="2022.5.0-0406-51a5673090" Version="0.128">
-  <NugetDependency Id="QDKWB4liQfJMDPWein5ERc" Location="VL.Core" Version="2021.4.11-1215-ga840232e2e" />
-  <NugetDependency Id="JngbdjrQttWP3C056ivUGZ" Location="VL.CoreLib" Version="2021.4.11-1215-ga840232e2e" />
+<Document xmlns:p="property" Id="QwzvqkCZNFBNTdZ92967Sh" LanguageVersion="2022.5.0-0415-9f84c137b4" Version="0.128">
+  <NugetDependency Id="QDKWB4liQfJMDPWein5ERc" Location="VL.Core" Version="2022.5.0-0415-g9f84c137b4" />
+  <NugetDependency Id="JngbdjrQttWP3C056ivUGZ" Location="VL.CoreLib" Version="2022.5.0-0415-g9f84c137b4" />
   <Patch Id="IiCA7zHpiE6LeILS7YZGKy">
     <Canvas Id="PmobLB0HSYAL6JU48f5ahA" DefaultCategory="Main" CanvasType="FullCategory" />
     <!--
@@ -61,7 +61,7 @@
               <p:stringtype p:Assembly="VL.Core" p:Type="VL.Core.StringType">Comment</p:stringtype>
             </p:ValueBoxSettings>
           </Pad>
-          <Pad Id="LaGJqpV06oZOeJsYUeAOMJ" Bounds="319,157,445,20" ShowValueBox="true" isIOBox="true" Value="(Optional. Includes a .pdf which may provide answers for your questions)">
+          <Pad Id="LaGJqpV06oZOeJsYUeAOMJ" Bounds="319,157,445,20" ShowValueBox="true" isIOBox="true" Value="(Optional. Includes a .pdf which may provide answers to your questions)">
             <p:TypeAnnotation>
               <Choice Kind="TypeFlag" Name="String" />
             </p:TypeAnnotation>
@@ -97,7 +97,7 @@
               <p:stringtype p:Assembly="VL.Core" p:Type="VL.Core.StringType">Comment</p:stringtype>
             </p:ValueBoxSettings>
           </Pad>
-          <Node Bounds="667,713,71,19" Id="L9aUj0XxTHaQdsRovjxG9W">
+          <Node Bounds="667,713,85,19" Id="L9aUj0XxTHaQdsRovjxG9W">
             <p:NodeReference LastCategoryFullName="IO.NDI" LastSymbolSource="VL.IO.NDI.vl">
               <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
               <Choice Kind="ProcessAppFlag" Name="NDIReceiver" />
@@ -127,7 +127,7 @@
             <p:Value />
           </Pad>
           <Node Bounds="398,717,44,26" Id="Ku4YWf0KSeqNJ1oTnbXBb2">
-            <p:NodeReference LastCategoryFullName="Collections.Spread" LastSymbolSource="VL.Collections.vl">
+            <p:NodeReference LastCategoryFullName="Collections.Spread" LastSymbolSource="VL.CoreLib.vl">
               <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
               <Choice Kind="OperationCallFlag" Name="Count" />
               <CategoryReference Kind="RecordType" Name="Spread" NeedsToBeDirectParent="true" />
@@ -136,7 +136,7 @@
             <Pin Id="FgPVrmkvpBeP26dNND4IRH" Name="Count" Kind="OutputPin" />
           </Node>
           <Pad Id="FTGSqUjImb1Pz7VnceuShm" Comment="Count" Bounds="400,766,35,15" ShowValueBox="true" isIOBox="true" />
-          <Node Bounds="560,713,65,19" Id="BgGvksjeuunPzbeXG2cEAT">
+          <Node Bounds="560,713,85,19" Id="BgGvksjeuunPzbeXG2cEAT">
             <p:NodeReference LastCategoryFullName="IO.NDI" LastSymbolSource="VL.IO.NDI.vl">
               <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
               <Choice Kind="ProcessAppFlag" Name="NDISender" />
@@ -159,7 +159,7 @@
               <p:buttonmode p:Assembly="VL.UI.Forms" p:Type="VL.HDE.PatchEditor.Editors.ButtonModeEnum">Toggle</p:buttonmode>
             </p:ValueBoxSettings>
           </Pad>
-          <Pad Id="PQ0tnPz5l1VLaeSCSxsYzg" Comment="Groups" Bounds="184,566,35,17" ShowValueBox="true" isIOBox="true">
+          <Pad Id="PQ0tnPz5l1VLaeSCSxsYzg" Comment="Groups" Bounds="172,566,35,17" ShowValueBox="true" isIOBox="true">
             <p:TypeAnnotation LastCategoryFullName="Collections" LastSymbolSource="VL.Collections.vl">
               <Choice Kind="TypeFlag" Name="Spread" />
               <p:TypeArguments>
@@ -170,7 +170,7 @@
             </p:TypeAnnotation>
             <p:Value />
           </Pad>
-          <Pad Id="BNkWsV9wjIeLOsns99ECT2" Comment="Extra Ips" Bounds="219,617,35,17" ShowValueBox="true" isIOBox="true">
+          <Pad Id="BNkWsV9wjIeLOsns99ECT2" Comment="Extra Ips" Bounds="196,617,35,17" ShowValueBox="true" isIOBox="true">
             <p:TypeAnnotation LastCategoryFullName="Collections" LastSymbolSource="VL.Collections.vl">
               <Choice Kind="TypeFlag" Name="Spread" />
               <p:TypeArguments>
@@ -226,6 +226,20 @@
               <p:stringtype p:Assembly="VL.Core" p:Type="VL.Core.StringType">Comment</p:stringtype>
             </p:ValueBoxSettings>
           </Pad>
+          <Node Bounds="776,713,85,19" Id="TNyuXFnh4ccQQf8y6zlp5e">
+            <p:NodeReference LastCategoryFullName="IO.NDI" LastSymbolSource="VL.IO.NDI.vl">
+              <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
+              <Choice Kind="ProcessAppFlag" Name="NDIReceiver (Reactive)" />
+            </p:NodeReference>
+            <Pin Id="Dy88UDJG9qjPDJypmCnrJ6" Name="Source" Kind="InputPin" />
+            <Pin Id="QryR7SPSH9LNL6OdTYmNaB" Name="Receiver Name" Kind="InputPin" />
+            <Pin Id="AZdj9LycT7QQa4TJePwzfe" Name="On Program" Kind="InputPin" />
+            <Pin Id="FJoo8kmBv0iM2SKafEJHY2" Name="On Preview" Kind="InputPin" />
+            <Pin Id="PirhQhwSIaONUJIwYaud0U" Name="Enabled" Kind="InputPin" />
+            <Pin Id="QNrFf5mYyPlPdceSdRFqmF" Name="Video Stream" Kind="OutputPin" />
+            <Pin Id="SUzqJMrSaUnP0BZRxXh5IO" Name="Audio Stream" Kind="OutputPin" />
+            <Pin Id="PvNaxamgAHvNxMaW6EICJf" Name="Metadata Stream" Kind="OutputPin" />
+          </Node>
         </Canvas>
         <Patch Id="RXbXPrEDZ5UN9J32SGvmAW" Name="Create" />
         <Patch Id="QpxSgEoztp6NSBKwkBB7d3" Name="Update" />
@@ -243,6 +257,6 @@
       </Patch>
     </Node>
   </Patch>
-  <NugetDependency Id="RZKOzWqotVjQVRGarARfLh" Location="VL.Stride" Version="2021.4.11-1232-gb3c6282bbb" />
-  <NugetDependency Id="SoARYR0FAkdOO0nZ0bPMDR" Location="VL.IO.NDI" Version="0.0.0.0" />
+  <NugetDependency Id="RZKOzWqotVjQVRGarARfLh" Location="VL.Stride" Version="2022.5.0-0415-g9f84c137b4" />
+  <NugetDependency Id="SoARYR0FAkdOO0nZ0bPMDR" Location="VL.IO.NDI" Version="0.5.0-preview" />
 </Document>
