@@ -94,13 +94,17 @@ namespace VL.IO.NDI
 
         protected override IReadOnlyDictionary<string, object> GetEntries()
         {
-            return mostRecentSources.ToDictionary(s => s.Name, s => default(object));
+            var map = new Dictionary<string, object>();
+            map[Source.None.Name] = Source.None;
+            foreach (var s in mostRecentSources)
+                map[s.Name] = s;
+            return map;
         }
 
         protected override IObservable<object> GetEntriesChangedObservable()
         {
             return Finder.GetSources(showLocalSources: true)
-                .Do(s => mostRecentSources = s.Add(Source.None));
+                .Do(s => mostRecentSources = s);
         }
     }
 }
