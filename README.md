@@ -21,3 +21,8 @@ Initial development by @mhusinsky and @sebllll
 By using this you agree to the NDI® EULA which can be found in *licenses/NDI License Agreement.pdf* .
 NDI® is a registered trademark of Vizrt Group. See [NDI.tv](https://ndi.tv) for details.
 
+## Sponsoring
+Development of this library was partially sponsored by
+- [Refik Anadol Studio](https://refikanadolstudio.com)
+
+For custom development requests, please [get in touch](mailto:devvvvs@vvvv.org).
