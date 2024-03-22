@@ -61,7 +61,7 @@ namespace VL.IO.NDI
         {
             var syncInstanceHandle = _syncInstanceProvider?.GetHandle();
             if (syncInstanceHandle is null)
-                return ResourceProvider.Return(AudioFrame.Empty);
+                return null;
 
             var nativeAudioFrame = new NDIlib.audio_frame_v2_t();
             NDIlib.framesync_capture_audio(syncInstanceHandle.Resource, ref nativeAudioFrame, sampleRate.Value, channelCount.Value, sampleCount);
@@ -70,7 +70,7 @@ namespace VL.IO.NDI
             {
                 NDIlib.framesync_free_audio(syncInstanceHandle.Resource, ref nativeAudioFrame);
                 syncInstanceHandle.Dispose();
-                return ResourceProvider.Return(AudioFrame.Empty);
+                return null;
             }
 
             var (bufferOwner, audioFrame) = Utils.CreateAudioFrame(ref nativeAudioFrame, interleaved.Value);
