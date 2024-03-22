@@ -23,10 +23,10 @@ jobs:
       uses: nuget/setup-nuget@v1
       
     - name: Publish VL Nuget
-      uses: vvvv/PublishVLNuget@1.0.41
+      uses: vvvv/PublishVLNuget@1.0.42
       with:
         csproj: src\VL.IO.NDI.csproj
         nuspec: deployment\VL.IO.NDI.nuspec
         icon-src: https://raw.githubusercontent.com/mhusinsky/VL.IO.NDI/master/deployment/nugeticon.png
         icon-dst: ./deployment/nugeticon.png
-        nuget-key: ${{ secrets.NUGET_KEY }}
+        nuget-key: ${{ secrets.VVVV_ORG_NUGET_KEY }}
