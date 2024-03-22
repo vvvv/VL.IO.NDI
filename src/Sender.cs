@@ -252,8 +252,11 @@ namespace VL.IO.NDI
 
             if (audioFrame.IsPlanar)
             {
-                var buffer = audioFrame.Data.Span;
-                fixed (float* bufferPointer = buffer)
+                // As long as this package needs to run in 5.2 and 6.0 we can't use the Span property as it causes a MissingMethodException
+                //var buffer = audioFrame.Data.Span;
+                //fixed (float* bufferPointer = buffer)
+                var buffer = audioFrame.Data;
+                using var bufferHandle = buffer.Pin();
                 fixed (byte* metadataPointer = Utils.StringToUtf8(audioFrame.Metadata))
                 {
                     var nativeAudioFrame = new NDIlib.audio_frame_v2_t()
@@ -261,7 +264,7 @@ namespace VL.IO.NDI
                         channel_stride_in_bytes = buffer.Width * sizeof(float),
                         no_channels = audioFrame.ChannelCount,
                         no_samples = audioFrame.SampleCount,
-                        p_data = new IntPtr(bufferPointer),
+                        p_data = new IntPtr(bufferHandle.Pointer),
                         p_metadata = new IntPtr(metadataPointer),
                         sample_rate = audioFrame.SampleRate
                     };
