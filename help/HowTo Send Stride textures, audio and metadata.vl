@@ -1,7 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Document xmlns:p="property" Id="EDpXcQUiaNFMZEqe06FgkO" LanguageVersion="2022.5.0-0415-9f84c137b4" Version="0.128">
-  <NugetDependency Id="QDKWB4liQfJMDPWein5ERc" Location="VL.Core" Version="2022.5.0-0415-g9f84c137b4" />
-  <NugetDependency Id="JngbdjrQttWP3C056ivUGZ" Location="VL.CoreLib" Version="2022.5.0-0415-g9f84c137b4" />
+<Document xmlns:p="property" xmlns:r="reflection" Id="EDpXcQUiaNFMZEqe06FgkO" LanguageVersion="2023.5.2" Version="0.128">
+  <NugetDependency Id="JngbdjrQttWP3C056ivUGZ" Location="VL.CoreLib" Version="2023.5.2" />
   <Patch Id="IiCA7zHpiE6LeILS7YZGKy">
     <Canvas Id="PmobLB0HSYAL6JU48f5ahA" DefaultCategory="Main" CanvasType="FullCategory" />
     <!--
@@ -19,7 +18,7 @@
           <Pad Id="MOBO4dMWdFsPn8QPdfVJTu" Comment="On Preview" Bounds="315,655,35,35" ShowValueBox="true" isIOBox="true" />
           <Pad Id="CquWAkrj8yrLQOtVzgpbB3" Comment="On Program" Bounds="315,613,35,35" ShowValueBox="true" isIOBox="true" />
           <Node Bounds="353,392,120,19" Id="A8MAt2Rsz7IMBOaViSVl0U">
-            <p:NodeReference LastCategoryFullName="Stride.Video" LastSymbolSource="VL.Stride.Runtime.vl" LastDependency="VL.Stride.vl">
+            <p:NodeReference LastCategoryFullName="Stride.Video" LastDependency="VL.Stride.vl">
               <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
               <Choice Kind="ProcessAppFlag" Name="TextureToVideoStream" />
             </p:NodeReference>
@@ -28,7 +27,7 @@
             <Pin Id="QYtXtfhl30LQB2pbHbZegj" Name="Output" Kind="OutputPin" />
           </Node>
           <Node Bounds="313,541,85,19" Id="HWqoI9kKIspNwirj3RU1d4">
-            <p:NodeReference LastCategoryFullName="IO.NDI" LastSymbolSource="VL.IO.NDI.vl">
+            <p:NodeReference LastCategoryFullName="IO.NDI" LastDependency="VL.IO.NDI.vl">
               <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
               <Choice Kind="ProcessAppFlag" Name="NDISender" />
             </p:NodeReference>
@@ -43,12 +42,12 @@
             <Pin Id="QXPQnKnshydNO6KdasE6Fu" Name="Connection Count" Kind="OutputPin" />
           </Node>
           <Pad Id="EJMgAWGG9xFMVcxNNZBFFe" Comment="Source Name" Bounds="314,480,65,15" ShowValueBox="true" isIOBox="true" Value="vvvv">
-            <p:TypeAnnotation LastCategoryFullName="Primitive" LastSymbolSource="CoreLibBasics.vl">
+            <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
               <Choice Kind="TypeFlag" Name="String" />
             </p:TypeAnnotation>
           </Pad>
           <Pad Id="KVLpC3yOpYIQbBtmkAuK8k" Comment="Enabled" Bounds="415,499,35,35" ShowValueBox="true" isIOBox="true" Value="True">
-            <p:TypeAnnotation>
+            <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
               <Choice Kind="ImmutableTypeFlag" Name="Boolean" />
               <FullNameCategoryReference ID="Primitive" />
             </p:TypeAnnotation>
@@ -58,7 +57,7 @@
           </Pad>
           <Pad Id="RYLfsMZaSZ4M9AdnycTZEe" Comment="Connection Count" Bounds="374,586,35,15" ShowValueBox="true" isIOBox="true" />
           <Node Bounds="353,316,54,19" Id="BuTZMyLicYpPgVv1NfZ4na">
-            <p:NodeReference LastCategoryFullName="Stride.Textures.Source" LastSymbolSource="VL.Stride.Rendering.EffectShaderNodes">
+            <p:NodeReference LastCategoryFullName="Stride.Textures.Source" LastDependency="VL.Stride.Rendering.EffectShaderNodes">
               <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
               <Choice Kind="ProcessNode" Name="Neurons" />
             </p:NodeReference>
@@ -68,7 +67,7 @@
             <Pin Id="Qwg7gBmlUqwO0T5gK6wy2m" Name="Output" Kind="OutputPin" />
           </Node>
           <Node Bounds="353,245,63,19" Id="Ma8nJrxmL1LM3QRw9zcJGy">
-            <p:NodeReference LastCategoryFullName="Animation" LastSymbolSource="VL.CoreLib.vl">
+            <p:NodeReference LastCategoryFullName="Animation" LastDependency="VL.CoreLib.vl">
               <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
               <Choice Kind="ProcessAppFlag" Name="Stopwatch" />
             </p:NodeReference>
@@ -77,12 +76,12 @@
             <Pin Id="QpaOEgDWdquMVw1GCbAMiV" Name="Time" Kind="OutputPin" />
           </Node>
           <Pad Id="JJF0Gj0UyHJPK18sjaqFdG" Comment="Output Size" Bounds="438,264,35,28" ShowValueBox="true" isIOBox="true" Value="512, 512">
-            <p:TypeAnnotation LastCategoryFullName="Primitive" LastSymbolSource="CoreLibBasics.vl">
+            <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
               <Choice Kind="TypeFlag" Name="Int2" />
             </p:TypeAnnotation>
           </Pad>
           <Node Bounds="519,392,140,19" Id="VZVVqhW1xgkOuhKrPPSWnr">
-            <p:NodeReference LastCategoryFullName="Audio.Conversion" LastSymbolSource="VL.Audio.vl">
+            <p:NodeReference LastCategoryFullName="Audio.Conversion" LastDependency="VL.Audio.vl">
               <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
               <Choice Kind="ProcessAppFlag" Name="AudioSignalToAudioStream" />
             </p:NodeReference>
@@ -91,7 +90,7 @@
             <Pin Id="GtOuqed58fUMUipbVnypRF" Name="Output" Kind="OutputPin" />
           </Node>
           <Node Bounds="519,316,52,19" Id="QRmbHXzUionNWVy3IlU3oW">
-            <p:NodeReference LastCategoryFullName="Audio.Source" LastSymbolSource="VL.Audio.vl">
+            <p:NodeReference LastCategoryFullName="Audio.Source" LastDependency="VL.Audio.vl">
               <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
               <Choice Kind="ProcessAppFlag" Name="AudioIn" />
             </p:NodeReference>
@@ -119,7 +118,7 @@
       </Patch>
     </Node>
   </Patch>
-  <NugetDependency Id="KZigFv0HjRzMkckft6Q8KE" Location="VL.Stride" Version="2022.5.0-0415-g9f84c137b4" />
+  <NugetDependency Id="KZigFv0HjRzMkckft6Q8KE" Location="VL.Stride" Version="2023.5.2" />
   <NugetDependency Id="KfsBNNv51VXMN0OcFa4M2u" Location="VL.IO.NDI" Version="0.5.0-preview" />
   <NugetDependency Id="CJufWbInsTZP8Ti76ncudE" Location="VL.Audio" Version="1.1.0-preview" />
 </Document>

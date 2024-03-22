@@ -1,7 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Document xmlns:p="property" Id="QwzvqkCZNFBNTdZ92967Sh" LanguageVersion="2022.5.0-0415-9f84c137b4" Version="0.128">
-  <NugetDependency Id="QDKWB4liQfJMDPWein5ERc" Location="VL.Core" Version="2022.5.0-0415-g9f84c137b4" />
-  <NugetDependency Id="JngbdjrQttWP3C056ivUGZ" Location="VL.CoreLib" Version="2022.5.0-0415-g9f84c137b4" />
+<Document xmlns:p="property" xmlns:r="reflection" Id="QwzvqkCZNFBNTdZ92967Sh" LanguageVersion="2023.5.2" Version="0.128">
+  <NugetDependency Id="JngbdjrQttWP3C056ivUGZ" Location="VL.CoreLib" Version="2023.5.2" />
   <Patch Id="IiCA7zHpiE6LeILS7YZGKy">
     <Canvas Id="PmobLB0HSYAL6JU48f5ahA" DefaultCategory="Main" CanvasType="FullCategory" />
     <!--
@@ -17,7 +16,7 @@
       <Patch Id="VX8x6j7wJ3GQSwpxICFXQ7">
         <Canvas Id="FntGeiaET6xNjAVP7uNJ4R" CanvasType="Group">
           <Pad Id="CXvWU8R04WkQWM1JNK3pLy" Bounds="108,358,669,117" ShowValueBox="true" isIOBox="true" Value="We have found that on some computer systems, if you install &quot;WireShark&quot; to monitor network traffic, a virtual &#xD;&#xA;device driver called &quot;NPCap Loopback Driver&quot; it installs can interfere with NDI, potentially causing it to fail to &#xD;&#xA;communicate. This is also a potential performance problem for networking since it is designed to intercept &#xD;&#xA;network traffic. This driver is not required or used by modern versions of Wireshark. If you find it is installed on &#xD;&#xA;your system, we recommend that you go to your network settings and use the context menu on the adapter to &#xD;&#xA;disable it.">
-            <p:TypeAnnotation>
+            <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
               <Choice Kind="TypeFlag" Name="String" />
             </p:TypeAnnotation>
             <p:ValueBoxSettings>
@@ -26,7 +25,7 @@
             </p:ValueBoxSettings>
           </Pad>
           <Pad Id="Ow5qFwJMEkSPSFOleqtbn2" Bounds="96,135,89,19" ShowValueBox="true" isIOBox="true" Value="NDI® Tools:">
-            <p:TypeAnnotation>
+            <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
               <Choice Kind="TypeFlag" Name="String" />
             </p:TypeAnnotation>
             <p:ValueBoxSettings>
@@ -35,7 +34,7 @@
             </p:ValueBoxSettings>
           </Pad>
           <Pad Id="KLswPCziIW6LelAz5s2cEi" Bounds="184,135,129,19" ShowValueBox="true" isIOBox="true" Value="https://ndi.tv/tools/">
-            <p:TypeAnnotation>
+            <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
               <Choice Kind="TypeFlag" Name="String" />
             </p:TypeAnnotation>
             <p:ValueBoxSettings>
@@ -44,7 +43,7 @@
             </p:ValueBoxSettings>
           </Pad>
           <Pad Id="RjbLKFSrcTOL6dSshGBMnj" Bounds="185,157,121,19" ShowValueBox="true" isIOBox="true" Value="https://ndi.tv/sdk/">
-            <p:TypeAnnotation>
+            <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
               <Choice Kind="TypeFlag" Name="String" />
             </p:TypeAnnotation>
             <p:ValueBoxSettings>
@@ -53,7 +52,7 @@
             </p:ValueBoxSettings>
           </Pad>
           <Pad Id="MCSEuGHF5aUOh12ovfqxz2" Bounds="95,157,89,19" ShowValueBox="true" isIOBox="true" Value="NDI® SDK:">
-            <p:TypeAnnotation>
+            <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
               <Choice Kind="TypeFlag" Name="String" />
             </p:TypeAnnotation>
             <p:ValueBoxSettings>
@@ -62,7 +61,7 @@
             </p:ValueBoxSettings>
           </Pad>
           <Pad Id="LaGJqpV06oZOeJsYUeAOMJ" Bounds="319,157,445,20" ShowValueBox="true" isIOBox="true" Value="(Optional. Includes a .pdf which may provide answers to your questions)">
-            <p:TypeAnnotation>
+            <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
               <Choice Kind="TypeFlag" Name="String" />
             </p:TypeAnnotation>
             <p:ValueBoxSettings>
@@ -71,7 +70,7 @@
             </p:ValueBoxSettings>
           </Pad>
           <Pad Id="VCdT6PbAPh7NZIdVI4E3g0" Bounds="93,336,270,19" ShowValueBox="true" isIOBox="true" Value="Wireshark (from the SDK documentation):">
-            <p:TypeAnnotation>
+            <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
               <Choice Kind="TypeFlag" Name="String" />
             </p:TypeAnnotation>
             <p:ValueBoxSettings>
@@ -80,7 +79,7 @@
             </p:ValueBoxSettings>
           </Pad>
           <Pad Id="CHSBvKLuQsYP2RDbFmh9c0" Bounds="93,243,164,19" ShowValueBox="true" isIOBox="true" Value="Settings/Access Manager">
-            <p:TypeAnnotation>
+            <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
               <Choice Kind="TypeFlag" Name="String" />
             </p:TypeAnnotation>
             <p:ValueBoxSettings>
@@ -89,7 +88,7 @@
             </p:ValueBoxSettings>
           </Pad>
           <Pad Id="KFX5UdGR7r9LzM1XnO2Bt2" Bounds="108,265,382,62" ShowValueBox="true" isIOBox="true" Value="The NDI Tools bundle for Windows includes “Access Manager”, a user interface for configuring most of the settings in:&#xD;&#xA;C:\ProgramData\NDI\ndi-config.v1.json">
-            <p:TypeAnnotation>
+            <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
               <Choice Kind="TypeFlag" Name="String" />
             </p:TypeAnnotation>
             <p:ValueBoxSettings>
@@ -98,7 +97,7 @@
             </p:ValueBoxSettings>
           </Pad>
           <Node Bounds="667,713,85,19" Id="L9aUj0XxTHaQdsRovjxG9W">
-            <p:NodeReference LastCategoryFullName="IO.NDI" LastSymbolSource="VL.IO.NDI.vl">
+            <p:NodeReference LastCategoryFullName="IO.NDI" LastDependency="VL.IO.NDI.vl">
               <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
               <Choice Kind="ProcessAppFlag" Name="NDIReceiver" />
             </p:NodeReference>
@@ -112,7 +111,7 @@
             <Pin Id="MIu4sCEecsgODEb69M5fmG" Name="Metadata Frames" Kind="OutputPin" />
           </Node>
           <Node Bounds="147,650,75,19" Id="U13NXcJqtrlMKrHZANTMdw">
-            <p:NodeReference LastCategoryFullName="IO.NDI" LastSymbolSource="VL.IO.NDI.vl">
+            <p:NodeReference LastCategoryFullName="IO.NDI" LastDependency="VL.IO.NDI.vl">
               <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
               <Choice Kind="ProcessAppFlag" Name="SourceFinder" />
             </p:NodeReference>
@@ -127,7 +126,7 @@
             <p:Value />
           </Pad>
           <Node Bounds="398,717,44,26" Id="Ku4YWf0KSeqNJ1oTnbXBb2">
-            <p:NodeReference LastCategoryFullName="Collections.Spread" LastSymbolSource="VL.CoreLib.vl">
+            <p:NodeReference LastCategoryFullName="Collections.Spread" LastDependency="VL.CoreLib.vl">
               <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
               <Choice Kind="OperationCallFlag" Name="Count" />
               <CategoryReference Kind="RecordType" Name="Spread" NeedsToBeDirectParent="true" />
@@ -137,7 +136,7 @@
           </Node>
           <Pad Id="FTGSqUjImb1Pz7VnceuShm" Comment="Count" Bounds="400,766,35,15" ShowValueBox="true" isIOBox="true" />
           <Node Bounds="560,713,85,19" Id="BgGvksjeuunPzbeXG2cEAT">
-            <p:NodeReference LastCategoryFullName="IO.NDI" LastSymbolSource="VL.IO.NDI.vl">
+            <p:NodeReference LastCategoryFullName="IO.NDI" LastDependency="VL.IO.NDI.vl">
               <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
               <Choice Kind="ProcessAppFlag" Name="NDISender" />
             </p:NodeReference>
@@ -151,7 +150,7 @@
             <Pin Id="MbAqbRzwrqmNX6a9pQ7BFW" Name="Connection Count" Kind="OutputPin" />
           </Node>
           <Pad Id="TDeYnoLUFSLLofibPxz1C7" Comment="Show Local Sources" Bounds="149,511,35,35" ShowValueBox="true" isIOBox="true" Value="True">
-            <p:TypeAnnotation>
+            <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
               <Choice Kind="ImmutableTypeFlag" Name="Boolean" />
               <FullNameCategoryReference ID="Primitive" />
             </p:TypeAnnotation>
@@ -160,10 +159,10 @@
             </p:ValueBoxSettings>
           </Pad>
           <Pad Id="PQ0tnPz5l1VLaeSCSxsYzg" Comment="Groups" Bounds="172,566,35,17" ShowValueBox="true" isIOBox="true">
-            <p:TypeAnnotation LastCategoryFullName="Collections" LastSymbolSource="VL.Collections.vl">
+            <p:TypeAnnotation LastCategoryFullName="Collections" LastDependency="VL.CoreLib.vl">
               <Choice Kind="TypeFlag" Name="Spread" />
               <p:TypeArguments>
-                <TypeReference LastCategoryFullName="Primitive" LastSymbolSource="CoreLibBasics.vl">
+                <TypeReference LastCategoryFullName="Primitive" LastDependency="CoreLibBasics.vl">
                   <Choice Kind="TypeFlag" Name="String" />
                 </TypeReference>
               </p:TypeArguments>
@@ -171,10 +170,10 @@
             <p:Value />
           </Pad>
           <Pad Id="BNkWsV9wjIeLOsns99ECT2" Comment="Extra Ips" Bounds="196,617,35,17" ShowValueBox="true" isIOBox="true">
-            <p:TypeAnnotation LastCategoryFullName="Collections" LastSymbolSource="VL.Collections.vl">
+            <p:TypeAnnotation LastCategoryFullName="Collections" LastDependency="VL.CoreLib.vl">
               <Choice Kind="TypeFlag" Name="Spread" />
               <p:TypeArguments>
-                <TypeReference LastCategoryFullName="Primitive" LastSymbolSource="CoreLibBasics.vl">
+                <TypeReference LastCategoryFullName="Primitive" LastDependency="CoreLibBasics.vl">
                   <Choice Kind="TypeFlag" Name="String" />
                 </TypeReference>
               </p:TypeArguments>
@@ -182,7 +181,7 @@
             <p:Value />
           </Pad>
           <Pad Id="Pbrox3TxpbYOpHs0CvRISr" Bounds="310,509,500,19" ShowValueBox="true" isIOBox="true" Value="Tells the finder whether it should locate and report NDI send sources that are running on the current local machine.">
-            <p:TypeAnnotation>
+            <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
               <Choice Kind="TypeFlag" Name="String" />
             </p:TypeAnnotation>
             <p:ValueBoxSettings>
@@ -191,7 +190,7 @@
             </p:ValueBoxSettings>
           </Pad>
           <Pad Id="F3rtHvjzZgwNy0sg4pbjmO" Bounds="310,562,370,19" ShowValueBox="true" isIOBox="true" Value="Specifies groups for which this NDI finder will report sources.">
-            <p:TypeAnnotation>
+            <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
               <Choice Kind="TypeFlag" Name="String" />
             </p:TypeAnnotation>
             <p:ValueBoxSettings>
@@ -200,7 +199,7 @@
             </p:ValueBoxSettings>
           </Pad>
           <Pad Id="D1P0guq3aPYOz6nvg6eAth" Bounds="310,613,490,19" ShowValueBox="true" isIOBox="true" Value="List of IP addresses outside the local network that will be queried for NDI sources.">
-            <p:TypeAnnotation>
+            <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
               <Choice Kind="TypeFlag" Name="String" />
             </p:TypeAnnotation>
             <p:ValueBoxSettings>
@@ -209,7 +208,7 @@
             </p:ValueBoxSettings>
           </Pad>
           <Pad Id="Lcuaq6C24G9L2QjkvYRvqr" Bounds="551,691,193,19" ShowValueBox="true" isIOBox="true" Value="For sending and Receiving use:">
-            <p:TypeAnnotation>
+            <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
               <Choice Kind="TypeFlag" Name="String" />
             </p:TypeAnnotation>
             <p:ValueBoxSettings>
@@ -218,7 +217,7 @@
             </p:ValueBoxSettings>
           </Pad>
           <Pad Id="OLpM3QfxIlMOGLnhCRkSBH" Bounds="241,657,156,19" ShowValueBox="true" isIOBox="true" Value="&lt; Lists available Sources">
-            <p:TypeAnnotation>
+            <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
               <Choice Kind="TypeFlag" Name="String" />
             </p:TypeAnnotation>
             <p:ValueBoxSettings>
@@ -227,7 +226,7 @@
             </p:ValueBoxSettings>
           </Pad>
           <Node Bounds="776,713,85,19" Id="TNyuXFnh4ccQQf8y6zlp5e">
-            <p:NodeReference LastCategoryFullName="IO.NDI" LastSymbolSource="VL.IO.NDI.vl">
+            <p:NodeReference LastCategoryFullName="IO.NDI" LastDependency="VL.IO.NDI.vl">
               <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
               <Choice Kind="ProcessAppFlag" Name="NDIReceiver (Reactive)" />
             </p:NodeReference>
@@ -257,6 +256,6 @@
       </Patch>
     </Node>
   </Patch>
-  <NugetDependency Id="RZKOzWqotVjQVRGarARfLh" Location="VL.Stride" Version="2022.5.0-0415-g9f84c137b4" />
+  <NugetDependency Id="RZKOzWqotVjQVRGarARfLh" Location="VL.Stride" Version="2023.5.2" />
   <NugetDependency Id="SoARYR0FAkdOO0nZ0bPMDR" Location="VL.IO.NDI" Version="0.5.0-preview" />
 </Document>
