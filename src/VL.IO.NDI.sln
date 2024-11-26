@@ -5,6 +5,11 @@ VisualStudioVersion = 17.3.32825.248
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VL.IO.NDI", "VL.IO.NDI.csproj", "{8B771692-F865-494F-9F0D-638DFFCB7D89}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Deployment", "Deployment", "{47A09AC7-FD75-4976-9B99-EEA0968D7C2F}"
+	ProjectSection(SolutionItems) = preProject
+		..\deployment\VL.IO.NDI.nuspec = ..\deployment\VL.IO.NDI.nuspec
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

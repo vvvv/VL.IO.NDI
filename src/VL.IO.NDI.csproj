@@ -10,7 +10,7 @@
 
     <!-- Startup properties -->
     <PackageRepositories>$([System.IO.Path]::GetFullPath('$(MsBuildThisFileDirectory)..\..'))</PackageRepositories>
-    <VVVVVersion>5.2</VVVVVersion>
+    <VVVVInstallPath>C:\Program Files\vvvv\vvvv_gamma_6.7-0236-g33a4a9999e-win-x64</VVVVInstallPath>
     
     <Version>0.5.0</Version>
     <Authors>NewTek, Motzi, sebl, vvvv group</Authors>

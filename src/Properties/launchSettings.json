@@ -2,11 +2,8 @@
   "profiles": {
     "VL.IO.NDI": {
       "commandName": "Executable",
-      "executablePath": "$(ProgramFiles)\\vvvv\\vvvv_gamma_$(VVVVVersion)\\vvvv.exe",
-      "commandLineArgs": "--package-repositories $(PackageRepositories) --debug --editable-packages VL.IO.NDI;VL.Audio"
-    },
-    "Profile 1": {
-      "commandName": "Project"
+      "executablePath": "$(VVVVInstallPath)\\vvvv.exe",
+      "commandLineArgs": "--package-repositories $(PackageRepositories) --editable-packages VL.IO.NDI;VL.Audio"
     }
   }
 }

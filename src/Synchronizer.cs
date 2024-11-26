@@ -12,6 +12,7 @@ namespace VL.IO.NDI
         // our unmanaged NDI sync instance
         private IResourceProvider<IntPtr> _syncInstanceProvider;
         private IResourceHandle<IntPtr> _syncInstanceHandle;
+        private Receiver _receiver;
 
         public Receiver Receiver
         {
@@ -20,6 +21,7 @@ namespace VL.IO.NDI
                 var syncInstance = value?.SyncInstanceProvider;
                 if (syncInstance != _syncInstanceProvider)
                 {
+                    _receiver = value;
                     _syncInstanceProvider = syncInstance;
                     _syncInstanceHandle?.Dispose();
                     _syncInstanceHandle = syncInstance?.GetHandle();
@@ -31,6 +33,9 @@ namespace VL.IO.NDI
         {
             var syncInstanceHandle = _syncInstanceProvider?.GetHandle();
             if (syncInstanceHandle is null)
+                return null;
+
+            if (_receiver is null || !_receiver.Enabled)
                 return null;
 
             var nativeVideoFrame = new NDIlib.video_frame_v2_t();
@@ -61,6 +66,9 @@ namespace VL.IO.NDI
         {
             var syncInstanceHandle = _syncInstanceProvider?.GetHandle();
             if (syncInstanceHandle is null)
+                return null;
+
+            if (_receiver is null || !_receiver.Enabled)
                 return null;
 
             var nativeAudioFrame = new NDIlib.audio_frame_v2_t();
