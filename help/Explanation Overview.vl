@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Document xmlns:p="property" xmlns:r="reflection" Id="QwzvqkCZNFBNTdZ92967Sh" LanguageVersion="2023.5.2" Version="0.128">
-  <NugetDependency Id="JngbdjrQttWP3C056ivUGZ" Location="VL.CoreLib" Version="2023.5.2" />
+<Document xmlns:p="property" xmlns:r="reflection" Id="QwzvqkCZNFBNTdZ92967Sh" LanguageVersion="2024.6.7" Version="0.128">
+  <NugetDependency Id="JngbdjrQttWP3C056ivUGZ" Location="VL.CoreLib" Version="2024.6.7" />
   <Patch Id="IiCA7zHpiE6LeILS7YZGKy">
     <Canvas Id="PmobLB0HSYAL6JU48f5ahA" DefaultCategory="Main" CanvasType="FullCategory" />
     <!--
@@ -96,33 +96,20 @@
               <p:stringtype p:Assembly="VL.Core" p:Type="VL.Core.StringType">Comment</p:stringtype>
             </p:ValueBoxSettings>
           </Pad>
-          <Node Bounds="667,713,85,19" Id="L9aUj0XxTHaQdsRovjxG9W">
-            <p:NodeReference LastCategoryFullName="IO.NDI" LastDependency="VL.IO.NDI.vl">
-              <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
-              <Choice Kind="ProcessAppFlag" Name="NDIReceiver" />
-            </p:NodeReference>
-            <Pin Id="P9R68YliElGQabNP3FGaxq" Name="Source" Kind="InputPin" />
-            <Pin Id="AVDgUfBJhw5OfL2dwQyIhv" Name="Receiver Name" Kind="InputPin" />
-            <Pin Id="PQekApObLqOOq1w2n6GnAs" Name="On Program" Kind="InputPin" />
-            <Pin Id="L8dYEkruZI0NdBS2jnjAgV" Name="On Preview" Kind="InputPin" />
-            <Pin Id="JLvwF46QiiqPb2X83jl6dh" Name="Enabled" Kind="InputPin" />
-            <Pin Id="PtO2ZL1BzeLOkMwp22uOW4" Name="Video Source" Kind="OutputPin" />
-            <Pin Id="TDFyKUzBH93OJiv5ibRJq5" Name="Audio Source" Kind="OutputPin" />
-            <Pin Id="MIu4sCEecsgODEb69M5fmG" Name="Metadata Frames" Kind="OutputPin" />
-          </Node>
           <Node Bounds="147,650,75,19" Id="U13NXcJqtrlMKrHZANTMdw">
             <p:NodeReference LastCategoryFullName="IO.NDI" LastDependency="VL.IO.NDI.vl">
               <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
               <Choice Kind="ProcessAppFlag" Name="SourceFinder" />
             </p:NodeReference>
             <p:HelpFocus p:Assembly="VL.Lang" p:Type="VL.Model.HelpPriority">High</p:HelpFocus>
+            <Pin Id="CVvYGBhWIm1MX4MfcvvxDc" Name="Node Context" Kind="InputPin" IsHidden="true" />
             <Pin Id="NWFUEVDtCZEMiY2ASQqmiH" Name="Show Local Sources" Kind="InputPin" />
             <Pin Id="VUdQXTXMeeYOWOqXQ5Xetl" Name="Groups" Kind="InputPin" />
             <Pin Id="E9LHjtre06OLkxjOBNuM6B" Name="Extra Ips" Kind="InputPin" />
             <Pin Id="UFcWC8rK95fLcdGVy92O5N" Name="Clear" Kind="InputPin" />
             <Pin Id="NhT6bkF15jDQYAPmQGxIzu" Name="Sources" Kind="OutputPin" />
           </Node>
-          <Pad Id="ICwTxIsFM86OXQVS547fnZ" Comment="Sources" Bounds="149,725,153,109" ShowValueBox="true" isIOBox="true">
+          <Pad Id="ICwTxIsFM86OXQVS547fnZ" Comment="Sources" Bounds="149,725,237,109" ShowValueBox="true" isIOBox="true">
             <p:Value />
           </Pad>
           <Node Bounds="398,717,44,26" Id="Ku4YWf0KSeqNJ1oTnbXBb2">
@@ -135,20 +122,6 @@
             <Pin Id="FgPVrmkvpBeP26dNND4IRH" Name="Count" Kind="OutputPin" />
           </Node>
           <Pad Id="FTGSqUjImb1Pz7VnceuShm" Comment="Count" Bounds="400,766,35,15" ShowValueBox="true" isIOBox="true" />
-          <Node Bounds="560,713,85,19" Id="BgGvksjeuunPzbeXG2cEAT">
-            <p:NodeReference LastCategoryFullName="IO.NDI" LastDependency="VL.IO.NDI.vl">
-              <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
-              <Choice Kind="ProcessAppFlag" Name="NDISender" />
-            </p:NodeReference>
-            <Pin Id="NUYTKqkQSKZNeWIVY9jFGK" Name="Source Name" Kind="InputPin" />
-            <Pin Id="KebRcNnBfznLUszyBMVtR3" Name="Groups" Kind="InputPin" />
-            <Pin Id="DHo2M2cWWXGLHMrFJY0jz1" Name="Video Stream" Kind="InputPin" />
-            <Pin Id="F6zmGBIAbxkLqIhO2YtGQA" Name="Audio Stream" Kind="InputPin" />
-            <Pin Id="NRR4t2tT58mLGgcrZoMb8W" Name="Enabled" Kind="InputPin" />
-            <Pin Id="J2fozS2fW53MGQ3v50fBcQ" Name="On Program" Kind="OutputPin" />
-            <Pin Id="TWs2GoYYApULjmUnF4WoKo" Name="On Preview" Kind="OutputPin" />
-            <Pin Id="MbAqbRzwrqmNX6a9pQ7BFW" Name="Connection Count" Kind="OutputPin" />
-          </Node>
           <Pad Id="TDeYnoLUFSLLofibPxz1C7" Comment="Show Local Sources" Bounds="149,511,35,35" ShowValueBox="true" isIOBox="true" Value="True">
             <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
               <Choice Kind="ImmutableTypeFlag" Name="Boolean" />
@@ -158,7 +131,7 @@
               <p:buttonmode p:Assembly="VL.UI.Forms" p:Type="VL.HDE.PatchEditor.Editors.ButtonModeEnum">Toggle</p:buttonmode>
             </p:ValueBoxSettings>
           </Pad>
-          <Pad Id="PQ0tnPz5l1VLaeSCSxsYzg" Comment="Groups" Bounds="172,566,35,17" ShowValueBox="true" isIOBox="true">
+          <Pad Id="PQ0tnPz5l1VLaeSCSxsYzg" Comment="Groups" Bounds="172,566,35,33" ShowValueBox="true" isIOBox="true">
             <p:TypeAnnotation LastCategoryFullName="Collections" LastDependency="VL.CoreLib.vl">
               <Choice Kind="TypeFlag" Name="Spread" />
               <p:TypeArguments>
@@ -169,7 +142,7 @@
             </p:TypeAnnotation>
             <p:Value />
           </Pad>
-          <Pad Id="BNkWsV9wjIeLOsns99ECT2" Comment="Extra Ips" Bounds="196,617,35,17" ShowValueBox="true" isIOBox="true">
+          <Pad Id="BNkWsV9wjIeLOsns99ECT2" Comment="Extra Ips" Bounds="196,617,35,33" ShowValueBox="true" isIOBox="true">
             <p:TypeAnnotation LastCategoryFullName="Collections" LastDependency="VL.CoreLib.vl">
               <Choice Kind="TypeFlag" Name="Spread" />
               <p:TypeArguments>
@@ -225,19 +198,60 @@
               <p:stringtype p:Assembly="VL.Core" p:Type="VL.Core.StringType">Comment</p:stringtype>
             </p:ValueBoxSettings>
           </Pad>
-          <Node Bounds="776,713,85,19" Id="TNyuXFnh4ccQQf8y6zlp5e">
+          <Node Bounds="564,720,85,19" Id="GKaqq4JU7MKNGnetr181KQ">
+            <p:NodeReference LastCategoryFullName="IO.NDI" LastDependency="VL.IO.NDI.vl">
+              <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
+              <Choice Kind="ProcessAppFlag" Name="NDISender" />
+            </p:NodeReference>
+            <Pin Id="Am45fR0MEh8N2dAJetGuQI" Name="Node Context" Kind="InputPin" IsHidden="true" />
+            <Pin Id="JnTpMlCNdydOSDKU9CAcO9" Name="Source Name" Kind="InputPin" />
+            <Pin Id="Cy2KxrnQhEBN7SJDcDfUl6" Name="Failsafe" Kind="InputPin" IsHidden="true" />
+            <Pin Id="CTz666HUXcPOMQQmxIdgY0" Name="Clock Video" Kind="InputPin" IsHidden="true" />
+            <Pin Id="U0o4baXC5SkQW2ncXjRyiO" Name="Clock Audio" Kind="InputPin" IsHidden="true" />
+            <Pin Id="TinmQuRH2BSNorSpsaitAO" Name="Groups" Kind="InputPin" />
+            <Pin Id="DFbSmzJSpGNPyqymdv9nEA" Name="Video Stream" Kind="InputPin" />
+            <Pin Id="Fev0vC4orkjN5FCdoNo8Db" Name="Audio Stream" Kind="InputPin" />
+            <Pin Id="DKdcbAN3BSINQ1mJtJubNW" Name="Enabled" Kind="InputPin" />
+            <Pin Id="KO11BIB4YDlL09ElZgKwfD" Name="On Program" Kind="OutputPin" IsHidden="true" />
+            <Pin Id="GFxztqZMTJjPxHIF7cru4p" Name="On Preview" Kind="OutputPin" IsHidden="true" />
+            <Pin Id="BEkfNjoOFLeMSfj7kOvJtt" Name="Connection Count" Kind="OutputPin" />
+          </Node>
+          <Node Bounds="681,720,71,19" Id="BDGMDwu0fwzPLRcUuwy2hE">
+            <p:NodeReference LastCategoryFullName="IO.NDI" LastDependency="VL.IO.NDI.vl">
+              <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
+              <Choice Kind="ProcessAppFlag" Name="NDIReceiver" />
+            </p:NodeReference>
+            <Pin Id="LLYAl2ay8b7OQVDkWLbcdp" Name="Node Context" Kind="InputPin" IsHidden="true" />
+            <Pin Id="PKfHKjnBLIkQbHdx2GcD5C" Name="Source" Kind="InputPin" />
+            <Pin Id="ELqn8rE54kePKO9J6zlhER" Name="Receiver Name" Kind="InputPin" />
+            <Pin Id="JsPsac7IqNDPjBb4eQ9xjy" Name="On Program" Kind="InputPin" IsHidden="true" />
+            <Pin Id="O5ZRomvWMItNn9rwmHTWys" Name="On Preview" Kind="InputPin" IsHidden="true" />
+            <Pin Id="PdasNkfY4B1PLxctjxrSPL" Name="Bandwidth" Kind="InputPin" />
+            <Pin Id="E9LsbCmXP9WL5FqNw0JRIR" Name="Color Format" Kind="InputPin" IsHidden="true" />
+            <Pin Id="KhluBpO5kvcMPdJPAqRIpa" Name="Allow Video Fields" Kind="InputPin" IsHidden="true" />
+            <Pin Id="JyxBRNsY1BaPb8gh3VjWnZ" Name="Enabled" Kind="InputPin" />
+            <Pin Id="PeNJXejP7hkPDVtujmL4Bh" Name="Video Source" Kind="OutputPin" />
+            <Pin Id="DV7uEVlKl29PgjK1hZ6Mfb" Name="Audio Source" Kind="OutputPin" />
+            <Pin Id="AjM0rVdEnL4Nkk4keBqR5o" Name="Metadata Frames" Kind="OutputPin" IsHidden="true" />
+          </Node>
+          <Node Bounds="768,720,85,19" Id="P6fyORZDhQKObC3vHqvwOT">
             <p:NodeReference LastCategoryFullName="IO.NDI" LastDependency="VL.IO.NDI.vl">
               <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
               <Choice Kind="ProcessAppFlag" Name="NDIReceiver (Reactive)" />
             </p:NodeReference>
-            <Pin Id="Dy88UDJG9qjPDJypmCnrJ6" Name="Source" Kind="InputPin" />
-            <Pin Id="QryR7SPSH9LNL6OdTYmNaB" Name="Receiver Name" Kind="InputPin" />
-            <Pin Id="AZdj9LycT7QQa4TJePwzfe" Name="On Program" Kind="InputPin" />
-            <Pin Id="FJoo8kmBv0iM2SKafEJHY2" Name="On Preview" Kind="InputPin" />
-            <Pin Id="PirhQhwSIaONUJIwYaud0U" Name="Enabled" Kind="InputPin" />
-            <Pin Id="QNrFf5mYyPlPdceSdRFqmF" Name="Video Stream" Kind="OutputPin" />
-            <Pin Id="SUzqJMrSaUnP0BZRxXh5IO" Name="Audio Stream" Kind="OutputPin" />
-            <Pin Id="PvNaxamgAHvNxMaW6EICJf" Name="Metadata Stream" Kind="OutputPin" />
+            <Pin Id="DFxN4A29KNILF6hkWCMgQa" Name="Node Context" Kind="InputPin" IsHidden="true" />
+            <Pin Id="NUb3rYpKSvkO8xuyUCSyI5" Name="Source" Kind="InputPin" />
+            <Pin Id="CspjuMpglXTMzMZWypNFAy" Name="Receiver Name" Kind="InputPin" />
+            <Pin Id="DqzPd5ZBjvrOOtUXGnlujM" Name="On Program" Kind="InputPin" />
+            <Pin Id="N7FWxxvaCQjQQ80AHGvATa" Name="On Preview" Kind="InputPin" />
+            <Pin Id="GYXCD4nckF5O46Jrkev0D2" Name="Bandwidth" Kind="InputPin" IsHidden="true" />
+            <Pin Id="VqMaRIvchF4PKunHcd1iW9" Name="Color Format" Kind="InputPin" IsHidden="true" />
+            <Pin Id="RVPG1T7qSwlPDC0gTJoQhs" Name="Allow Video Fields" Kind="InputPin" IsHidden="true" />
+            <Pin Id="OraDVfda0W8MXR2AMJ7NDK" Name="Enabled" Kind="InputPin" />
+            <Pin Id="PmnmPmfft8NNPzp4HcAYjc" Name="Internal Receiver" Kind="OutputPin" IsHidden="true" />
+            <Pin Id="L4LRt6BIqWBPzIfewcJ246" Name="Video Stream" Kind="OutputPin" />
+            <Pin Id="NlX0mwtVpMTLhgoFns71LK" Name="Audio Stream" Kind="OutputPin" />
+            <Pin Id="B0xK0ht4kkVNefJGL2s24j" Name="Metadata Stream" Kind="OutputPin" IsHidden="true" />
           </Node>
         </Canvas>
         <Patch Id="RXbXPrEDZ5UN9J32SGvmAW" Name="Create" />
@@ -256,6 +270,7 @@
       </Patch>
     </Node>
   </Patch>
-  <NugetDependency Id="RZKOzWqotVjQVRGarARfLh" Location="VL.Stride" Version="2023.5.2" />
+  <NugetDependency Id="RZKOzWqotVjQVRGarARfLh" Location="VL.Stride" Version="2024.6.7" />
   <NugetDependency Id="SoARYR0FAkdOO0nZ0bPMDR" Location="VL.IO.NDI" Version="0.5.0-preview" />
+  <NugetDependency Id="UKfazRzy3I9OZG6pksHmWR" Location="VL.Stride.TextureFX" Version="2024.6.7" />
 </Document>

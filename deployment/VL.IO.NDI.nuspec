@@ -2,15 +2,14 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2011/10/nuspec.xsd">
   <metadata>
     <id>VL.IO.NDI</id>
-    <version>0.5.5-preview</version>
+    <version>1.0.0</version>
     <title>VL.IO.NDI</title>
     <authors>vvvv, Matthias Husinsky, sebl, NewTek</authors>
     <owners>vvvv, Matthias Husinsky, sebl, NewTek</owners>
     <projectUrl>https://github.com/vvvv/VL.IO.NDI</projectUrl>
     <repository type="git" url="https://github.com/vvvv/VL.IO.NDI" branch="master"/>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <summary>Provides support for NDI® in VL.</summary>
-    <description>Provides support for NDI® in VL.</description>
+    <description>Provides support for streaming video/textures via network using NDI®</description>
     <tags>VL, NDI, network, video, audio, stream, broadcast</tags>
 	  <license type="expression">LGPL-3.0-only</license>
     <dependencies>
@@ -21,6 +20,7 @@
 	  <file src="..\lib\net6.0\VL.IO.NDI.dll" target="lib\net6.0\" exclude="" /> 
     <file src="..\lib\net6.0\VL.IO.NDI.xml" target="lib\net6.0\" exclude="" />
     <file src="..\runtimes\win-x64\native\Processing.NDI.Lib.x64.dll" target="runtimes\win-x64\native\" exclude="" />
+    <file src="..\runtimes\win-x64\native\Processing.NDI.Lib.Licenses.txt" target="runtimes\win-x64\native\" exclude="" />
     <file src="..\*.vl" target="" exclude="" />
     <file src="..\help\**" target="help\" exclude="" />
 	  <file src="nugeticon.png" target="icon\" />
