@@ -24,7 +24,7 @@ NDI® is a registered trademark of Vizrt Group. See [NDI.video](https://ndi.vide
 - When making a pull-request, please make sure to read the general [guidelines on contributing to vvvv libraries](https://thegraybook.vvvv.org/reference/extending/contributing.html)
 
 ## Credits
-- Based on NDI 5.0
+- Based on NDI 6.3.2
 
 ## Sponsoring
 Development of this library was partially sponsored by
