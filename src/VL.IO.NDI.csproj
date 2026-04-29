@@ -1,18 +1,19 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net6.0</TargetFramework>
+    <TargetFramework>net8.0</TargetFramework>
     
     <OutputPath>..\lib\</OutputPath>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <NoWarn>1701;1702;1591</NoWarn>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <Nullable>enable</Nullable>
 
     <!-- Startup properties -->
     <PackageRepositories>$([System.IO.Path]::GetFullPath('$(MsBuildThisFileDirectory)..\..'))</PackageRepositories>
     <VVVVInstallPath>C:\Program Files\vvvv\vvvv_gamma_7.1-win-x64</VVVVInstallPath>
     
-    <Version>1.1.0</Version>
+    <Version>1.2.0</Version>
     <Authors>NewTek, Motzi, sebl, vvvv group</Authors>
     <Company />
     <Product />
@@ -22,7 +23,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="VL.Core" Version="2023.5.2" />
+    <PackageReference Include="VL.Core" Version="2025.7.0" />
   </ItemGroup>
 
 </Project>

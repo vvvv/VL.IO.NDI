@@ -13,7 +13,7 @@ namespace VL.IO.NDI
 {
     static partial class Utils
     {
-        public static byte[] StringToUtf8(string managedString)
+        public static byte[]? StringToUtf8(string? managedString)
         {
             if (managedString is null)
                 return default;

@@ -27,12 +27,12 @@ namespace VL.IO.NDI
         private readonly SerialDisposable _videoStreamSubscription = new SerialDisposable();
         private readonly SerialDisposable _audioStreamSubscription = new SerialDisposable();
 
-        VideoStream _videoStream;
-        AudioStream _audioStream;
+        VideoStream? _videoStream;
+        AudioStream? _audioStream;
 
         private NDIlib.tally_t _ndiTally = new NDIlib.tally_t();
 
-        public Sender(string sourceName, bool clockVideo = true, bool clockAudio = false, String[] groups = null, Source failsafe = null)
+        public Sender(string sourceName, bool clockVideo = true, bool clockAudio = false, String[]? groups = null, Source? failsafe = null)
         {
             if (string.IsNullOrEmpty(sourceName))
             {
@@ -100,7 +100,7 @@ namespace VL.IO.NDI
                         {
                             var videoFrame = handle.Resource;
 
-                            MemoryOwner<byte> memoryOwner = default;
+                            MemoryOwner<byte>? memoryOwner = default;
                             if (!videoFrame.TryGetMemory(out var memory))
                             {
                                 memoryOwner = MemoryOwner<byte>.Allocate(videoFrame.LengthInBytes);

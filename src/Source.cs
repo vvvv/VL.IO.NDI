@@ -21,9 +21,9 @@ namespace VL.IO.NDI
         [CreateDefault]
         public static Source CreateDefault() => None;
 
-        private string _computerName;
-        private string _sourceName;
-        private Lazy<Uri> _uri;
+        private string? _computerName;
+        private string? _sourceName;
+        private Lazy<Uri?>? _uri;
 
         // Construct from NDIlib.source_t
         internal Source(NDIlib.source_t source_t)
@@ -46,13 +46,13 @@ namespace VL.IO.NDI
 
         public string SourceName => _sourceName ??= Regex.Match(Name, @"(?<=\().+?(?=\))").Value;
 
-        public Uri Uri
+        public Uri? Uri
         {
             get 
             {
-                return (_uri ??= new Lazy<Uri>(Compute)).Value;
+                return (_uri ??= new Lazy<Uri?>(Compute)).Value;
 
-                Uri Compute()
+                Uri? Compute()
                 {
                     var uriString = string.Format("ndi://{0}/{1}", ComputerName, System.Net.WebUtility.UrlEncode(SourceName));
                     if (Uri.TryCreate(uriString, UriKind.Absolute, out var uri))
@@ -74,7 +74,7 @@ namespace VL.IO.NDI
             return false;
         }
 
-        public bool Equals(Source other)
+        public bool Equals(Source? other)
         {
             if (other is null)
                 return false;

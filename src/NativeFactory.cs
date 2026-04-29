@@ -44,10 +44,5 @@ namespace VL.IO.NDI
                 }
             }, NDIlib.recv_destroy);
         }
-
-        public static IResourceProvider<IntPtr> CreateSync(this IResourceProvider<IntPtr> receiver)
-        {
-            return receiver.Bind(r => ResourceProvider.New(() => NDIlib.framesync_create(r), NDIlib.framesync_destroy));
-        }
     }
 }

@@ -11,19 +11,19 @@ namespace VL.IO.NDI
 {
     public class Router : IDisposable, INotifyPropertyChanged
     {
-        private string[] _groups;
+        private string[]? _groups;
         private IntPtr _routingInstancePtr;
-        private Source _selectedSource;
+        private Source? _selectedSource;
         private string _routingName = "Routing";
 
         [Category("NewTek NDI"),
         Description("The NDI source to route elsewhere. An empty new Source() or a Source with no Name will disconnect.")]
-        public Source SelectedSource
+        public Source? SelectedSource
         {
             get { return _selectedSource; }
             set
             {
-                if (value.Name != _selectedSource.Name)
+                if (value?.Name != _selectedSource?.Name)
                 {
                     _selectedSource = value;
                     
@@ -54,7 +54,7 @@ namespace VL.IO.NDI
         }
 
         // Constructor
-        public Router(String routingName="Routing", String[] groups = null)
+        public Router(String routingName="Routing", String[]? groups = null)
         {
             _groups = groups;
             _routingName = routingName;
@@ -108,7 +108,7 @@ namespace VL.IO.NDI
             }
         }
 
-        public event PropertyChangedEventHandler PropertyChanged;
+        public event PropertyChangedEventHandler? PropertyChanged;
 
         private void NotifyPropertyChanged(String info)
         {

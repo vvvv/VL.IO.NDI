@@ -3,7 +3,7 @@
     "VL.IO.NDI": {
       "commandName": "Executable",
       "executablePath": "$(VVVVInstallPath)\\vvvv.exe",
-      "commandLineArgs": "--package-repositories $(PackageRepositories) --editable-packages VL.IO.NDI;VL.Audio"
+      "commandLineArgs": "--allowmultiple --package-repositories $(PackageRepositories) --editable-packages VL.IO.NDI;VL.Audio"
     }
   }
 }

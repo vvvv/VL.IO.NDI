@@ -16,7 +16,7 @@ namespace VL.IO.NDI
 {
     public static class Finder
     {
-        public static IObservable<Spread<Source>> GetSources(bool showLocalSources = false, string[] groups = null, string[] extraIps = null)
+        public static IObservable<Spread<Source>> GetSources(bool showLocalSources = false, string[]? groups = null, string[]? extraIps = null)
         {
             return Observable.Using(
                 () => CreateNativeInstanceProvider(showLocalSources, groups, extraIps).GetHandle(), 
@@ -48,7 +48,7 @@ namespace VL.IO.NDI
 
         }
 
-        private static unsafe IResourceProvider<IntPtr> CreateNativeInstanceProvider(bool showLocalSources = false, string[] groups = null, string[] extraIps = null)
+        private static unsafe IResourceProvider<IntPtr> CreateNativeInstanceProvider(bool showLocalSources = false, string[]? groups = null, string[]? extraIps = null)
         {
             // make a flat list of groups if needed
             var flatGroups = groups != null ? string.Join(",", groups) : null;
